@@ -19,7 +19,7 @@ export const CardSign = styled.div`
   display: flex;
   gap: 1rem;
   flex-direction: column;
-  background: linear-gradient(180deg, #347372 32%, #C9D6D6 100%);
+  background: linear-gradient(180deg, #347372 32%, #c9d6d6 100%);
   border-radius: 6px;
   padding: 2rem;
   align-items: center;
