@@ -43,6 +43,7 @@ export default function Guide() {
           atividades interativas! Vamos começar essa jornada?
         </span>
       </div>
+
       <ButtonWithLoading className="w-full">VAMOS COMECAR</ButtonWithLoading>
     </GuidePage>
   )

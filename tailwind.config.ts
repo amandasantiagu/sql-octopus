@@ -22,6 +22,7 @@ export default {
           200: '#44A1A0',
           300: '#0D5C63',
         },
+        yellowIcon: '#DBB736',
       },
       textColor: {
         DEFAULT: '#34333E',

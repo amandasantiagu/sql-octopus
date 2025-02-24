@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 export const Sign = styled.div`
   width: 100%;
-  display: grid;
+  display: flex;
   min-height: 100%;
   align-items: center;
   justify-items: center;
