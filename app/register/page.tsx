@@ -7,10 +7,11 @@ import Link from 'next/link'
 import { useState } from 'react'
 import { Controller, FormProvider, useForm } from 'react-hook-form'
 
+const FORM_NAME = 'name'
 const FORM_EMAIL = 'email'
 const FORM_PASSWORD = 'password'
 
-export default function Login() {
+export default function Register() {
   const formHook = useForm({
     mode: 'all',
     reValidateMode: 'onBlur',
@@ -30,14 +31,14 @@ export default function Login() {
           <Image src="/logo.png" alt="SqlOctopus" width={142} height={142} />
         </div>
 
-        <p className="font-bold text-xl text-white">Entre com sua conta</p>
+        <p className="font-bold text-xl text-white">Registre-se</p>
 
         <FormProvider {...formHook}>
           <form className="flex flex-col gap-4 items-center">
-            <div className="flex flex-col gap-1 w-full">
-              <div className="mb-2">
+            <div className="flex flex-col gap-4 w-full">
+              <div>
                 <Controller
-                  name={FORM_EMAIL}
+                  name={FORM_NAME}
                   rules={{
                     required: true,
                   }}
@@ -49,20 +50,49 @@ export default function Login() {
                       value={value || ''}
                       required
                       data-cy="email-input"
-                      placeholder="Email"
-                      size="small"
                       sx={sxTextField}
+                      placeholder="Nome completo"
+                      size="small"
                       fullWidth
                       autoComplete="email"
                       onChange={onChange}
+                      error={!!errors[FORM_NAME]}
+                    />
+                  )}
+                />
+
+                {!!errors[FORM_NAME] && (
+                  <FormHelperText error>Nome completo é obrigatório</FormHelperText>
+                )}
+              </div>
+
+              <div>
+                <Controller
+                  name={FORM_EMAIL}
+                  rules={{
+                    required: true,
+                  }}
+                  control={control}
+                  render={({ field: { onChange, onBlur, name, value } }) => (
+                    <TextField
+                      onBlur={onBlur}
+                      onChange={onChange}
+                      value={value || ''}
+                      name={name}
+                      placeholder="Email"
+                      type="email"
+                      data-cy="email-input"
+                      variant="outlined"
+                      sx={sxTextField}
+                      size="small"
+                      fullWidth
+                      autoComplete="current-email"
                       error={!!errors[FORM_EMAIL]}
                     />
                   )}
                 />
 
-                {!!errors[FORM_EMAIL] && (
-                  <FormHelperText error>E-mail é obrigatório</FormHelperText>
-                )}
+                {!!errors[FORM_EMAIL] && <FormHelperText error>Email é obrigatório</FormHelperText>}
               </div>
 
               <div>
@@ -81,9 +111,40 @@ export default function Login() {
                       placeholder="Senha"
                       type="password"
                       data-cy="password-input"
-                      variant="outlined"
                       sx={sxTextField}
+                      variant="outlined"
                       size="small"
+                      fullWidth
+                      autoComplete="current-password"
+                      error={!!errors[FORM_PASSWORD]}
+                    />
+                  )}
+                />
+
+                {!!errors[FORM_PASSWORD] && (
+                  <FormHelperText error>Senha é obrigatório</FormHelperText>
+                )}
+              </div>
+
+              <div>
+                <Controller
+                  name={FORM_PASSWORD}
+                  rules={{
+                    required: true,
+                  }}
+                  control={control}
+                  render={({ field: { onChange, onBlur, name, value } }) => (
+                    <TextField
+                      onBlur={onBlur}
+                      onChange={onChange}
+                      value={value || ''}
+                      name={name}
+                      placeholder="Confirme sua senha"
+                      type="password"
+                      data-cy="password-input"
+                      variant="outlined"
+                      size="small"
+                      sx={sxTextField}
                       fullWidth
                       autoComplete="current-password"
                       error={!!errors[FORM_PASSWORD]}
@@ -109,14 +170,14 @@ export default function Login() {
                 }}
                 className="mt-2 flex w-full bg-primary-300 justify-center rounded-md border border-transparent py-2 px-4 text-sm font-medium text-white uppercase"
               >
-                {isLoading ? '...' : <span>Entrar </span>}
+                {isLoading ? '...' : <span>Registrar </span>}
               </button>
             </div>
 
             <div className="flex flex-row gap-1">
-              <span className="text-white">Não tem uma conta ainda?</span>
-              <Link href="/register">
-                <span className="text-primary-300">Registre-se</span>
+              <span className="text-white">Já tem uma conta?</span>
+              <Link href="/login">
+                <span className="text-primary-300">Faça o seu login</span>
               </Link>
             </div>
           </form>

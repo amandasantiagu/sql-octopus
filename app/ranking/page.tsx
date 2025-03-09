@@ -140,7 +140,7 @@ export default function Ranking() {
                   key={index}
                 >
                   <div className="col-span-8 flex flex-row items-center gap-4">
-                    <span className="font-bold text-xl">{index}</span>
+                    <span className="font-bold text-xl">{index + 1}</span>
 
                     <Avatar alt="user-avatar" sx={{ width: 40, height: 40, background: '#44A1A0' }}>
                       {item.user.name.charAt(0)}
@@ -155,7 +155,7 @@ export default function Ranking() {
                     </span>
 
                     <span className="flex flex-row items-center gap-1">
-                      <IoTimeOutline className="text-primary-200" size={18} /> {item.time}{' '}
+                      <IoTimeOutline className="text-primary-200" size={18} /> {item.time}
                     </span>
                   </div>
                 </div>

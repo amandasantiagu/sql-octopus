@@ -8,6 +8,15 @@ interface CustomTextFieldProps {
   type?: string
 }
 
+export const sxTextField = {
+  '& .MuiOutlinedInput-root': {
+    color: 'white',
+    '& fieldset': {
+      borderColor: 'white',
+    },
+  },
+}
+
 const CustomTextField: React.FC<CustomTextFieldProps> = ({
   value,
   name,
@@ -26,14 +35,7 @@ const CustomTextField: React.FC<CustomTextFieldProps> = ({
         size="small"
         fullWidth
         autoComplete="off"
-        sx={{
-          '& .MuiOutlinedInput-root': {
-            color: 'white',
-            '& fieldset': {
-              borderColor: 'white',
-            },
-          },
-        }}
+        sx={sxTextField}
       />
     </div>
   )

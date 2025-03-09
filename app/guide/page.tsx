@@ -44,7 +44,17 @@ export default function Guide() {
         </span>
       </div>
 
-      <ButtonWithLoading className="w-full">VAMOS COMECAR</ButtonWithLoading>
+      <ButtonWithLoading
+        className="w-full"
+        sx={{
+          height: '2.2rem',
+          background: '#78CDD7',
+          color: 'black',
+          width: '100%',
+        }}
+      >
+        VAMOS COMECAR
+      </ButtonWithLoading>
     </GuidePage>
   )
 }
