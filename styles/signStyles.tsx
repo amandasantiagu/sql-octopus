@@ -3,14 +3,10 @@ import styled from 'styled-components'
 export const Sign = styled.div`
   width: 100%;
   display: flex;
-  min-height: 100%;
+  height: 100%;
   align-items: center;
   justify-items: center;
   background: #f2f2f2;
-  @media (max-width: 1031px) {
-    width: 100%;
-    height: 100%;
-  }
 `
 
 export const CardSign = styled.div`
@@ -24,8 +20,4 @@ export const CardSign = styled.div`
   padding: 2rem;
   align-items: center;
   justify-content: center;
-  @media (max-width: 1031px) {
-    width: 100%;
-    height: 100%;
-  }
 `

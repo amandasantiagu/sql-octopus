@@ -6,8 +6,14 @@ import Typography from '@mui/material/Typography'
 import { PiListBold, PiListThin } from 'react-icons/pi'
 import { FaCheck } from 'react-icons/fa6'
 import { TbLockHeart } from 'react-icons/tb'
+import DialogActivityDetails from './Dialog/DialogActivityDetails'
 
 const AccordionComponent: React.FC = () => {
+  const [currentActivity, setCurrentActivity] = React.useState<any>(undefined)
+
+  const handleOpen = (item: any) => setCurrentActivity(item)
+  const handleClose = () => setCurrentActivity(undefined)
+
   const items = [
     {
       label: 'Noções básicas de SQL',
@@ -17,16 +23,19 @@ const AccordionComponent: React.FC = () => {
           label: 'Linhas e colunas',
           id: 1,
           completed: new Date(),
+          totalExp: 50,
         },
         {
           label: 'Seleção de dados',
           id: 2,
           completed: new Date(),
+          totalExp: 50,
         },
         {
           label: 'Agrupamento de dados',
           id: 3,
           completed: new Date(),
+          totalExp: 50,
         },
       ],
       completed: new Date(),
@@ -38,6 +47,7 @@ const AccordionComponent: React.FC = () => {
         {
           label: 'Linhas e colunas',
           completed: new Date(),
+          totalExp: 60,
           id: 1,
         },
         {
@@ -78,7 +88,19 @@ const AccordionComponent: React.FC = () => {
   ]
 
   return (
-    <div className="flex flex-col w-full gap-6">
+    <div
+      className="flex flex-col w-full gap-6 p-1"
+      style={{
+        maxHeight: 'calc(100vh - 200px)',
+        overflowY: 'auto',
+      }}
+    >
+      <DialogActivityDetails
+        open={!!currentActivity}
+        activity={currentActivity}
+        onClose={handleClose}
+      />
+
       {items.map((item, index) => (
         <Accordion
           key={item.id}
@@ -117,10 +139,13 @@ const AccordionComponent: React.FC = () => {
 
           {item.content.map((content) => (
             <AccordionDetails
-              className="bg-white flex flex-row items-center justify-between w-full"
+              className="bg-white flex flex-row items-center justify-between w-full cursor-pointer"
               sx={{
                 padding: '16px',
                 borderBottom: '1px solid #ECEEEE',
+              }}
+              onClick={() => {
+                if (content.completed) handleOpen(content.completed)
               }}
               key={content.id}
             >

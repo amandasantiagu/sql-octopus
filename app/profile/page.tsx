@@ -5,6 +5,7 @@ import Footer from '@/components/Footer'
 import { ProfileItems, ProfilePage } from '@/styles/profileStyles'
 import { User } from '@/types/User'
 import { Avatar } from '@mui/material'
+import { useRouter } from 'next/navigation'
 import { IoMdSettings } from 'react-icons/io'
 
 export default function Profile() {
@@ -20,6 +21,8 @@ export default function Profile() {
     const initials = nameParts.map((part) => part[0].toUpperCase()).join('')
     return initials
   }
+
+  const router = useRouter()
 
   return (
     <ProfilePage className="flex flex-col min-h-screen">
@@ -49,6 +52,7 @@ export default function Profile() {
           <ButtonWithLoading
             className="w-full"
             sx={{ background: '#17373A', borderRadius: '0.5rem' }}
+            onClick={() => router.push('/login')}
           >
             Sair
           </ButtonWithLoading>
