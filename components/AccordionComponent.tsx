@@ -23,19 +23,19 @@ const AccordionComponent: React.FC = () => {
           label: 'Linhas e colunas',
           id: 1,
           completed: new Date(),
-          totalExp: 50,
+          exp: 50,
         },
         {
           label: 'Seleção de dados',
           id: 2,
           completed: new Date(),
-          totalExp: 50,
+          exp: 50,
         },
         {
           label: 'Agrupamento de dados',
           id: 3,
           completed: new Date(),
-          totalExp: 50,
+          exp: 50,
         },
       ],
       completed: new Date(),
@@ -47,7 +47,7 @@ const AccordionComponent: React.FC = () => {
         {
           label: 'Linhas e colunas',
           completed: new Date(),
-          totalExp: 60,
+          exp: 60,
           id: 1,
         },
         {
@@ -145,7 +145,7 @@ const AccordionComponent: React.FC = () => {
                 borderBottom: '1px solid #ECEEEE',
               }}
               onClick={() => {
-                if (content.completed) handleOpen(content.completed)
+                if (content.completed) handleOpen(content)
               }}
               key={content.id}
             >
