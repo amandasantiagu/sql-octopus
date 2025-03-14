@@ -105,6 +105,7 @@ const AccordionComponent: React.FC = () => {
         <Accordion
           key={item.id}
           disabled={index !== 0 && !items[index - 1]?.completed}
+          className="rounded border-none shadow-none flex flex-col"
           sx={{
             backgroundColor: '#0d5c63',
             borderRadius: '0.5rem',

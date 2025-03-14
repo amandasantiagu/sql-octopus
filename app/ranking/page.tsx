@@ -120,7 +120,7 @@ export default function Ranking() {
 
   return (
     <ProfilePage className="flex flex-col min-h-screen">
-      <ProfileItems>
+      <ProfileItems className="flex-grow flex flex-col gap-4">
         <div className="flex flex-col gap-4 py-2">
           <div className="flex w-full gap-6 items-center justify-center">
             <FaRankingStar size={32} className="text-white" />
@@ -131,7 +131,7 @@ export default function Ranking() {
           <hr className="border-0 h-[0.2rem] bg-primary-100 rounded-full" />
         </div>
 
-        <div className="flex flex-col gap-2 w-full">
+        <div className="flex flex-col gap-2 w-full flex-grow overflow-y-auto max-h-[calc(100vh-150px)]">
           {rankings?.length > 0 ? (
             <div className="flex flex-col gap-4 w-full">
               {rankings.map((item: RankingType, index) => (

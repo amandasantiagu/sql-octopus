@@ -3,6 +3,7 @@ import Dialog from '@mui/material/Dialog'
 import DialogTitle from '@mui/material/DialogTitle'
 import { ButtonWithLoading } from '../ButtonWithLoading'
 import { format } from 'date-fns'
+import CardActivityDetails from '../CardActivityDetails'
 
 interface DialogActivityDetailsProps {
   open: boolean
@@ -25,41 +26,27 @@ const DialogActivityDetails: React.FC<DialogActivityDetailsProps> = ({
       open={open}
       maxWidth="lg"
       sx={{
-        borderRadius: '0.5rem',
+        '& .MuiDialog-paper': { borderRadius: '0.8rem', width: '100%' },
       }}
     >
-      <DialogTitle className="bg-primary-200 text-white text-base">
+      <DialogTitle
+        className="bg-primary-200 text-white text-base justify-center flex w-full"
+        sx={{ fontSize: '1rem' }}
+      >
         Prática: {activity?.label}
       </DialogTitle>
 
-      <div className="p-1 w-full flex flex-col gap-4 items-center">
-        <div className="flex w-full gap-2 text-sm justify-center py-4">
-          <div className="flex flex-col gap-1 items-center">
-            <div>TOTAL XP</div> <div>{activity?.exp}</div>
-          </div>
-
-          <div className="flex flex-col gap-1 items-center">
-            <div>DURAÇÃO</div>
-            <div>{formatToHoursAndMinutes(activity?.completed || new Date())}</div>
-          </div>
-
-          <div className="flex flex-col gap-1 items-center">
-            <div>ACERTOS</div> <div>88%</div>
-          </div>
-        </div>
-
-        <div className="flex flex-col gap-1 w-full">
+      <div className="p-4 w-full flex flex-col gap-2 items-center">
+        <CardActivityDetails activity={activity} />
+        <div className="flex flex-col gap-2 w-full">
           <ButtonWithLoading
             className="w-full"
             sx={{
-              height: '2.2rem',
               background: '#78CDD7',
               color: 'black',
               width: '100%',
               boxShadow: 'none',
-              textTransform: 'none',
               borderRadius: '0.5rem',
-              fontWeight: 600,
             }}
           >
             Refazer prática
@@ -70,12 +57,9 @@ const DialogActivityDetails: React.FC<DialogActivityDetailsProps> = ({
             variant="text"
             onClick={onClose}
             sx={{
-              height: '2.2rem',
               color: 'black',
               width: '100%',
-              boxShadow: 'none',
               textTransform: 'none',
-              borderRadius: '0.5rem',
               fontWeight: 600,
             }}
           >

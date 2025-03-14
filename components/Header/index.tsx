@@ -7,7 +7,7 @@ import MenuExp from '../Menus/MenuExp'
 const Header = () => {
   return (
     <HeaderStyles>
-      <Image src="/logo.png" alt="SqlOctopus" width={100} height={100} />
+      <Image src="/logo.png" alt="SqlOctopus" width={130} height={130} />
 
       <div className="flex flex-row gap-6">
         <MenuHearth />

@@ -5,7 +5,7 @@ export const HeaderStyles = styled.div`
   display: flex;
   padding: 1.5rem;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   width: 100%;
 `
 
