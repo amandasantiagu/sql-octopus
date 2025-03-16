@@ -9,17 +9,15 @@ interface DialogActivityDetailsProps {
   open: boolean
   activity: any
   onClose: () => void
+  onOpenLesson: () => void
 }
 
 const DialogActivityDetails: React.FC<DialogActivityDetailsProps> = ({
   open,
   activity,
   onClose,
+  onOpenLesson,
 }) => {
-  const formatToHoursAndMinutes = (date: Date): string => {
-    return format(date, 'HH:mm')
-  }
-
   return (
     <Dialog
       onClose={onClose}
@@ -48,6 +46,7 @@ const DialogActivityDetails: React.FC<DialogActivityDetailsProps> = ({
               boxShadow: 'none',
               borderRadius: '0.5rem',
             }}
+            onClick={onOpenLesson}
           >
             Refazer prática
           </ButtonWithLoading>

@@ -2,19 +2,26 @@ import * as React from 'react'
 import Accordion from '@mui/material/Accordion'
 import AccordionSummary from '@mui/material/AccordionSummary'
 import AccordionDetails from '@mui/material/AccordionDetails'
-import Typography from '@mui/material/Typography'
-import { PiListBold, PiListThin } from 'react-icons/pi'
+import { PiListBold } from 'react-icons/pi'
 import { FaCheck } from 'react-icons/fa6'
 import { TbLockHeart } from 'react-icons/tb'
 import DialogActivityDetails from './Dialog/DialogActivityDetails'
+import DialogActivity from './Dialog/DialogActivity'
 
 const AccordionComponent: React.FC = () => {
   const [currentActivity, setCurrentActivity] = React.useState<any>(undefined)
+  const [openLesson, setOpenLesson] = React.useState<boolean>(false)
 
-  const handleOpen = (item: any) => setCurrentActivity(item)
-  const handleClose = () => setCurrentActivity(undefined)
+  const handleOpen = (item: any) => {
+    setCurrentActivity(item)
+  }
 
-  const items = [
+  const handleClose = () => {
+    setCurrentActivity(undefined)
+    setOpenLesson(false)
+  }
+
+  const lessons = [
     {
       label: 'Noções básicas de SQL',
       id: 123,
@@ -22,18 +29,21 @@ const AccordionComponent: React.FC = () => {
         {
           label: 'Linhas e colunas',
           id: 1,
+          parentId: 123,
           completed: new Date(),
           exp: 50,
         },
         {
           label: 'Seleção de dados',
           id: 2,
+          parentId: 123,
           completed: new Date(),
           exp: 50,
         },
         {
           label: 'Agrupamento de dados',
           id: 3,
+          parentId: 123,
           completed: new Date(),
           exp: 50,
         },
@@ -48,17 +58,20 @@ const AccordionComponent: React.FC = () => {
           label: 'Linhas e colunas',
           completed: new Date(),
           exp: 60,
+          parentId: 122213,
           id: 1,
         },
         {
           label: 'Seleção de dados',
           id: 2,
           completed: null,
+          parentId: 122213,
         },
         {
           label: 'Agrupamento de dados',
           id: 3,
           completed: null,
+          parentId: 122213,
         },
       ],
       completed: null,
@@ -71,16 +84,19 @@ const AccordionComponent: React.FC = () => {
           label: 'Linhas e colunas',
           id: 1,
           completed: null,
+          parentId: 1223453,
         },
         {
           label: 'Seleção de dados',
           id: 2,
           completed: null,
+          parentId: 1223453,
         },
         {
           label: 'Agrupamento de dados',
           id: 3,
           completed: null,
+          parentId: 1223453,
         },
       ],
       completed: null,
@@ -95,16 +111,19 @@ const AccordionComponent: React.FC = () => {
         overflowY: 'auto',
       }}
     >
+      <DialogActivity open={openLesson} onClose={handleClose} activity={currentActivity} />
+
       <DialogActivityDetails
         open={!!currentActivity}
         activity={currentActivity}
         onClose={handleClose}
+        onOpenLesson={() => setOpenLesson(true)}
       />
 
-      {items.map((item, index) => (
+      {lessons.map((item, index) => (
         <Accordion
           key={item.id}
-          disabled={index !== 0 && !items[index - 1]?.completed}
+          disabled={index !== 0 && !lessons[index - 1]?.completed}
           className="rounded border-none shadow-none flex flex-col"
           sx={{
             backgroundColor: '#0d5c63',

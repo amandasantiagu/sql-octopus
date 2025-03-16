@@ -4,8 +4,8 @@ interface Props {
   data: any
 }
 
-const FillInTheBlank: React.FC<Props> = ({ data }) => {
+const FillBlanks: React.FC<Props> = ({ data }) => {
   return <div>Ola </div>
 }
 
-export default FillInTheBlank
+export default FillBlanks
