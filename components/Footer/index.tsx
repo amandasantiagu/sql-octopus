@@ -9,7 +9,7 @@ const Footer = () => {
   return (
     <FooterComponent>
       <div className="w-full h-full flex items-center justify-between">
-        <Link href="/home">
+        <Link href="/learn">
           <BiHome size={32} className="text-white" />
         </Link>
 

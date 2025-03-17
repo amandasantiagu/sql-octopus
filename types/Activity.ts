@@ -12,11 +12,18 @@ type Blanks = {
   correctAnswer: string
 }
 
+export type Table = {
+  id: number
+  label: string
+  values: string[]
+}
+
 export type ActivityType = {
   id: number
   type?: TypesActivities
   description?: string
   template?: string
+  table?: Table[]
   blanks?: Blanks[]
   answer?: string
 }

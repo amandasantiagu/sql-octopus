@@ -1,7 +1,7 @@
 import * as React from 'react'
 import Dialog from '@mui/material/Dialog'
 import HeaderActivity from '../Header/HeaderActivity'
-import { styled, LinearProgress, linearProgressClasses } from '@mui/material'
+import { styled, LinearProgress, linearProgressClasses, Button } from '@mui/material'
 import ResultPractice from '../Activities/ResultPractice'
 import Combiningpairs from '../Activities/CombiningPairs'
 import DragAndDrop from '../Activities/DragAndDrop'
@@ -9,6 +9,8 @@ import OnlyChoice from '../Activities/OnlyChoice'
 import TrueOrFalse from '../Activities/TrueOrFalse'
 import FillBlanks from '../Activities/FillBlanks'
 import { ActivityType } from '@/types/Activity'
+import { ButtonWithLoading } from '../ButtonWithLoading'
+import { buttonTiffanyBlue } from '@/styles/activityStyles'
 
 interface Props {
   open: boolean
@@ -33,6 +35,7 @@ const BorderLinearProgress = styled(LinearProgress)(() => ({
 const DialogActivity: React.FC<Props> = ({ open, onClose }) => {
   const [step, setSteps] = React.useState<number>(1)
   const [currentActivity, setCurrentActivity] = React.useState<ActivityType | undefined>(undefined)
+  const [check, setCheck] = React.useState<boolean>(false)
 
   const activitys = [
     {
@@ -40,6 +43,28 @@ const DialogActivity: React.FC<Props> = ({ open, onClose }) => {
       description:
         'Organize as informações dos estudantes exibindo apenas aqueles com idade acima de 18 anos.',
       type: 'fill-blanks',
+      table: [
+        {
+          id: 1,
+          label: 'id',
+          values: ['1', '2', '3'],
+        },
+        {
+          id: 2,
+          label: 'name',
+          values: ['Anna', 'Maria', 'Keny'],
+        },
+        {
+          id: 3,
+          label: 'age',
+          values: ['20', '17', '22'],
+        },
+        {
+          id: 4,
+          label: 'grade',
+          values: ['B', 'A', 'B'],
+        },
+      ],
       template: 'SELECT * FROM students WHERE __condition__;',
       blanks: [
         {
@@ -53,6 +78,28 @@ const DialogActivity: React.FC<Props> = ({ open, onClose }) => {
       description: "Exiba o nome e a idade dos estudantes da tabela 'students'.",
       type: 'fill-blanks',
       template: 'SELECT __columns__ FROM __table__;',
+      table: [
+        {
+          id: 1,
+          label: 'id',
+          values: ['1', '2', '3'],
+        },
+        {
+          id: 2,
+          label: 'name',
+          values: ['Anna', 'Maria', 'Keny'],
+        },
+        {
+          id: 3,
+          label: 'age',
+          values: ['20', '17', '22'],
+        },
+        {
+          id: 4,
+          label: 'grade',
+          values: ['B', 'A', 'B'],
+        },
+      ],
       blanks: [
         {
           placeholder: '__columns__',
@@ -65,6 +112,8 @@ const DialogActivity: React.FC<Props> = ({ open, onClose }) => {
       ],
     },
   ]
+
+  const progress = (step / activitys?.length) * 100
 
   const typeInCurrentActivity = React.useMemo(() => {
     const type = currentActivity?.type
@@ -84,6 +133,10 @@ const DialogActivity: React.FC<Props> = ({ open, onClose }) => {
         return <ResultPractice data={currentActivity} />
     }
   }, [currentActivity])
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setCheck(true)
+  }
 
   React.useEffect(() => {
     if (!currentActivity) setCurrentActivity(activitys[0])
@@ -105,14 +158,24 @@ const DialogActivity: React.FC<Props> = ({ open, onClose }) => {
         },
       }}
     >
-      <div className="w-full flex flex-col p-2">
+      <div className="w-full flex flex-col h-screen p-4">
         <HeaderActivity currentLife={2} onClose={onClose} />
 
-        <BorderLinearProgress variant="determinate" value={50} />
+        <BorderLinearProgress variant="determinate" value={progress} />
 
-        <div className="p-4 w-full flex flex-col gap-2 items-center">
+        <div className="p-4 w-full flex flex-col gap-2 items-center h-full overflow-auto">
           {currentActivity && typeInCurrentActivity}
         </div>
+
+        <ButtonWithLoading
+          id="validation"
+          size="large"
+          className="sticky bottom-0"
+          onClick={handleClick}
+          sx={buttonTiffanyBlue}
+        >
+          Verificar
+        </ButtonWithLoading>
       </div>
     </Dialog>
   )
