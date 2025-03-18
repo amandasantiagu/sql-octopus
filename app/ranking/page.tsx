@@ -122,8 +122,8 @@ export default function Ranking() {
     <ProfilePage className="flex flex-col min-h-screen">
       <ProfileItems className="flex-grow flex flex-col gap-4">
         <div className="flex flex-col gap-4 py-2">
-          <div className="flex w-full gap-6 items-center justify-center">
-            <FaRankingStar size={32} className="text-white" />
+          <div className="flex w-full gap-4 items-center justify-center">
+            <FaRankingStar size={28} className="text-white mb-2" />
 
             <span className="text-white font-semibold text-base">RANKING</span>
           </div>
@@ -140,13 +140,14 @@ export default function Ranking() {
                   key={index}
                 >
                   <div className="col-span-8 flex flex-row items-center gap-4">
-                    <span className="font-bold text-xl">{index + 1}</span>
-
-                    <Avatar alt="user-avatar" sx={{ width: 40, height: 40, background: '#44A1A0' }}>
-                      {item.user.name.charAt(0)}
+                    <Avatar
+                      alt="user-avatar"
+                      sx={{ width: 25, height: 25, background: '#44A1A0', fontSize: '1rem' }}
+                    >
+                      {index + 1}
                     </Avatar>
 
-                    <span className="font-bold text-base w-full truncate">{item.user.name}</span>
+                    <span className="font-bold text-sm w-full truncate">{item.user.name}</span>
                   </div>
 
                   <div className="col-span-4 flex flex-col justify-end font-light text-sm">

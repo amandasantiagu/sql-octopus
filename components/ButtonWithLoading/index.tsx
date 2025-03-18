@@ -50,7 +50,7 @@ export const ButtonWithLoading: React.FC<ButtonWithLoadingProps> = ({
   onClick,
   size,
   sx,
-  className = 'hover:bg-neutral-200 hover:text-pink-700',
+  className = 'hover:bg-neutral-100 hover:text-primary shadow-none',
   hasOpen = false,
   id = '',
   startIcon,
