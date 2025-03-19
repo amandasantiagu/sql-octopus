@@ -4,8 +4,8 @@ interface Props {
   data: any
 }
 
-const Combiningpairs: React.FC<Props> = ({ data }) => {
+const CombiningPairs: React.FC<Props> = ({ data }) => {
   return <div>Ola </div>
 }
 
-export default Combiningpairs
+export default CombiningPairs
