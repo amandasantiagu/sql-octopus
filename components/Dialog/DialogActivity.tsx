@@ -1,14 +1,17 @@
 import * as React from 'react'
 import Dialog from '@mui/material/Dialog'
 import HeaderActivity from '../Header/HeaderActivity'
-import { styled, LinearProgress, linearProgressClasses } from '@mui/material'
+import { styled, LinearProgress, linearProgressClasses, Button } from '@mui/material'
 import ResultPractice from '../Activities/ResultPractice'
-import Combiningpairs from '../Activities/CombiningPairs'
+import CombiningPairs from '../Activities/CombiningPairs'
 import DragAndDrop from '../Activities/DragAndDrop'
 import OnlyChoice from '../Activities/OnlyChoice'
 import TrueOrFalse from '../Activities/TrueOrFalse'
 import FillBlanks from '../Activities/FillBlanks'
 import { ActivityType } from '@/types/Activity'
+import { ButtonWithLoading } from '../ButtonWithLoading'
+import { buttonTiffanyBlue } from '@/styles/activityStyles'
+import { opendir } from 'fs'
 
 interface Props {
   open: boolean
@@ -33,26 +36,43 @@ const BorderLinearProgress = styled(LinearProgress)(() => ({
 const DialogActivity: React.FC<Props> = ({ open, onClose }) => {
   const [step, setSteps] = React.useState<number>(1)
   const [currentActivity, setCurrentActivity] = React.useState<ActivityType | undefined>(undefined)
+  const [check, setCheck] = React.useState<boolean>(false)
+
+  const handleClose = () => {
+    setSteps(1)
+    setCurrentActivity(undefined)
+
+    if (onClose) onClose()
+  }
 
   const activitys = [
     {
       id: 1,
-      description:
-        'Organize as informações dos estudantes exibindo apenas aqueles com idade acima de 18 anos.',
       type: 'fill-blanks',
-      template: 'SELECT * FROM students WHERE __condition__;',
-      blanks: [
+      description: 'Exiba o nome e a idade dos estudantes da tabela students.',
+      template: 'SELECT __columns__ FROM __table__;',
+      table: [
         {
-          placeholder: '__condition__',
-          correctAnswer: 'age > 18',
+          id: 1,
+          label: 'id',
+          values: ['1', '2', '3'],
+        },
+        {
+          id: 2,
+          label: 'name',
+          values: ['Anna', 'Maria', 'Keny'],
+        },
+        {
+          id: 3,
+          label: 'age',
+          values: ['20', '17', '22'],
+        },
+        {
+          id: 4,
+          label: 'grade',
+          values: ['B', 'A', 'B'],
         },
       ],
-    },
-    {
-      id: 2,
-      description: "Exiba o nome e a idade dos estudantes da tabela 'students'.",
-      type: 'fill-blanks',
-      template: 'SELECT __columns__ FROM __table__;',
       blanks: [
         {
           placeholder: '__columns__',
@@ -64,7 +84,27 @@ const DialogActivity: React.FC<Props> = ({ open, onClose }) => {
         },
       ],
     },
+    {
+      id: 3,
+      type: 'only-choice',
+      description: 'Qual comando é utilizado para agrupar resultados por uma coluna?',
+      options: [
+        { label: 'join', value: 'join' },
+        { label: 'group by', value: 'groupBy' },
+        { label: 'order by', value: 'orderBy' },
+        { label: 'having', value: 'having' },
+      ],
+      correctAnswer: 'groupBy',
+    },
+    {
+      id: 4,
+      type: 'true-false',
+      description: 'A cláusula HAVING pode ser usada sem um GROUP BY',
+      correctAnswer: true,
+    },
   ]
+
+  const progress = (step / activitys?.length) * 100
 
   const typeInCurrentActivity = React.useMemo(() => {
     const type = currentActivity?.type
@@ -77,7 +117,7 @@ const DialogActivity: React.FC<Props> = ({ open, onClose }) => {
       case 'drag-and-drop':
         return <DragAndDrop data={currentActivity} />
       case 'combining-pairs':
-        return <Combiningpairs data={currentActivity} />
+        return <CombiningPairs data={currentActivity} />
       case 'true-false':
         return <TrueOrFalse data={currentActivity} />
       default:
@@ -85,13 +125,40 @@ const DialogActivity: React.FC<Props> = ({ open, onClose }) => {
     }
   }, [currentActivity])
 
+  const getCurrentActivity = (step: number) => {
+    const index = step - 1
+    const activity = activitys[index] as ActivityType
+    setCurrentActivity(activity)
+  }
+
+  const nextStep = React.useCallback(() => {
+    const newStep = step + 1
+    getCurrentActivity(newStep)
+    setSteps(newStep)
+  }, [step])
+
+  // const previousStep = React.useCallback(() => {
+  //   const index = step - 1
+  //   getCurrentActivity(index)
+  //   setSteps(index)
+  // }, [step])
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setCheck(true)
+
+    nextStep()
+  }
+
+  console.log(currentActivity)
+
   React.useEffect(() => {
     if (!currentActivity) setCurrentActivity(activitys[0])
-  }, [])
+    setSteps(1)
+  }, [open])
 
   return (
     <Dialog
-      onClose={onClose}
+      onClose={handleClose}
       open={open}
       maxWidth={false}
       sx={{
@@ -105,14 +172,24 @@ const DialogActivity: React.FC<Props> = ({ open, onClose }) => {
         },
       }}
     >
-      <div className="w-full flex flex-col p-2">
-        <HeaderActivity currentLife={2} onClose={onClose} />
+      <div className="w-full flex flex-col h-screen p-4">
+        <HeaderActivity currentLife={2} onClose={handleClose} />
 
-        <BorderLinearProgress variant="determinate" value={50} />
+        <BorderLinearProgress variant="determinate" value={progress} />
 
-        <div className="p-4 w-full flex flex-col gap-2 items-center">
+        <div className="p-4 w-full flex flex-col gap-2 items-center h-full overflow-auto">
           {currentActivity && typeInCurrentActivity}
         </div>
+
+        <ButtonWithLoading
+          id="validation"
+          size="large"
+          className="sticky bottom-0"
+          onClick={handleClick}
+          sx={buttonTiffanyBlue}
+        >
+          Verificar
+        </ButtonWithLoading>
       </div>
     </Dialog>
   )

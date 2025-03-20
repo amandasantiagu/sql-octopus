@@ -3,6 +3,7 @@ import { HeaderStyles } from '@/styles/headerStyles'
 import { IconButton } from '@mui/material'
 import { IoMdClose } from 'react-icons/io'
 import { FaHeart } from 'react-icons/fa6'
+import DialogCloseLesson from '../Dialog/DialogCloseLesson'
 
 interface Props {
   currentLife: number
@@ -14,11 +15,9 @@ const HeaderActivity: React.FC<Props> = ({ currentLife = 2, onClose }) => {
 
   return (
     <HeaderStyles>
-      <IconButton aria-label="close" onClick={onClose}>
-        <IoMdClose className="text-gray-300" />
-      </IconButton>
+      <DialogCloseLesson onClose={onClose} />
 
-      <div className="w-full flex gap-4 justify-center">
+      <div className="w-full flex gap-2 justify-center">
         <FaHeart className={life === 3 ? 'text-red-600' : 'text-red-950'} size={30} />
         <FaHeart className={life > 1 ? 'text-red-600' : 'text-red-950'} size={30} />
         <FaHeart className={life === 0 ? 'text-red-950' : 'text-red-600'} size={30} />
