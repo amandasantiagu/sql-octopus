@@ -4,7 +4,6 @@ import { CardSign, Sign } from '@/styles/signStyles'
 import { FormHelperText, TextField } from '@mui/material'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useState } from 'react'
 import { Controller, FormProvider, useForm } from 'react-hook-form'
 
 const FORM_EMAIL = 'email'
@@ -20,8 +19,6 @@ export default function Login() {
     control,
     formState: { errors },
   } = formHook
-
-  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   return (
     <Sign>
@@ -100,7 +97,6 @@ export default function Login() {
             <div className="w-full">
               <button
                 type="submit"
-                disabled={isLoading}
                 data-cy="submit-button"
                 style={{
                   height: '2.2rem',
@@ -109,7 +105,7 @@ export default function Login() {
                 }}
                 className="mt-2 flex w-full bg-primary-300 justify-center rounded-md border border-transparent py-2 px-4 text-sm font-medium text-white uppercase"
               >
-                {isLoading ? '...' : <span>Entrar </span>}
+                Entrar
               </button>
             </div>
 

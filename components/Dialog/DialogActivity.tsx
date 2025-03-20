@@ -73,16 +73,8 @@ const DialogActivity: React.FC<Props> = ({ open, onClose }) => {
           values: ['B', 'A', 'B'],
         },
       ],
-      blanks: [
-        {
-          placeholder: '__columns__',
-          correctAnswer: 'name, age',
-        },
-        {
-          placeholder: '__table__',
-          correctAnswer: 'students',
-        },
-      ],
+      blanks: ['__columns__', '__table__'],
+      correctAnswer: 'SELECT name, age FROM students;',
     },
     {
       id: 3,

@@ -42,8 +42,8 @@ const DialogCloseLesson: React.FC<DialogCloseLessonProps> = ({ onClose }) => {
             <Image
               src="/logo.png"
               alt="SqlOctopus"
-              width={80}
-              height={80}
+              width={100}
+              height={100}
               className="cursor-pointer"
             />
 
