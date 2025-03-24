@@ -11,7 +11,6 @@ import FillBlanks from '../Activities/FillBlanks'
 import { ActivityType } from '@/types/Activity'
 import { ButtonWithLoading } from '../ButtonWithLoading'
 import { buttonTiffanyBlue } from '@/styles/activityStyles'
-import { opendir } from 'fs'
 
 interface Props {
   open: boolean
@@ -94,6 +93,30 @@ const DialogActivity: React.FC<Props> = ({ open, onClose }) => {
       description: 'A cláusula HAVING pode ser usada sem um GROUP BY',
       correctAnswer: true,
     },
+    {
+      id: 5,
+      type: 'combining-pairs',
+      description:
+        'Leia atentamente cada descrição apresentada e verifique se esta associada ao comando correspondente.',
+      options: [
+        {
+          id: 1,
+          label: 'select',
+          description: 'Escolhe as colunas a serem exibidas no resultado da consulta.',
+        },
+        {
+          id: 2,
+          label: 'where',
+          description: 'Filtra registros com base em condições específicas.',
+        },
+        {
+          id: 3,
+          label: 'from',
+          description: 'Define a tabela de onde os dados serão recuperados.',
+        },
+        { id: 4, label: 'distinct', description: 'Remove valores duplicados do resultado.' },
+      ],
+    },
   ]
 
   const progress = (step / activitys?.length) * 100
@@ -106,7 +129,7 @@ const DialogActivity: React.FC<Props> = ({ open, onClose }) => {
         return <FillBlanks data={currentActivity} />
       case 'only-choice':
         return <OnlyChoice data={currentActivity} />
-      case 'drag-and-drop':
+      case 'drag-drop':
         return <DragAndDrop data={currentActivity} />
       case 'combining-pairs':
         return <CombiningPairs data={currentActivity} />
@@ -164,7 +187,7 @@ const DialogActivity: React.FC<Props> = ({ open, onClose }) => {
         },
       }}
     >
-      <div className="w-full flex flex-col h-screen p-4">
+      <div className="w-full flex flex-col h-screen px-2 py-4">
         <HeaderActivity currentLife={2} onClose={handleClose} />
 
         <BorderLinearProgress variant="determinate" value={progress} />

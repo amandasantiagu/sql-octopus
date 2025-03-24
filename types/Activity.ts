@@ -3,7 +3,7 @@ import { User } from './User'
 type TypesActivities =
   | 'fill-blanks'
   | 'only-choice'
-  | 'drag-and-drop'
+  | 'drag-drop'
   | 'combining-pairs'
   | 'true-false'
 
