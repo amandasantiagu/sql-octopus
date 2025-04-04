@@ -24,7 +24,7 @@ const DialogActivityDetails: React.FC<DialogActivityDetailsProps> = ({
       open={open}
       maxWidth="lg"
       sx={{
-        '& .MuiDialog-paper': { borderRadius: '0.8rem', width: '100%' },
+        '& .MuiDialog-paper': { borderRadius: '0.8rem', minWidth: '100vw' },
       }}
     >
       <DialogTitle
@@ -42,7 +42,6 @@ const DialogActivityDetails: React.FC<DialogActivityDetailsProps> = ({
             sx={{
               background: '#78CDD7',
               color: 'black',
-              width: '100%',
               boxShadow: 'none',
               borderRadius: '0.5rem',
             }}

@@ -8,6 +8,7 @@ const CombiningPairs: React.FC<Props> = ({ data }) => {
   const [pairs, setPairs] = React.useState<any[]>([])
   const [draggingIndex, setDraggingIndex] = React.useState<number | null>(null)
   const [hoveredIndex, setHoveredIndex] = React.useState<number | null>(null)
+  const [results, setResults] = React.useState<number | null>(null)
 
   // Handle drag start
   const handleDragStart = (index: number) => {
@@ -56,7 +57,7 @@ const CombiningPairs: React.FC<Props> = ({ data }) => {
     }))
 
     setPairs(initialPairs)
-  }, [data.options, pairs])
+  }, [])
 
   return (
     <div className="w-full flex flex-col gap-6 py-4">
@@ -73,6 +74,8 @@ const CombiningPairs: React.FC<Props> = ({ data }) => {
               onDragOver={(e) => {
                 e.preventDefault()
                 handleDragOver(index)
+
+                e.preventDefault()
               }}
               onDragLeave={() => setHoveredIndex(null)}
               onDrop={() => handleDrop(index)}

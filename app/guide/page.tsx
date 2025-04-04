@@ -4,6 +4,7 @@ import { buttonTiffanyBlue } from '@/styles/activityStyles'
 import { GuidePage } from '@/styles/guideStyles'
 import Image from 'next/image'
 import { useState } from 'react'
+import Link from 'next/link'
 
 export default function Guide() {
   const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -15,7 +16,7 @@ export default function Guide() {
         <p className="font-bold text-xl text-white">Ola, humano!</p>
       </div>
 
-      <div className="w-full flex flex-col flex-grow gap-4 text-white py-2 overflow-y-auto max-h-[40vh]">
+      <div className="w-full flex flex-col flex-grow gap-4 text-white py-2 overflow-y-auto">
         <span>Bem-vindo(a) ao SQLOctopus!</span>
 
         <span>
@@ -45,9 +46,28 @@ export default function Guide() {
         </span>
       </div>
 
-      <ButtonWithLoading className="w-full" sx={buttonTiffanyBlue}>
-        VAMOS COMECAR
-      </ButtonWithLoading>
+      <div className="flex flex-col gap-4 w-full">
+        <Link href="/learn" className="w-full">
+          <ButtonWithLoading className="w-full" sx={buttonTiffanyBlue}>
+            VAMOS COMECAR
+          </ButtonWithLoading>
+        </Link>
+
+        <Link href="/learn" className="w-full">
+          <ButtonWithLoading
+            className="w-full"
+            variant="text"
+            sx={{
+              color: 'white',
+              width: '100%',
+              textTransform: 'none',
+              fontWeight: 600,
+            }}
+          >
+            Sair
+          </ButtonWithLoading>
+        </Link>
+      </div>
     </GuidePage>
   )
 }
