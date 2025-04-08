@@ -37,18 +37,20 @@ export default function Profile() {
           <hr className="border-0 h-[0.2rem] bg-primary-100 rounded-full" />
         </div>
 
-        <div className="flex flex-col w-full items-center">
-          <Avatar alt="name-user" sx={{ width: 56, height: 56, background: '#44A1A0' }}>
-            {getInitials()}
-          </Avatar>
+        <div id="list-profile" className="flex flex-col gap-4">
+          <div className="flex flex-col w-full items-center">
+            <Avatar alt="name-user" sx={{ width: 56, height: 56, background: '#44A1A0' }}>
+              {getInitials()}
+            </Avatar>
+          </div>
+
+          <div className="flex flex-col justify-center w-full gap-8">
+            <CustomTextField value={user.name} name="name" inputLabel="Nome" />
+            <CustomTextField value={user.email} name="email" inputLabel="Email" />
+          </div>
         </div>
 
-        <div className="flex flex-col justify-center w-full gap-8">
-          <CustomTextField value={user.name} name="name" inputLabel="Nome" />
-          <CustomTextField value={user.email} name="email" inputLabel="Email" />
-        </div>
-
-        <div className="mt-auto w-full">
+        <div className="mt-auto w-full" id="logout">
           <ButtonWithLoading
             className="w-full"
             sx={{ background: '#17373A', borderRadius: '0.5rem' }}

@@ -105,6 +105,7 @@ const AccordionComponent: React.FC = () => {
 
   return (
     <div
+      id="list-learn"
       className="flex flex-col w-full gap-6 p-1"
       style={{
         maxHeight: 'calc(100vh - 200px)',

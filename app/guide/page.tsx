@@ -1,10 +1,10 @@
 'use client'
 import { ButtonWithLoading } from '@/components/ButtonWithLoading'
-import { buttonTiffanyBlue } from '@/styles/activityStyles'
 import { GuidePage } from '@/styles/guideStyles'
 import Image from 'next/image'
 import { useState } from 'react'
 import Link from 'next/link'
+import ShepherdTour from '@/components/Shepherd/ShepherdTour'
 
 export default function Guide() {
   const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -39,19 +39,10 @@ export default function Guide() {
           Nível Avançado: Dominar atualizações complexas, gerenciar autorizações e configurar
           visões, ganhando total controle sobre o banco de dados.
         </span>
-
-        <span>
-          Prepare-se para expandir suas habilidades em SQL, passo a passo, com exercícios práticos e
-          atividades interativas! Vamos começar essa jornada?
-        </span>
       </div>
 
-      <div className="flex flex-col gap-4 w-full">
-        <Link href="/learn" className="w-full">
-          <ButtonWithLoading className="w-full" sx={buttonTiffanyBlue}>
-            VAMOS COMECAR
-          </ButtonWithLoading>
-        </Link>
+      <div className="flex flex-col w-full">
+        <ShepherdTour />
 
         <Link href="/learn" className="w-full">
           <ButtonWithLoading
