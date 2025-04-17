@@ -1,11 +1,26 @@
 import { Table } from '@/types/Activity'
 import * as React from 'react'
+import TableComponent from '../TableComponent'
 
 interface Props {
   data: any
 }
 
 const FillBlanks: React.FC<Props> = ({ data }) => {
+  const [answers, setAnswers] = React.useState(
+    data?.blanks?.reduce((acc: any, blank: any) => {
+      acc[blank] = ''
+      return acc
+    }, {}) || {}
+  )
+
+  const handleInputChange = (placeholder: string, value: string) => {
+    setAnswers((prev: any) => ({
+      ...prev,
+      [placeholder]: value,
+    }))
+  }
+
   return (
     <div className="w-full flex flex-col gap-4">
       <span className="text-white text-base w-full">{data?.description}</span>
@@ -13,48 +28,31 @@ const FillBlanks: React.FC<Props> = ({ data }) => {
       <div className="flex flex-col w-full gap-1">
         <span className="text-base text-white"> Tabela </span>
 
-        {data?.table && (
-          <table className="table-auto w-full border-separate border-spacing-0 rounded-lg">
-            <thead>
-              <tr>
-                {data.table.map((column: Table, columnIndex: number) => (
-                  <th
-                    key={column.id}
-                    className={`bg-white text-black p-2 font-normal  ${
-                      columnIndex === 0 ? 'rounded-tl-lg' : ''
-                    } ${columnIndex === data.table.length - 1 ? 'rounded-tr-lg' : ''}`}
-                  >
-                    {column.label}
-                  </th>
-                ))}
-              </tr>
-            </thead>
+        {data?.table && <TableComponent table={data.table} />}
+      </div>
 
-            <tbody>
-              {data.table[0].values.map((_: Table, rowIndex: number) => (
-                <tr key={rowIndex}>
-                  {data.table.map((column: Table, columnIndex: number) => (
-                    <td
-                      key={column.id}
-                      className={`p-2 border border-gray-300 text-center text-xxs text-white ${
-                        rowIndex === data.table[0].values.length - 1 && columnIndex === 0
-                          ? 'rounded-bl-lg'
-                          : ''
-                      } ${
-                        rowIndex === data.table[0].values.length - 1 &&
-                        columnIndex === data.table.length - 1
-                          ? 'rounded-br-lg'
-                          : ''
-                      }`}
-                    >
-                      {column.values[rowIndex]}
-                    </td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
+      <div className="text-white flex flex-col w-full gap-2">
+        <span className="text-base font-bold">Complete os espaços:</span>
+
+        <div className="flex flex-wrap w-full gap-4 items-center">
+          {data?.template.split(/(__\w+__)/g).map((part: string, index: number) => {
+            const blank = data?.blanks?.find((b: any) => b === part)
+
+            if (blank) {
+              return (
+                <input
+                  key={index}
+                  type="text"
+                  value={answers[blank]}
+                  onChange={(e) => handleInputChange(blank, e.target.value)}
+                  placeholder="complete"
+                  className="mx-1 px-2 py-1 rounded bg-white text-black"
+                />
+              )
+            }
+            return <span key={index}>{part}</span>
+          })}
+        </div>
       </div>
     </div>
   )

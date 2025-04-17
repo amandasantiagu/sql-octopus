@@ -7,6 +7,13 @@ export const buttonTiffanyBlue = {
   boxShadow: 'none',
 }
 
+export const buttonTeal = {
+  background: '#0D5C63',
+  color: 'white',
+  fontWeight: 600,
+  boxShadow: 'none',
+}
+
 export const CardOptions = styled.div.withConfig({
   shouldForwardProp: (prop) => prop !== 'isSelected',
 })<{ isSelected?: boolean }>`

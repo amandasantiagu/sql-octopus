@@ -10,16 +10,16 @@ const Footer = () => {
     <FooterComponent>
       <div className="w-full h-full flex items-center justify-between">
         <Link href="/learn">
-          <BiHome size={32} className="text-white" />
+          <BiHome size={32} className="text-white" id="icon-home" />
         </Link>
 
         <div className="flex flex-row gap-6">
           <Link href="/ranking">
-            <FaRankingStar size={32} className="text-white" />
+            <FaRankingStar size={32} className="text-white" id="icon-ranking" />
           </Link>
 
           <Link href="/profile">
-            <IoSettings size={32} className="text-white" />
+            <IoSettings size={32} className="text-white" id="icon-profile" />
           </Link>
         </div>
       </div>

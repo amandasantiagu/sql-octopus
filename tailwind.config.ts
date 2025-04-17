@@ -18,9 +18,12 @@ export default {
         mainBackground: '#E9EEF2',
         primary: {
           DEFAULT: '#0D5C63',
+          30: '#638C8F',
+          50: '#7DC1C930',
           100: '#78CDD7',
           200: '#44A1A0',
           300: '#0D5C63',
+          500: '#17373A',
         },
         yellowIcon: '#DBB736',
       },
@@ -30,6 +33,7 @@ export default {
       fontSize: {
         xxs: '0.75rem',
         xs: '0.938rem',
+        sm: '1rem',
         md: '1.25rem',
         lg: '1.563rem',
       },

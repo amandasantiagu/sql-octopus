@@ -8,10 +8,8 @@ import DragAndDrop from '../Activities/DragAndDrop'
 import OnlyChoice from '../Activities/OnlyChoice'
 import TrueOrFalse from '../Activities/TrueOrFalse'
 import FillBlanks from '../Activities/FillBlanks'
-import { ActivityType } from '@/types/Activity'
-import { ButtonWithLoading } from '../ButtonWithLoading'
-import { buttonTiffanyBlue } from '@/styles/activityStyles'
-import { opendir } from 'fs'
+import { activitys, ActivityType } from '@/types/Activity'
+import ButtonValidation from '../ButtonValidation/ButtonValidationComponent'
 
 interface Props {
   open: boolean
@@ -31,8 +29,6 @@ const BorderLinearProgress = styled(LinearProgress)(() => ({
   },
 }))
 
-//acho que a life pode vir no usuario
-// Nessa pagina vou ter que receber a quantidade de vida, e todos as atividades ligada aquela LESSON, fazer um get com o id da lesson selecionada e retornar as atividades
 const DialogActivity: React.FC<Props> = ({ open, onClose }) => {
   const [step, setSteps] = React.useState<number>(1)
   const [currentActivity, setCurrentActivity] = React.useState<ActivityType | undefined>(undefined)
@@ -45,65 +41,6 @@ const DialogActivity: React.FC<Props> = ({ open, onClose }) => {
     if (onClose) onClose()
   }
 
-  const activitys = [
-    {
-      id: 1,
-      type: 'fill-blanks',
-      description: 'Exiba o nome e a idade dos estudantes da tabela students.',
-      template: 'SELECT __columns__ FROM __table__;',
-      table: [
-        {
-          id: 1,
-          label: 'id',
-          values: ['1', '2', '3'],
-        },
-        {
-          id: 2,
-          label: 'name',
-          values: ['Anna', 'Maria', 'Keny'],
-        },
-        {
-          id: 3,
-          label: 'age',
-          values: ['20', '17', '22'],
-        },
-        {
-          id: 4,
-          label: 'grade',
-          values: ['B', 'A', 'B'],
-        },
-      ],
-      blanks: [
-        {
-          placeholder: '__columns__',
-          correctAnswer: 'name, age',
-        },
-        {
-          placeholder: '__table__',
-          correctAnswer: 'students',
-        },
-      ],
-    },
-    {
-      id: 3,
-      type: 'only-choice',
-      description: 'Qual comando é utilizado para agrupar resultados por uma coluna?',
-      options: [
-        { label: 'join', value: 'join' },
-        { label: 'group by', value: 'groupBy' },
-        { label: 'order by', value: 'orderBy' },
-        { label: 'having', value: 'having' },
-      ],
-      correctAnswer: 'groupBy',
-    },
-    {
-      id: 4,
-      type: 'true-false',
-      description: 'A cláusula HAVING pode ser usada sem um GROUP BY',
-      correctAnswer: true,
-    },
-  ]
-
   const progress = (step / activitys?.length) * 100
 
   const typeInCurrentActivity = React.useMemo(() => {
@@ -114,7 +51,7 @@ const DialogActivity: React.FC<Props> = ({ open, onClose }) => {
         return <FillBlanks data={currentActivity} />
       case 'only-choice':
         return <OnlyChoice data={currentActivity} />
-      case 'drag-and-drop':
+      case 'drag-drop':
         return <DragAndDrop data={currentActivity} />
       case 'combining-pairs':
         return <CombiningPairs data={currentActivity} />
@@ -137,13 +74,8 @@ const DialogActivity: React.FC<Props> = ({ open, onClose }) => {
     setSteps(newStep)
   }, [step])
 
-  // const previousStep = React.useCallback(() => {
-  //   const index = step - 1
-  //   getCurrentActivity(index)
-  //   setSteps(index)
-  // }, [step])
-
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleClick = () => {
+    console.log('passou aqui')
     setCheck(true)
 
     nextStep()
@@ -154,7 +86,7 @@ const DialogActivity: React.FC<Props> = ({ open, onClose }) => {
   React.useEffect(() => {
     if (!currentActivity) setCurrentActivity(activitys[0])
     setSteps(1)
-  }, [open])
+  }, [])
 
   return (
     <Dialog
@@ -172,7 +104,7 @@ const DialogActivity: React.FC<Props> = ({ open, onClose }) => {
         },
       }}
     >
-      <div className="w-full flex flex-col h-screen p-4">
+      <div className="w-full flex flex-col h-screen px-2 py-4">
         <HeaderActivity currentLife={2} onClose={handleClose} />
 
         <BorderLinearProgress variant="determinate" value={progress} />
@@ -181,15 +113,7 @@ const DialogActivity: React.FC<Props> = ({ open, onClose }) => {
           {currentActivity && typeInCurrentActivity}
         </div>
 
-        <ButtonWithLoading
-          id="validation"
-          size="large"
-          className="sticky bottom-0"
-          onClick={handleClick}
-          sx={buttonTiffanyBlue}
-        >
-          Verificar
-        </ButtonWithLoading>
+        <ButtonValidation onAfterClick={handleClick} currentActivity={currentActivity} />
       </div>
     </Dialog>
   )

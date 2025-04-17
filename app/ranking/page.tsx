@@ -131,7 +131,10 @@ export default function Ranking() {
           <hr className="border-0 h-[0.2rem] bg-primary-100 rounded-full" />
         </div>
 
-        <div className="flex flex-col gap-2 w-full flex-grow overflow-y-auto max-h-[calc(100vh-150px)]">
+        <div
+          className="flex flex-col gap-2 w-full flex-grow overflow-y-auto max-h-[calc(100vh-150px)]"
+          id="list-ranking"
+        >
           {rankings?.length > 0 ? (
             <div className="flex flex-col gap-4 w-full">
               {rankings.map((item: RankingType, index) => (
