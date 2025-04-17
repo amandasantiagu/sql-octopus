@@ -1,7 +1,5 @@
 import React from 'react'
 import { HeaderStyles } from '@/styles/headerStyles'
-import { IconButton } from '@mui/material'
-import { IoMdClose } from 'react-icons/io'
 import { FaHeart } from 'react-icons/fa6'
 import DialogCloseLesson from '../Dialog/DialogCloseLesson'
 
