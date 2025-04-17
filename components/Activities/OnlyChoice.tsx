@@ -3,16 +3,15 @@ import * as React from 'react'
 
 interface Props {
   data: any
-  onChangeValue?: (item: string) => void
+  onChange: (item: string) => void
 }
 
-const OnlyChoice: React.FC<Props> = ({ data }) => {
+const OnlyChoice: React.FC<Props> = ({ data, onChange }) => {
   const [value, setValue] = React.useState<any | undefined>(undefined)
 
   const handleClick = (item: any) => {
     setValue(item.value)
-
-    console.log(item)
+    onChange(item.value)
   }
 
   return (

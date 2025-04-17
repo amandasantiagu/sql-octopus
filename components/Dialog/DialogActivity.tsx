@@ -2,14 +2,13 @@ import * as React from 'react'
 import Dialog from '@mui/material/Dialog'
 import HeaderActivity from '../Header/HeaderActivity'
 import { styled, LinearProgress, linearProgressClasses, Button } from '@mui/material'
-import ResultPractice from '../Activities/ResultPractice'
 import CombiningPairs from '../Activities/CombiningPairs'
-import DragAndDrop from '../Activities/DragAndDrop'
 import OnlyChoice from '../Activities/OnlyChoice'
 import TrueOrFalse from '../Activities/TrueOrFalse'
 import FillBlanks from '../Activities/FillBlanks'
 import { activitys, ActivityType } from '@/types/Activity'
 import ButtonValidation from '../ButtonValidation/ButtonValidationComponent'
+import ResultPractice from '../Activities/ResultPractice'
 
 interface Props {
   open: boolean
@@ -32,33 +31,41 @@ const BorderLinearProgress = styled(LinearProgress)(() => ({
 const DialogActivity: React.FC<Props> = ({ open, onClose }) => {
   const [step, setSteps] = React.useState<number>(1)
   const [currentActivity, setCurrentActivity] = React.useState<ActivityType | undefined>(undefined)
-  const [check, setCheck] = React.useState<boolean>(false)
+  const [results, setResults] = React.useState<{ activity: ActivityType; answer: any }[]>([])
 
   const handleClose = () => {
     setSteps(1)
-    setCurrentActivity(undefined)
+    setCurrentActivity(activitys[0])
+    setResults([])
 
     if (onClose) onClose()
   }
 
   const progress = (step / activitys?.length) * 100
 
+  const handleActivityChange = (newValue: any) => {
+    if (currentActivity) {
+      setResults((prevResults) => {
+        const updatedResults = prevResults.filter((r) => r.activity !== currentActivity)
+        return [...updatedResults, { activity: currentActivity, answer: newValue }]
+      })
+    }
+  }
+
   const typeInCurrentActivity = React.useMemo(() => {
     const type = currentActivity?.type
 
     switch (type) {
       case 'fill-blanks':
-        return <FillBlanks data={currentActivity} />
+        return <FillBlanks data={currentActivity} onChange={handleActivityChange} />
       case 'only-choice':
-        return <OnlyChoice data={currentActivity} />
-      case 'drag-drop':
-        return <DragAndDrop data={currentActivity} />
+        return <OnlyChoice data={currentActivity} onChange={handleActivityChange} />
       case 'combining-pairs':
-        return <CombiningPairs data={currentActivity} />
+        return <CombiningPairs data={currentActivity} onChange={handleActivityChange} />
       case 'true-false':
-        return <TrueOrFalse data={currentActivity} />
+        return <TrueOrFalse data={currentActivity} onChange={handleActivityChange} />
       default:
-        return <ResultPractice data={currentActivity} />
+        return <></>
     }
   }, [currentActivity])
 
@@ -75,13 +82,19 @@ const DialogActivity: React.FC<Props> = ({ open, onClose }) => {
   }, [step])
 
   const handleClick = () => {
-    console.log('passou aqui')
-    setCheck(true)
-
     nextStep()
   }
 
-  console.log(currentActivity)
+  const currentResult = React.useMemo(() => {
+    return (
+      results.find((r) => r.activity === currentActivity) || {
+        activity: currentActivity,
+        answer: null,
+      }
+    )
+  }, [currentActivity, results])
+
+  console.log(results)
 
   React.useEffect(() => {
     if (!currentActivity) setCurrentActivity(activitys[0])
@@ -105,15 +118,24 @@ const DialogActivity: React.FC<Props> = ({ open, onClose }) => {
       }}
     >
       <div className="w-full flex flex-col h-screen px-2 py-4">
-        <HeaderActivity currentLife={2} onClose={handleClose} />
+        {currentActivity && <HeaderActivity currentLife={2} onClose={handleClose} />}
 
-        <BorderLinearProgress variant="determinate" value={progress} />
+        {currentActivity && <BorderLinearProgress variant="determinate" value={progress} />}
 
         <div className="p-4 w-full flex flex-col gap-2 items-center h-full overflow-auto">
-          {currentActivity && typeInCurrentActivity}
+          {step <= activitys.length ? (
+            currentActivity && (
+              <div className="flex flex-col w-full h-full">
+                <div className="flex-grow">{typeInCurrentActivity}</div>
+                <div className="mt-auto">
+                  <ButtonValidation onAfterClick={handleClick} currentResult={currentResult} />
+                </div>
+              </div>
+            )
+          ) : (
+            <ResultPractice data={results} onClose={handleClose} />
+          )}
         </div>
-
-        <ButtonValidation onAfterClick={handleClick} currentActivity={currentActivity} />
       </div>
     </Dialog>
   )
