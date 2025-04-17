@@ -36,6 +36,7 @@ export default {
         sm: '1rem',
         md: '1.25rem',
         lg: '1.563rem',
+        xl: '1.8rem',
       },
     },
   },

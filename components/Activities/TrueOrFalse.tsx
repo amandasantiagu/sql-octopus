@@ -3,10 +3,10 @@ import * as React from 'react'
 
 interface Props {
   data: any
-  onChangeValue?: (item: string) => void
+  onChange: (answer: any) => void
 }
 
-const TrueOrFalse: React.FC<Props> = ({ data, onChangeValue }) => {
+const TrueOrFalse: React.FC<Props> = ({ data, onChange }) => {
   const options = [
     { label: 'true', value: true },
     { label: 'false', value: false },
@@ -16,6 +16,8 @@ const TrueOrFalse: React.FC<Props> = ({ data, onChangeValue }) => {
 
   const handleClick = (item: any) => {
     setValue(item.value)
+
+    onChange(item.value)
   }
 
   return (

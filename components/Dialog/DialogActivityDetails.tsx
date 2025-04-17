@@ -2,7 +2,6 @@ import * as React from 'react'
 import Dialog from '@mui/material/Dialog'
 import DialogTitle from '@mui/material/DialogTitle'
 import { ButtonWithLoading } from '../ButtonWithLoading'
-import { format } from 'date-fns'
 import CardActivityDetails from '../CardActivityDetails'
 
 interface DialogActivityDetailsProps {

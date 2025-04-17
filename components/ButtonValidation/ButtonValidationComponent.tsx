@@ -3,25 +3,37 @@ import Button from '@mui/material/Button'
 import Dialog from '@mui/material/Dialog'
 import DialogContent from '@mui/material/DialogContent'
 import DialogActions from '@mui/material/DialogActions'
-import Typography from '@mui/material/Typography'
 import { buttonTeal, buttonTiffanyBlue } from '@/styles/activityStyles'
 import { FaHeart } from 'react-icons/fa6'
 import DialogExplanation from '../Dialog/DialogExplanation'
+import { ActivityType } from '@/types/Activity'
 
 type Props = {
-  currentActivity?: any
+  currentResult: { activity: ActivityType | undefined; answer: any }
   life?: number
-  result: any
   onAfterClick: () => void
 }
 
-const ButtonValidation: React.FC<Props> = ({ result, life = 2, currentActivity, onAfterClick }) => {
+const ButtonValidation: React.FC<Props> = ({ life = 2, currentResult, onAfterClick }) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [openExplanation, setOpenExplanation] = useState(false)
 
+  const [count, setCount] = useState<number>(0)
+
   const title = useMemo(() => {
-    return result ? 'Parabens!' : 'Incorreto'
-  }, [result])
+    console.log('Atividade:', currentResult.activity)
+    console.log('Resposta:', currentResult.answer)
+
+    const correctAnswer = currentResult.activity?.answer === currentResult.answer
+
+    if (correctAnswer) {
+      setCount(1)
+    } else {
+      setCount(-1)
+    }
+
+    return correctAnswer ? 'Parabens!' : 'Incorreto'
+  }, [])
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen)
@@ -35,9 +47,10 @@ const ButtonValidation: React.FC<Props> = ({ result, life = 2, currentActivity, 
     <div className="relative">
       <DialogExplanation
         open={openExplanation}
-        activity={currentActivity}
+        activity={currentResult.activity}
         onClose={() => setOpenExplanation(false)}
       />
+
       <Button
         onClick={toggleModal}
         sx={buttonTiffanyBlue}
@@ -72,6 +85,7 @@ const ButtonValidation: React.FC<Props> = ({ result, life = 2, currentActivity, 
             >
               {title}
             </span>
+
             {title === 'Incorreto' ? (
               <div className="flex flex-col gap-4">
                 <div className="w-full flex gap-2 justify-center">
@@ -89,15 +103,17 @@ const ButtonValidation: React.FC<Props> = ({ result, life = 2, currentActivity, 
         </DialogContent>
 
         <DialogActions className="flex flex-col gap-4">
-          <Button
-            onClick={toggleModalExplanation}
-            variant="contained"
-            color="error"
-            className="w-full"
-            sx={buttonTeal}
-          >
-            Explicação
-          </Button>
+          {title === 'Incorreto' && (
+            <Button
+              onClick={toggleModalExplanation}
+              variant="contained"
+              color="error"
+              className="w-full"
+              sx={buttonTeal}
+            >
+              Explicação
+            </Button>
+          )}
 
           <Button
             onClick={() => {

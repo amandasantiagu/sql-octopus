@@ -2,34 +2,29 @@ import * as React from 'react'
 
 interface Props {
   data: any
+  onChange: (newAnswer: any) => void
 }
 
-const CombiningPairs: React.FC<Props> = ({ data }) => {
+const CombiningPairs: React.FC<Props> = ({ data, onChange }) => {
   const [pairs, setPairs] = React.useState<any[]>([])
   const [draggingIndex, setDraggingIndex] = React.useState<number | null>(null)
   const [hoveredIndex, setHoveredIndex] = React.useState<number | null>(null)
-  const [results, setResults] = React.useState<number | null>(null)
 
-  // Handle drag start
   const handleDragStart = (index: number) => {
     setDraggingIndex(index)
   }
 
-  // Handle drag over (hover)
   const handleDragOver = (index: number) => {
     setHoveredIndex(index)
   }
 
-  // Handle drop
   const handleDrop = (targetIndex: number) => {
     console.log('draggingIndex', draggingIndex, 'targetIndex', targetIndex)
     if (draggingIndex === null || targetIndex === null || draggingIndex === targetIndex) return
 
     setPairs((prev) => {
-      // Cria uma cópia imutável do array
       const updatedPairs = prev.map((pair) => ({ ...pair }))
 
-      // Troca apenas os descriptions
       const temp = updatedPairs[targetIndex].description
       updatedPairs[targetIndex].description = updatedPairs[draggingIndex].description
       updatedPairs[draggingIndex].description = temp
@@ -43,7 +38,6 @@ const CombiningPairs: React.FC<Props> = ({ data }) => {
     setHoveredIndex(null)
   }
 
-  // Inicializa os pares com descriptions randomizados
   React.useEffect(() => {
     if (pairs.length > 0) return
 
@@ -58,6 +52,10 @@ const CombiningPairs: React.FC<Props> = ({ data }) => {
 
     setPairs(initialPairs)
   }, [])
+
+  React.useEffect(() => {
+    onChange(pairs)
+  }, [pairs])
 
   return (
     <div className="w-full flex flex-col gap-6 py-4">
