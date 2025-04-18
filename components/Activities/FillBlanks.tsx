@@ -44,9 +44,9 @@ const FillBlanks: React.FC<Props> = ({ data, onChange }) => {
       </div>
 
       <div className="text-white flex flex-col w-full gap-4">
-        <span className="text-base font-bold">Complete os espaços:</span>
+        <span className="text-base font-bold">Complete a consulta:</span>
 
-        <div className="flex flex-wrap w-full gap-4 items-center">
+        <div className="flex flex-wrap w-full gap-4 items-center p-4 rounded-lg bg-primary-500">
           {data?.template.split(/(__\w+__)/g).map((part: string, index: number) => {
             const blank = data?.blanks?.find((b: any) => b === part)
 
@@ -58,8 +58,8 @@ const FillBlanks: React.FC<Props> = ({ data, onChange }) => {
                   value={answers[blank]}
                   onChange={(e) => handleInputChange(blank, e.target.value)}
                   onBlur={handleBlur}
-                  placeholder="complete"
-                  className="mx-1 px-2 py-1 rounded bg-white text-black"
+                  placeholder="Insira um valor"
+                  className="px-1 py-1 rounded bg-white text-black"
                 />
               )
             }
