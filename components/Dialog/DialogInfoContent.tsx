@@ -2,8 +2,6 @@ import * as React from 'react'
 import Dialog from '@mui/material/Dialog'
 import { IconButton } from '@mui/material'
 import { IoMdClose } from 'react-icons/io'
-import { ButtonWithLoading } from '../ButtonWithLoading'
-import { buttonTiffanyBlue } from '@/styles/activityStyles'
 
 interface Props {
   open: boolean

@@ -14,6 +14,13 @@ interface Props {
 }
 
 const ResultPractice: React.FC<Props> = ({ data, content, time, onClose }) => {
+  const formattedTime = React.useMemo(() => {
+    const minutes = Math.floor(time / 60)
+    const seconds = time % 60
+
+    return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
+  }, [time])
+
   const hits = React.useMemo(() => {
     const total = data.length
     const correctAnswers = data.filter((item) => item.activity.answer === item.answer).length
@@ -30,9 +37,9 @@ const ResultPractice: React.FC<Props> = ({ data, content, time, onClose }) => {
 
   return (
     <div className="w-full flex flex-col gap-8 items-center justify-center h-full">
-      <div className="text-white text-xl flex-col text-center flex w-full">
+      <div className="text-white text-base flex-col text-center flex w-full">
         <span>Conteúdo</span>
-        <span className="text-primary-100">{content.label}</span>
+        <span className="text-primary-100 font-medium">{content.label}</span>
         <span>finalizado!</span>
       </div>
 
@@ -45,7 +52,7 @@ const ResultPractice: React.FC<Props> = ({ data, content, time, onClose }) => {
             id: content.id,
             moduleId: content.moduleId,
             completed: new Date(),
-            duration: time,
+            duration: formattedTime,
             exp: exp,
             hits: hits,
           }}

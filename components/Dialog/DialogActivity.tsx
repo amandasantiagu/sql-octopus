@@ -10,7 +10,6 @@ import { activitys, ActivityType } from '@/types/Activity'
 import ButtonValidation from '../ButtonValidation/ButtonValidationComponent'
 import ResultPractice from '../Activities/ResultPractice'
 import { ModuleContent } from '@/types/Module'
-import { useTimer } from 'react-timer-hook'
 
 interface Props {
   open: boolean
@@ -34,25 +33,16 @@ const DialogActivity: React.FC<Props> = ({ open, content, onClose }) => {
   const [step, setSteps] = React.useState<number>(1)
   const [currentActivity, setCurrentActivity] = React.useState<ActivityType | undefined>(undefined)
   const [results, setResults] = React.useState<{ activity: ActivityType; answer: any }[]>([])
-
-  const expiryTimestamp = new Date()
-  expiryTimestamp.setFullYear(expiryTimestamp.getFullYear() + 1)
-
-  const { seconds, minutes, hours, start, pause, restart } = useTimer({
-    expiryTimestamp,
-    autoStart: false, // Não inicia automaticamente
-  })
+  const [startTime, setStartTime] = React.useState<Date | null>(null)
+  const [totalTime, setTotalTime] = React.useState<number>(0)
 
   const handleClose = () => {
     setSteps(1)
     setCurrentActivity(activitys[0])
 
-    pause()
     setResults([])
-
-    const newExpiryTimestamp = new Date()
-    newExpiryTimestamp.setHours(0, 0, 0, 0)
-    restart(newExpiryTimestamp, false)
+    setStartTime(null)
+    setTotalTime(0)
 
     if (onClose) onClose()
   }
@@ -96,7 +86,13 @@ const DialogActivity: React.FC<Props> = ({ open, content, onClose }) => {
     getCurrentActivity(newStep)
     setSteps(newStep)
 
-    if (newStep > activitys.length) pause()
+    if (newStep > activitys.length && startTime) {
+      const endTime = new Date()
+      const timeDiff = endTime.getTime() - startTime.getTime()
+
+      console.log(timeDiff)
+      setTotalTime(Math.floor(timeDiff / 1000))
+    }
   }, [step])
 
   const handleClick = () => {
@@ -112,16 +108,11 @@ const DialogActivity: React.FC<Props> = ({ open, content, onClose }) => {
     )
   }, [currentActivity, results])
 
-  const totalTime = React.useMemo(() => {
-    const totalSeconds = seconds + minutes * 60 + hours * 3600
-    return totalSeconds
-  }, [seconds, minutes, hours])
-
   React.useEffect(() => {
     if (!currentActivity) setCurrentActivity(activitys[0])
 
     setSteps(1)
-    start()
+    setStartTime(new Date())
   }, [])
 
   return (

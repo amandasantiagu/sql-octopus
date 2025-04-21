@@ -37,8 +37,8 @@ const ButtonValidation: React.FC<Props> = ({
         data.length === answer.length &&
         data.every((item: { label: string; value: string }) =>
           answer.some(
-            (answerItem: { label: string; description: string }) =>
-              item.label === answerItem.label && item.value === answerItem.description
+            (answerItem: { label: string; value: string }) =>
+              item.label === answerItem.label && item.value === answerItem.value
           )
         )
       )
