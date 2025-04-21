@@ -3,27 +3,51 @@ import * as React from 'react'
 import { ButtonWithLoading } from '../ButtonWithLoading'
 import { buttonTiffanyBlue } from '@/styles/activityStyles'
 import CardActivityDetails from '../CardActivityDetails'
+import { ModuleContent } from '@/types/Module'
+import { ActivityType } from '@/types/Activity'
 
 interface Props {
-  data?: any
+  data: { activity: ActivityType; answer: any }[]
+  content: ModuleContent
+  time: number
   onClose?: () => void
 }
 
-const ResultPractice: React.FC<Props> = ({ data, onClose }) => {
+const ResultPractice: React.FC<Props> = ({ data, content, time, onClose }) => {
+  const hits = React.useMemo(() => {
+    const total = data.length
+    const correctAnswers = data.filter((item) => item.activity.answer === item.answer).length
+
+    if (total === 0) return 0
+    return Math.round((correctAnswers / total) * 100)
+  }, [data])
+
+  const exp = React.useMemo(() => {
+    if (hits === 100) return 150
+    if (hits >= 60 && hits < 100) return 100
+    return 70
+  }, [hits])
+
   return (
     <div className="w-full flex flex-col gap-8 items-center justify-center h-full">
-      <span className="text-white text-xl">Pratica concluida!</span>
+      <div className="text-white text-xl flex-col text-center flex w-full">
+        <span>Conteúdo</span>
+        <span className="text-primary-100">{content.label}</span>
+        <span>finalizado!</span>
+      </div>
 
-      <Image src="/logo.png" alt="SqlOctopus" width={250} height={250} />
+      <Image src="/logo.png" alt="SqlOctopus" width={200} height={200} />
 
       <div className="bg-white w-full px-2 rounded-lg">
         <CardActivityDetails
           activity={{
-            label: 'Linhas e colunas',
-            id: 1,
-            parentId: 123,
+            label: content.label,
+            id: content.id,
+            moduleId: content.moduleId,
             completed: new Date(),
-            exp: 50,
+            duration: time,
+            exp: exp,
+            hits: hits,
           }}
         />
       </div>

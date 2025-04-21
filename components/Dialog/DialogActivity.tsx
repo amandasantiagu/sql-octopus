@@ -1,7 +1,7 @@
 import * as React from 'react'
 import Dialog from '@mui/material/Dialog'
 import HeaderActivity from '../Header/HeaderActivity'
-import { styled, LinearProgress, linearProgressClasses, Button } from '@mui/material'
+import { styled, LinearProgress, linearProgressClasses } from '@mui/material'
 import CombiningPairs from '../Activities/CombiningPairs'
 import OnlyChoice from '../Activities/OnlyChoice'
 import TrueOrFalse from '../Activities/TrueOrFalse'
@@ -9,10 +9,12 @@ import FillBlanks from '../Activities/FillBlanks'
 import { activitys, ActivityType } from '@/types/Activity'
 import ButtonValidation from '../ButtonValidation/ButtonValidationComponent'
 import ResultPractice from '../Activities/ResultPractice'
+import { ModuleContent } from '@/types/Module'
+import { useTimer } from 'react-timer-hook'
 
 interface Props {
   open: boolean
-  activity: any
+  content: ModuleContent
   onClose: () => void
 }
 
@@ -28,16 +30,29 @@ const BorderLinearProgress = styled(LinearProgress)(() => ({
   },
 }))
 
-const DialogActivity: React.FC<Props> = ({ open, onClose }) => {
+const DialogActivity: React.FC<Props> = ({ open, content, onClose }) => {
   const [step, setSteps] = React.useState<number>(1)
   const [currentActivity, setCurrentActivity] = React.useState<ActivityType | undefined>(undefined)
   const [results, setResults] = React.useState<{ activity: ActivityType; answer: any }[]>([])
-  const [consecutiveCorrect, setConsecutiveCorrect] = React.useState<number>(0)
+
+  const expiryTimestamp = new Date()
+  expiryTimestamp.setFullYear(expiryTimestamp.getFullYear() + 1)
+
+  const { seconds, minutes, hours, start, pause, restart } = useTimer({
+    expiryTimestamp,
+    autoStart: false, // Não inicia automaticamente
+  })
 
   const handleClose = () => {
     setSteps(1)
     setCurrentActivity(activitys[0])
+
+    pause()
     setResults([])
+
+    const newExpiryTimestamp = new Date()
+    newExpiryTimestamp.setHours(0, 0, 0, 0)
+    restart(newExpiryTimestamp, false)
 
     if (onClose) onClose()
   }
@@ -80,6 +95,8 @@ const DialogActivity: React.FC<Props> = ({ open, onClose }) => {
     const newStep = step + 1
     getCurrentActivity(newStep)
     setSteps(newStep)
+
+    if (newStep > activitys.length) pause()
   }, [step])
 
   const handleClick = () => {
@@ -95,23 +112,17 @@ const DialogActivity: React.FC<Props> = ({ open, onClose }) => {
     )
   }, [currentActivity, results])
 
-  console.log(results)
+  const totalTime = React.useMemo(() => {
+    const totalSeconds = seconds + minutes * 60 + hours * 3600
+    return totalSeconds
+  }, [seconds, minutes, hours])
 
   React.useEffect(() => {
     if (!currentActivity) setCurrentActivity(activitys[0])
+
     setSteps(1)
+    start()
   }, [])
-
-  React.useEffect(() => {
-    const correctAnswer = currentResult.activity?.answer === currentResult.answer
-
-    if (correctAnswer) {
-      console.log(consecutiveCorrect)
-      setConsecutiveCorrect((prev) => prev + 1)
-    } else {
-      setConsecutiveCorrect(0)
-    }
-  }, [currentResult])
 
   return (
     <Dialog
@@ -143,14 +154,18 @@ const DialogActivity: React.FC<Props> = ({ open, onClose }) => {
                   <ButtonValidation
                     onAfterClick={handleClick}
                     currentResult={currentResult}
-                    consecutive={consecutiveCorrect || 0}
                     disabled={!currentResult?.answer}
                   />
                 </div>
               </div>
             )
           ) : (
-            <ResultPractice data={results} onClose={handleClose} />
+            <ResultPractice
+              content={content}
+              data={results}
+              time={totalTime}
+              onClose={handleClose}
+            />
           )}
         </div>
       </div>

@@ -4,9 +4,10 @@ import { PiCurrencyEthFill } from 'react-icons/pi'
 import { BiTimeFive } from 'react-icons/bi'
 import { TbTargetArrow } from 'react-icons/tb'
 import { CardItems, LabelCard } from '@/styles/cardStyles'
+import { ModuleContent } from '@/types/Module'
 
 interface Props {
-  activity: any
+  activity: ModuleContent
 }
 
 const CardActivityDetails: React.FC<Props> = ({ activity }) => {

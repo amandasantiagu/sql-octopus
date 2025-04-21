@@ -3,7 +3,7 @@ import Accordion from '@mui/material/Accordion'
 import AccordionSummary from '@mui/material/AccordionSummary'
 import AccordionDetails from '@mui/material/AccordionDetails'
 import { PiListBold } from 'react-icons/pi'
-import { FaCheck } from 'react-icons/fa6'
+import { FaBookOpen, FaCheck } from 'react-icons/fa6'
 import { TbLockHeart } from 'react-icons/tb'
 import DialogActivityDetails from './Dialog/DialogActivityDetails'
 import DialogActivity from './Dialog/DialogActivity'
@@ -11,12 +11,12 @@ import CircularWithFixedValue from './CircularWithFixedValue'
 import { ModuleType } from '@/types/Module'
 
 const AccordionComponent: React.FC = () => {
-  const [currentActivity, setCurrentActivity] = React.useState<any>(undefined)
+  const [currentContent, setCurrentContent] = React.useState<any>(undefined)
   const [openLesson, setOpenLesson] = React.useState<boolean>(false)
   const [openModalDetails, setOpenModalDetails] = React.useState<boolean>(false)
 
   const handleClose = () => {
-    setCurrentActivity(undefined)
+    setCurrentContent(undefined)
     setOpenLesson(false)
     setOpenModalDetails(false)
   }
@@ -142,11 +142,11 @@ const AccordionComponent: React.FC = () => {
         overflowY: 'auto',
       }}
     >
-      <DialogActivity open={openLesson} onClose={handleClose} activity={currentActivity} />
+      <DialogActivity open={openLesson} onClose={handleClose} content={currentContent} />
 
       <DialogActivityDetails
         open={openModalDetails}
-        activity={currentActivity}
+        content={currentContent}
         onClose={handleClose}
         onOpenLesson={() => setOpenLesson(true)}
       />
@@ -214,29 +214,39 @@ const AccordionComponent: React.FC = () => {
                   padding: '16px',
                   borderBottom: '1px solid #ECEEEE',
                 }}
-                onClick={() => {
-                  const isFirstContent = contentIndex === 0
-                  const previousCompleted =
-                    contentIndex > 0 && item.content[contentIndex - 1]?.completed
-
-                  if (content.completed) {
-                    setCurrentActivity(content)
-                    setOpenModalDetails(true)
-                  } else if (isFirstContent || previousCompleted) {
-                    setCurrentActivity(content)
-                    setOpenLesson(true)
-                  }
-                }}
                 key={content.id}
               >
-                <div className="flex flex-row items-center gap-4">
-                  <div className="bg-primary-200 p-2 rounded-full">
-                    <PiListBold className="text-white" />
+                <div className="flex flex-row items-center gap-4 w-full">
+                  <div
+                    className="bg-primary-200 p-2 rounded-full shadow-lg"
+                    style={{
+                      boxShadow:
+                        'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px',
+                    }}
+                  >
+                    <FaBookOpen className="text-white" />
                   </div>
-                  {content.label}
-                </div>
 
-                {getContentIcon()}
+                  <div
+                    className="flex flex-row justify-between items-center w-full"
+                    onClick={() => {
+                      const isFirstContent = contentIndex === 0
+                      const previousCompleted =
+                        contentIndex > 0 && item.content[contentIndex - 1]?.completed
+
+                      if (content.completed) {
+                        setCurrentContent(content)
+                        setOpenModalDetails(true)
+                      } else if (isFirstContent || previousCompleted) {
+                        setCurrentContent(content)
+                        setOpenLesson(true)
+                      }
+                    }}
+                  >
+                    <span className="flex-grow"> {content.label}</span>
+                    <span className="justify-end">{getContentIcon()}</span>
+                  </div>
+                </div>
               </AccordionDetails>
             )
           })}

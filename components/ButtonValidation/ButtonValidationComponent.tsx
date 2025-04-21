@@ -25,12 +25,36 @@ const ButtonValidation: React.FC<Props> = ({
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [openExplanation, setOpenExplanation] = useState(false)
-  const [consecutiveCorrect, setConsecutiveCorrect] = useState<number>(0)
+
+  const validateAnswer = (
+    activityType: string,
+    data: any[],
+    correctAnswer: string,
+    answer: any
+  ): boolean => {
+    if (activityType === 'combining-pairs') {
+      return (
+        data.length === answer.length &&
+        data.every((item: { label: string; value: string }) =>
+          answer.some(
+            (answerItem: { label: string; description: string }) =>
+              item.label === answerItem.label && item.value === answerItem.description
+          )
+        )
+      )
+    }
+
+    return correctAnswer === answer
+  }
 
   const title = useMemo(() => {
-    const correctAnswer = currentResult.activity?.answer === currentResult.answer
+    if (!currentResult.activity || !currentResult.answer) return 'Incorreto'
 
-    return correctAnswer ? 'Parabens!' : 'Incorreto'
+    const { type, data, answer } = currentResult.activity
+
+    const isCorrect = validateAnswer(type, data || [], answer, currentResult.answer)
+
+    return isCorrect ? 'Parabéns!' : 'Incorreto'
   }, [currentResult])
 
   const toggleModal = () => {
@@ -97,23 +121,23 @@ const ButtonValidation: React.FC<Props> = ({
                 <span className="text-white"> A cada erro voce perde uma vida </span>
               </div>
             ) : (
-              <div>{consecutive > 1 && <span> Você ja acertou {consecutive} seguidos!</span>}</div>
+              <div>
+                <span className="text-white">A resposta esta correta, continue assim!</span>
+              </div>
             )}
           </div>
         </DialogContent>
 
         <DialogActions className="flex flex-col gap-4">
-          {title === 'Incorreto' && (
-            <Button
-              onClick={toggleModalExplanation}
-              variant="contained"
-              color="error"
-              className="w-full"
-              sx={buttonTeal}
-            >
-              Explicação
-            </Button>
-          )}
+          <Button
+            onClick={toggleModalExplanation}
+            variant="contained"
+            color="error"
+            className="w-full"
+            sx={buttonTeal}
+          >
+            Explicação
+          </Button>
 
           <Button
             onClick={() => {

@@ -12,6 +12,25 @@ interface Props {
 }
 
 const DialogExplanation: React.FC<Props> = ({ open, activity, onClose }) => {
+  const getFormattedAnswer = () => {
+    if (activity?.type === 'combining-pairs') {
+      return activity?.data?.map((item: { label: string; value: string }, index: number) => (
+        <div className="flex flex-col gap-2" key={index}>
+          <span className="text-md text-center uppercase">{item.label}</span>
+          <span className="rounded-md bg-white text-primary p-4 text-sm">{item.value}</span>
+        </div>
+      ))
+    }
+
+    if (activity?.type === 'true-false') {
+      const translatedAnswer = activity?.answer === 'true' ? 'Verdadeiro' : 'Falso'
+
+      return <span className="text-md text-center">{translatedAnswer}</span>
+    }
+
+    return <span className="text-md text-center">{activity?.answer}</span>
+  }
+
   return (
     <Dialog
       onClose={onClose}
@@ -37,16 +56,18 @@ const DialogExplanation: React.FC<Props> = ({ open, activity, onClose }) => {
         <hr className="border-0 h-[0.2rem] bg-primary-100 rounded-full" />
       </div>
 
-      <div className="p-4 w-full flex flex-col gap-8 items-center text-white h-max">
+      <div className="px-4 w-full flex flex-col gap-8 items-center text-white h-max">
         <div className="flex flex-col gap-4">
           <div className="flex flex-col gap-2 w-full justify-center items-center py-4">
-            <span className="font-semibold">Resposta correta:</span>
-            <span className="text-md">{activity?.answer}</span>
+            <span className="font-semibold text-sm">Resposta correta:</span>
+            <div className="flex flex-col gap-4">{getFormattedAnswer()}</div>
           </div>
 
-          <div className="rounded-md bg-white text-primary p-4 text-sm">
-            <span>{activity?.explanation}</span>
-          </div>
+          {activity.type !== 'combining-pairs' && (
+            <div className="rounded-md bg-white text-primary p-4 text-sm">
+              <span>{activity?.explanation}</span>
+            </div>
+          )}
         </div>
 
         <ButtonWithLoading className="w-full" sx={buttonTiffanyBlue} onClick={onClose}>

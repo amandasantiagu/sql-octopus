@@ -8,8 +8,8 @@ interface Props {
 
 const TrueOrFalse: React.FC<Props> = ({ data, onChange }) => {
   const options = [
-    { label: 'true', value: true },
-    { label: 'false', value: false },
+    { label: 'Verdadeiro', value: true },
+    { label: 'Falso', value: false },
   ]
 
   const [value, setValue] = React.useState<any | undefined>(undefined)

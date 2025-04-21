@@ -10,21 +10,45 @@ type TypesActivities =
 export type Data = {
   id: number
   label: string
-  value: string | string[]
+  value: any
 }
 
 export type ActivityType = {
   id: number
-  type?: TypesActivities
-  description?: string
+  type: TypesActivities
+  answer: string
+  description: string
+  explanation: string
   template?: string
   data?: Data[]
   blanks?: string[]
-  answer?: string
-  explanation: string
 }
 
 export const activitys = [
+  {
+    id: 5,
+    type: 'combining-pairs',
+    description:
+      'Leia atentamente cada descrição apresentada e verifique se esta associada ao comando correspondente.',
+    data: [
+      {
+        id: 1,
+        label: 'select',
+        value: 'Escolhe as colunas a serem exibidas no resultado da consulta.',
+      },
+      {
+        id: 2,
+        label: 'where',
+        value: 'Filtra registros com base em condições específicas.',
+      },
+      {
+        id: 3,
+        label: 'from',
+        value: 'Define a tabela de onde os dados serão recuperados.',
+      },
+      { id: 4, label: 'distinct', value: 'Remove valores duplicados do resultado.' },
+    ],
+  },
   {
     id: 1,
     type: 'fill-blanks',
@@ -78,29 +102,5 @@ export const activitys = [
     answer: 'true',
     explanation:
       'A cláusula HAVING pode ser usada sem um GROUP BY em consultas SQL. Embora geralmente seja usada para filtrar resultados de grupos criados pelo GROUP BY, ela também pode ser aplicada para filtrar resultados de funções de agregação em consultas sem agrupamento.',
-  },
-  {
-    id: 5,
-    type: 'combining-pairs',
-    description:
-      'Leia atentamente cada descrição apresentada e verifique se esta associada ao comando correspondente.',
-    data: [
-      {
-        id: 1,
-        label: 'select',
-        value: 'Escolhe as colunas a serem exibidas no resultado da consulta.',
-      },
-      {
-        id: 2,
-        label: 'where',
-        value: 'Filtra registros com base em condições específicas.',
-      },
-      {
-        id: 3,
-        label: 'from',
-        value: 'Define a tabela de onde os dados serão recuperados.',
-      },
-      { id: 4, label: 'distinct', value: 'Remove valores duplicados do resultado.' },
-    ],
   },
 ]

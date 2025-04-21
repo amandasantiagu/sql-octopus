@@ -3,17 +3,18 @@ import Dialog from '@mui/material/Dialog'
 import DialogTitle from '@mui/material/DialogTitle'
 import { ButtonWithLoading } from '../ButtonWithLoading'
 import CardActivityDetails from '../CardActivityDetails'
+import { ModuleContent } from '@/types/Module'
 
 interface DialogActivityDetailsProps {
   open: boolean
-  activity: any
+  content: ModuleContent
   onClose: () => void
   onOpenLesson: () => void
 }
 
 const DialogActivityDetails: React.FC<DialogActivityDetailsProps> = ({
   open,
-  activity,
+  content,
   onClose,
   onOpenLesson,
 }) => {
@@ -30,12 +31,25 @@ const DialogActivityDetails: React.FC<DialogActivityDetailsProps> = ({
         className="bg-primary-200 text-white text-base justify-center flex w-full"
         sx={{ fontSize: '1rem' }}
       >
-        Prática: {activity?.label}
+        Prática: {content?.label}
       </DialogTitle>
 
       <div className="p-4 w-full flex flex-col gap-2 items-center">
-        <CardActivityDetails activity={activity} />
+        <CardActivityDetails activity={content} />
+
         <div className="flex flex-col gap-2 w-full">
+          <ButtonWithLoading
+            className="w-full"
+            sx={{
+              color: 'white',
+              boxShadow: 'none',
+              borderRadius: '0.5rem',
+            }}
+            onClick={onOpenLesson}
+          >
+            Visualizar
+          </ButtonWithLoading>
+
           <ButtonWithLoading
             className="w-full"
             sx={{
