@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import Button from '@mui/material/Button'
 import Dialog from '@mui/material/Dialog'
 import DialogContent from '@mui/material/DialogContent'
@@ -11,29 +11,27 @@ import { ActivityType } from '@/types/Activity'
 type Props = {
   currentResult: { activity: ActivityType | undefined; answer: any }
   life?: number
+  disabled?: boolean
+  consecutive?: number
   onAfterClick: () => void
 }
 
-const ButtonValidation: React.FC<Props> = ({ life = 2, currentResult, onAfterClick }) => {
+const ButtonValidation: React.FC<Props> = ({
+  life = 2,
+  currentResult,
+  consecutive = 0,
+  disabled = false,
+  onAfterClick,
+}) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [openExplanation, setOpenExplanation] = useState(false)
-
-  const [count, setCount] = useState<number>(0)
+  const [consecutiveCorrect, setConsecutiveCorrect] = useState<number>(0)
 
   const title = useMemo(() => {
-    console.log('Atividade:', currentResult.activity)
-    console.log('Resposta:', currentResult.answer)
-
     const correctAnswer = currentResult.activity?.answer === currentResult.answer
 
-    if (correctAnswer) {
-      setCount(1)
-    } else {
-      setCount(-1)
-    }
-
     return correctAnswer ? 'Parabens!' : 'Incorreto'
-  }, [])
+  }, [currentResult])
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen)
@@ -54,6 +52,7 @@ const ButtonValidation: React.FC<Props> = ({ life = 2, currentResult, onAfterCli
       <Button
         onClick={toggleModal}
         sx={buttonTiffanyBlue}
+        disabled={disabled}
         variant="contained"
         color="primary"
         className="w-full"
@@ -63,7 +62,8 @@ const ButtonValidation: React.FC<Props> = ({ life = 2, currentResult, onAfterCli
 
       <Dialog
         open={isModalOpen}
-        onClose={toggleModal}
+        onClose={undefined}
+        disableEscapeKeyDown
         fullWidth
         maxWidth="sm"
         sx={{
@@ -97,7 +97,7 @@ const ButtonValidation: React.FC<Props> = ({ life = 2, currentResult, onAfterCli
                 <span className="text-white"> A cada erro voce perde uma vida </span>
               </div>
             ) : (
-              <div></div>
+              <div>{consecutive > 1 && <span> Você ja acertou {consecutive} seguidos!</span>}</div>
             )}
           </div>
         </DialogContent>

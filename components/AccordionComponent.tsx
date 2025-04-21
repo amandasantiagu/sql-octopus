@@ -7,21 +7,44 @@ import { FaCheck } from 'react-icons/fa6'
 import { TbLockHeart } from 'react-icons/tb'
 import DialogActivityDetails from './Dialog/DialogActivityDetails'
 import DialogActivity from './Dialog/DialogActivity'
+import CircularWithFixedValue from './CircularWithFixedValue'
+import { ModuleType } from '@/types/Module'
 
 const AccordionComponent: React.FC = () => {
   const [currentActivity, setCurrentActivity] = React.useState<any>(undefined)
   const [openLesson, setOpenLesson] = React.useState<boolean>(false)
-
-  const handleOpen = (item: any) => {
-    setCurrentActivity(item)
-  }
+  const [openModalDetails, setOpenModalDetails] = React.useState<boolean>(false)
 
   const handleClose = () => {
     setCurrentActivity(undefined)
     setOpenLesson(false)
+    setOpenModalDetails(false)
   }
 
-  const lessons = [
+  const calculateProgress = (content: any[]) => {
+    const completedCount = content.filter((item) => item.completed).length
+    return (completedCount / content.length) * 100
+  }
+
+  const getIconForLesson = (item: any, index: number, lessons: any[]) => {
+    if (item.completed && index === 0) {
+      return <CircularWithFixedValue value={100} />
+    }
+
+    if (!item.completed && index === 0) {
+      const progress = calculateProgress(item.content)
+      return <CircularWithFixedValue value={progress} />
+    }
+
+    if (index > 0 && !lessons[index - 1]?.completed) {
+      return <TbLockHeart className="text-primary-300" size={32} />
+    }
+
+    const progress = calculateProgress(item.content)
+    return <CircularWithFixedValue value={progress} />
+  }
+
+  const lessons: ModuleType[] = [
     {
       label: 'Noções básicas de SQL',
       id: 123,
@@ -29,22 +52,28 @@ const AccordionComponent: React.FC = () => {
         {
           label: 'Linhas e colunas',
           id: 1,
-          parentId: 123,
+          moduleId: 123,
           completed: new Date(),
+          duration: 2330,
+          hits: 88,
           exp: 50,
         },
         {
           label: 'Seleção de dados',
           id: 2,
-          parentId: 123,
+          moduleId: 123,
           completed: new Date(),
+          duration: 2330,
+          hits: 88,
           exp: 50,
         },
         {
           label: 'Agrupamento de dados',
           id: 3,
-          parentId: 123,
+          moduleId: 123,
           completed: new Date(),
+          duration: 2330,
+          hits: 88,
           exp: 50,
         },
       ],
@@ -58,20 +87,21 @@ const AccordionComponent: React.FC = () => {
           label: 'Linhas e colunas',
           completed: new Date(),
           exp: 60,
-          parentId: 122213,
+          moduleId: 122213,
           id: 1,
+          hits: 98,
         },
         {
           label: 'Seleção de dados',
           id: 2,
           completed: null,
-          parentId: 122213,
+          moduleId: 122213,
         },
         {
           label: 'Agrupamento de dados',
           id: 3,
           completed: null,
-          parentId: 122213,
+          moduleId: 122213,
         },
       ],
       completed: null,
@@ -84,19 +114,19 @@ const AccordionComponent: React.FC = () => {
           label: 'Linhas e colunas',
           id: 1,
           completed: null,
-          parentId: 1223453,
+          moduleId: 1223453,
         },
         {
           label: 'Seleção de dados',
           id: 2,
           completed: null,
-          parentId: 1223453,
+          moduleId: 1223453,
         },
         {
           label: 'Agrupamento de dados',
           id: 3,
           completed: null,
-          parentId: 1223453,
+          moduleId: 1223453,
         },
       ],
       completed: null,
@@ -115,7 +145,7 @@ const AccordionComponent: React.FC = () => {
       <DialogActivity open={openLesson} onClose={handleClose} activity={currentActivity} />
 
       <DialogActivityDetails
-        open={!!currentActivity}
+        open={openModalDetails}
         activity={currentActivity}
         onClose={handleClose}
         onOpenLesson={() => setOpenLesson(true)}
@@ -148,43 +178,68 @@ const AccordionComponent: React.FC = () => {
             }}
           >
             <span className="text-white items-center flex justify-center gap-4 w-full">
-              {item.completed ? (
-                <FaCheck className="text-primary-300" size={32} />
-              ) : (
-                <TbLockHeart className="text-primary-300" size={32} />
-              )}
+              {getIconForLesson(item, index, lessons)}
 
               {item.label}
             </span>
           </AccordionSummary>
 
-          {item.content.map((content) => (
-            <AccordionDetails
-              className="bg-white flex flex-row items-center justify-between w-full cursor-pointer"
-              sx={{
-                padding: '16px',
-                borderBottom: '1px solid #ECEEEE',
-              }}
-              onClick={() => {
-                if (content.completed) handleOpen(content)
-              }}
-              key={content.id}
-            >
-              <div className="flex flex-row items-center gap-4">
-                <div className="bg-primary-200 p-2 rounded-full">
-                  <PiListBold className="text-white" />
+          {item.content.map((content, contentIndex) => {
+            const getContentIcon = () => {
+              if (content.completed) {
+                return <FaCheck className="text-primary-300" size={20} />
+              }
+
+              if (contentIndex === 0) {
+                return null
+              }
+
+              const previousContent = item.content[contentIndex - 1]
+              if (previousContent?.completed) {
+                return null
+              }
+
+              const previousToPreviousContent = item.content[contentIndex - 2]
+              if (previousToPreviousContent?.completed) {
+                return <TbLockHeart className="text-primary-300" size={20} />
+              }
+
+              return <TbLockHeart className="text-primary-300" size={20} />
+            }
+
+            return (
+              <AccordionDetails
+                className="bg-white flex flex-row items-center justify-between w-full cursor-pointer"
+                sx={{
+                  padding: '16px',
+                  borderBottom: '1px solid #ECEEEE',
+                }}
+                onClick={() => {
+                  const isFirstContent = contentIndex === 0
+                  const previousCompleted =
+                    contentIndex > 0 && item.content[contentIndex - 1]?.completed
+
+                  if (content.completed) {
+                    setCurrentActivity(content)
+                    setOpenModalDetails(true)
+                  } else if (isFirstContent || previousCompleted) {
+                    setCurrentActivity(content)
+                    setOpenLesson(true)
+                  }
+                }}
+                key={content.id}
+              >
+                <div className="flex flex-row items-center gap-4">
+                  <div className="bg-primary-200 p-2 rounded-full">
+                    <PiListBold className="text-white" />
+                  </div>
+                  {content.label}
                 </div>
 
-                {content.label}
-              </div>
-
-              {content.completed ? (
-                <FaCheck className="text-primary-300" size={20} />
-              ) : (
-                <TbLockHeart className="text-primary-300" size={20} />
-              )}
-            </AccordionDetails>
-          ))}
+                {getContentIcon()}
+              </AccordionDetails>
+            )
+          })}
         </Accordion>
       ))}
     </div>

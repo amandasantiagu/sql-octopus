@@ -3,7 +3,7 @@ import React from 'react'
 interface TableColumn {
   id: number
   label: string
-  values: string[]
+  value: string[]
 }
 
 interface TableProps {
@@ -29,22 +29,20 @@ const TableComponent: React.FC<TableProps> = ({ table }) => {
       </thead>
 
       <tbody>
-        {table[0].values.map((_, rowIndex) => (
+        {table[0].value.map((_, rowIndex) => (
           <tr key={rowIndex}>
             {table.map((column, columnIndex) => (
               <td
                 key={column.id}
                 className={`p-2 border border-gray-300 text-center text-xxs text-white ${
-                  rowIndex === table[0].values.length - 1 && columnIndex === 0
-                    ? 'rounded-bl-lg'
-                    : ''
+                  rowIndex === table[0].value.length - 1 && columnIndex === 0 ? 'rounded-bl-lg' : ''
                 } ${
-                  rowIndex === table[0].values.length - 1 && columnIndex === table.length - 1
+                  rowIndex === table[0].value.length - 1 && columnIndex === table.length - 1
                     ? 'rounded-br-lg'
                     : ''
                 }`}
               >
-                {column.values[rowIndex]}
+                {column.value[rowIndex]}
               </td>
             ))}
           </tr>

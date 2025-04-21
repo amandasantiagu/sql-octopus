@@ -35,6 +35,10 @@ export default function ShepherdTour() {
       },
       buttons: [
         {
+          text: 'Finalizar',
+          action: tour.complete,
+        },
+        {
           text: 'Próximo',
           action: () => {
             tour.next()
@@ -72,6 +76,7 @@ export default function ShepherdTour() {
           text: 'Voltar',
           action: () => {
             router.push('guide')
+            tour.cancel()
           },
         },
         {
@@ -330,7 +335,9 @@ export default function ShepherdTour() {
       ],
     })
 
-    tour.start()
+    handleTourEnd()
+
+    return tour
   }
 
   const startTour = () => {
@@ -339,6 +346,7 @@ export default function ShepherdTour() {
     setIsTourRunning(true)
 
     initializeTour()
+
     tour.start()
 
     tour.on('complete', handleTourEnd)

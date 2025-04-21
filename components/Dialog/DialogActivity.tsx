@@ -32,6 +32,7 @@ const DialogActivity: React.FC<Props> = ({ open, onClose }) => {
   const [step, setSteps] = React.useState<number>(1)
   const [currentActivity, setCurrentActivity] = React.useState<ActivityType | undefined>(undefined)
   const [results, setResults] = React.useState<{ activity: ActivityType; answer: any }[]>([])
+  const [consecutiveCorrect, setConsecutiveCorrect] = React.useState<number>(0)
 
   const handleClose = () => {
     setSteps(1)
@@ -101,6 +102,17 @@ const DialogActivity: React.FC<Props> = ({ open, onClose }) => {
     setSteps(1)
   }, [])
 
+  React.useEffect(() => {
+    const correctAnswer = currentResult.activity?.answer === currentResult.answer
+
+    if (correctAnswer) {
+      console.log(consecutiveCorrect)
+      setConsecutiveCorrect((prev) => prev + 1)
+    } else {
+      setConsecutiveCorrect(0)
+    }
+  }, [currentResult])
+
   return (
     <Dialog
       onClose={handleClose}
@@ -128,7 +140,12 @@ const DialogActivity: React.FC<Props> = ({ open, onClose }) => {
               <div className="flex flex-col w-full h-full">
                 <div className="flex-grow">{typeInCurrentActivity}</div>
                 <div className="mt-auto">
-                  <ButtonValidation onAfterClick={handleClick} currentResult={currentResult} />
+                  <ButtonValidation
+                    onAfterClick={handleClick}
+                    currentResult={currentResult}
+                    consecutive={consecutiveCorrect || 0}
+                    disabled={!currentResult?.answer}
+                  />
                 </div>
               </div>
             )

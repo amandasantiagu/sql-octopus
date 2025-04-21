@@ -19,8 +19,8 @@ const OnlyChoice: React.FC<Props> = ({ data, onChange }) => {
       <span className="text-white text-base w-full">{data?.description}</span>
 
       <div className="flex flex-col w-full gap-4">
-        {data?.options &&
-          data.options.map((item: any, index: number) => (
+        {data?.data &&
+          data.data.map((item: any, index: number) => (
             <CardOptions
               key={index}
               isSelected={value === item.value}

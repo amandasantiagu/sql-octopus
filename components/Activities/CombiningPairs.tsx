@@ -19,7 +19,6 @@ const CombiningPairs: React.FC<Props> = ({ data, onChange }) => {
   }
 
   const handleDrop = (targetIndex: number) => {
-    console.log('draggingIndex', draggingIndex, 'targetIndex', targetIndex)
     if (draggingIndex === null || targetIndex === null || draggingIndex === targetIndex) return
 
     setPairs((prev) => {
@@ -29,11 +28,12 @@ const CombiningPairs: React.FC<Props> = ({ data, onChange }) => {
       updatedPairs[targetIndex].description = updatedPairs[draggingIndex].description
       updatedPairs[draggingIndex].description = temp
 
-      console.log('Updated Pairs:', updatedPairs) // Log para verificar
+      console.log('Updated Pairs:', updatedPairs)
+
+      onChange(updatedPairs)
       return updatedPairs
     })
 
-    // Reseta os índices
     setDraggingIndex(null)
     setHoveredIndex(null)
   }
@@ -50,12 +50,10 @@ const CombiningPairs: React.FC<Props> = ({ data, onChange }) => {
       description: shuffledDescriptions[index],
     }))
 
+    onChange(initialPairs)
+
     setPairs(initialPairs)
   }, [])
-
-  React.useEffect(() => {
-    onChange(pairs)
-  }, [pairs])
 
   return (
     <div className="w-full flex flex-col gap-6 py-4">

@@ -35,16 +35,16 @@ const FillBlanks: React.FC<Props> = ({ data, onChange }) => {
 
   return (
     <div className="w-full flex flex-col gap-6">
-      <span className="text-white text-base w-full">{data?.description}</span>
+      <span className="text-white text-base w-full font-bold">{data?.description}</span>
 
       <div className="flex flex-col w-full gap-1">
         <span className="text-base text-white"> Tabela </span>
 
-        {data?.table && <TableComponent table={data.table} />}
+        {data?.data && <TableComponent table={data.data} />}
       </div>
 
       <div className="text-white flex flex-col w-full gap-4">
-        <span className="text-base font-bold">Complete a consulta:</span>
+        <span className="text-base ">Complete a consulta:</span>
 
         <div className="flex flex-wrap w-full gap-4 items-center p-4 rounded-lg bg-primary-500">
           {data?.template.split(/(__\w+__)/g).map((part: string, index: number) => {

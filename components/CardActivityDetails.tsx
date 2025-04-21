@@ -40,7 +40,7 @@ const CardActivityDetails: React.FC<Props> = ({ activity }) => {
 
         <CardItems className="bg-green-200 text-green-800">
           <TbTargetArrow className="text-green-600" size={20} />
-          88%
+          {activity?.hits}%
         </CardItems>
       </LabelCard>
     </div>

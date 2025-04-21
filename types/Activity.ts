@@ -7,15 +7,10 @@ type TypesActivities =
   | 'combining-pairs'
   | 'true-false'
 
-type Blanks = {
-  placeholder: string
-  answer: string
-}
-
-export type Table = {
+export type Data = {
   id: number
   label: string
-  values: string[]
+  value: string | string[]
 }
 
 export type ActivityType = {
@@ -23,8 +18,8 @@ export type ActivityType = {
   type?: TypesActivities
   description?: string
   template?: string
-  table?: Table[]
-  blanks?: Blanks[]
+  data?: Data[]
+  blanks?: string[]
   answer?: string
   explanation: string
 }
@@ -35,26 +30,26 @@ export const activitys = [
     type: 'fill-blanks',
     description: 'Exiba o nome e a idade dos estudantes da tabela students.',
     template: 'SELECT __columns__ FROM __table__;',
-    table: [
+    data: [
       {
         id: 1,
         label: 'id',
-        values: ['1', '2', '3'],
+        value: ['1', '2', '3'],
       },
       {
         id: 2,
         label: 'name',
-        values: ['Anna', 'Maria', 'Keny'],
+        value: ['Anna', 'Maria', 'Keny'],
       },
       {
         id: 3,
         label: 'age',
-        values: ['20', '17', '22'],
+        value: ['20', '17', '22'],
       },
       {
         id: 4,
         label: 'grade',
-        values: ['B', 'A', 'B'],
+        value: ['B', 'A', 'B'],
       },
     ],
     blanks: ['__columns__', '__table__'],
@@ -66,11 +61,11 @@ export const activitys = [
     id: 3,
     type: 'only-choice',
     description: 'Qual comando é utilizado para agrupar resultados por uma coluna?',
-    options: [
-      { label: 'join', value: 'join' },
-      { label: 'group by', value: 'groupBy' },
-      { label: 'order by', value: 'orderBy' },
-      { label: 'having', value: 'having' },
+    data: [
+      { id: 1, label: 'join', value: 'join' },
+      { id: 2, label: 'group by', value: 'groupBy' },
+      { id: 3, label: 'order by', value: 'orderBy' },
+      { id: 4, label: 'having', value: 'having' },
     ],
     answer: 'groupBy',
     explanation:
@@ -80,7 +75,7 @@ export const activitys = [
     id: 4,
     type: 'true-false',
     description: 'A cláusula HAVING pode ser usada sem um GROUP BY',
-    answer: true,
+    answer: 'true',
     explanation:
       'A cláusula HAVING pode ser usada sem um GROUP BY em consultas SQL. Embora geralmente seja usada para filtrar resultados de grupos criados pelo GROUP BY, ela também pode ser aplicada para filtrar resultados de funções de agregação em consultas sem agrupamento.',
   },
@@ -89,23 +84,23 @@ export const activitys = [
     type: 'combining-pairs',
     description:
       'Leia atentamente cada descrição apresentada e verifique se esta associada ao comando correspondente.',
-    options: [
+    data: [
       {
         id: 1,
         label: 'select',
-        description: 'Escolhe as colunas a serem exibidas no resultado da consulta.',
+        value: 'Escolhe as colunas a serem exibidas no resultado da consulta.',
       },
       {
         id: 2,
         label: 'where',
-        description: 'Filtra registros com base em condições específicas.',
+        value: 'Filtra registros com base em condições específicas.',
       },
       {
         id: 3,
         label: 'from',
-        description: 'Define a tabela de onde os dados serão recuperados.',
+        value: 'Define a tabela de onde os dados serão recuperados.',
       },
-      { id: 4, label: 'distinct', description: 'Remove valores duplicados do resultado.' },
+      { id: 4, label: 'distinct', value: 'Remove valores duplicados do resultado.' },
     ],
   },
 ]

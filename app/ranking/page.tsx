@@ -132,7 +132,11 @@ export default function Ranking() {
         </div>
 
         <div
-          className="flex flex-col gap-2 w-full flex-grow overflow-y-auto max-h-[calc(100vh-150px)]"
+          className="flex flex-col gap-2 w-full flex-grow overflow-y-auto"
+          style={{
+            maxHeight: 'calc(100vh - 250px)',
+            overflowY: 'auto',
+          }}
           id="list-ranking"
         >
           {rankings?.length > 0 ? (
