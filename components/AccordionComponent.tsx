@@ -9,16 +9,20 @@ import DialogActivityDetails from './Dialog/DialogActivityDetails'
 import DialogActivity from './Dialog/DialogActivity'
 import CircularWithFixedValue from './CircularWithFixedValue'
 import { ModuleType } from '@/types/Module'
+import { IconButton } from '@mui/material'
+import DialogInfoContent from './Dialog/DialogInfoContent'
 
 const AccordionComponent: React.FC = () => {
   const [currentContent, setCurrentContent] = React.useState<any>(undefined)
   const [openLesson, setOpenLesson] = React.useState<boolean>(false)
   const [openModalDetails, setOpenModalDetails] = React.useState<boolean>(false)
+  const [openInfoContent, setOpenInfoContent] = React.useState<boolean>(false)
 
   const handleClose = () => {
     setCurrentContent(undefined)
     setOpenLesson(false)
     setOpenModalDetails(false)
+    setOpenInfoContent(false)
   }
 
   const calculateProgress = (content: any[]) => {
@@ -151,6 +155,8 @@ const AccordionComponent: React.FC = () => {
         onOpenLesson={() => setOpenLesson(true)}
       />
 
+      <DialogInfoContent open={openInfoContent} content={currentContent} onClose={handleClose} />
+
       {lessons.map((item, index) => (
         <Accordion
           key={item.id}
@@ -219,6 +225,10 @@ const AccordionComponent: React.FC = () => {
                 <div className="flex flex-row items-center gap-4 w-full">
                   <div
                     className="bg-primary-200 p-2 rounded-full shadow-lg"
+                    onClick={() => {
+                      setCurrentContent(content)
+                      setOpenInfoContent(true)
+                    }}
                     style={{
                       boxShadow:
                         'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px',
