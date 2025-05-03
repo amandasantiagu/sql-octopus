@@ -1,9 +1,9 @@
 import React from 'react'
 
-interface TableColumn {
+export interface TableColumn {
   id: number
   label: string
-  value: string[]
+  value: any[]
 }
 
 interface TableProps {

@@ -96,11 +96,10 @@ export default function Login() {
               type="submit"
               data-cy="submit-button"
               style={{
-                height: '2.2rem',
                 background: '#0D5C63',
                 width: '100%',
               }}
-              className="mt-2 flex w-full bg-primary-300 justify-center rounded-md border border-transparent py-2 px-4 text-sm font-medium text-white uppercase"
+              className="flex w-full bg-primary-300 justify-center rounded-md border border-transparent py-1 px-4 text-sm font-medium text-white uppercase"
             >
               Entrar
             </button>
