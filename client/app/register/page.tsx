@@ -2,15 +2,20 @@
 
 import { sxTextField } from '@/components/CustomTextField'
 import { CardSign, Sign } from '@/styles/signStyles'
-import { FormHelperText, TextField } from '@mui/material'
+import { User } from '@/types/User'
+import { FormHelperText, IconButton, InputAdornment, TextField } from '@mui/material'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+
 import { useState } from 'react'
 import { Controller, FormProvider, useForm } from 'react-hook-form'
+import { FaEye, FaEyeSlash } from 'react-icons/fa6'
 
 const FORM_NAME = 'name'
 const FORM_EMAIL = 'email'
 const FORM_PASSWORD = 'password'
+const CONFIRM_PASSWORD = 'confirmPassword'
 
 export default function Register() {
   const formHook = useForm({
@@ -20,10 +25,35 @@ export default function Register() {
 
   const {
     control,
-    formState: { errors },
+    watch,
+    formState: { errors, isValid },
+    handleSubmit,
   } = formHook
 
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [showPassword, setShowPassword] = useState<boolean>(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false)
+
+  const togglePasswordVisibility = () => setShowPassword(!showPassword)
+  const toggleConfirmPasswordVisibility = () => setShowConfirmPassword(!showConfirmPassword)
+
+  const router = useRouter()
+
+  const onSubmit = async (data: User) => {
+    try {
+      // const response = await fetchRequest('/auth/login', {
+      //   method: 'POST',
+      //   body: data, // Passa o objeto contendo email e password
+      // })
+
+      console.log(data)
+
+      // console.log('Resposta:', response)
+      router.push('login')
+    } catch (error) {
+      console.error('Erro na requisição:', error)
+    }
+  }
 
   return (
     <Sign>
@@ -35,7 +65,7 @@ export default function Register() {
         <p className="font-bold text-xl text-white">Registre-se</p>
 
         <FormProvider {...formHook}>
-          <form className="flex flex-col gap-4 items-center">
+          <form className="flex flex-col gap-4 items-center" onSubmit={handleSubmit(onSubmit)}>
             <div className="flex flex-col gap-4 w-full">
               <div>
                 <Controller
@@ -103,17 +133,27 @@ export default function Register() {
                     required: true,
                   }}
                   control={control}
-                  render={({ field: { onChange, onBlur, name, value } }) => (
+                  render={({ field: { onChange, onBlur, value } }) => (
                     <TextField
                       onBlur={onBlur}
                       onChange={onChange}
                       value={value || ''}
-                      name={name}
                       placeholder="Senha"
-                      type="password"
+                      type={showPassword ? 'text' : 'password'}
                       data-cy="password-input"
                       sx={sxTextField}
                       variant="outlined"
+                      slotProps={{
+                        input: {
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              <IconButton onClick={togglePasswordVisibility} edge="end">
+                                {showPassword ? <FaEyeSlash /> : <FaEye />}
+                              </IconButton>
+                            </InputAdornment>
+                          ),
+                        },
+                      }}
                       size="small"
                       fullWidth
                       autoComplete="current-password"
@@ -129,32 +169,44 @@ export default function Register() {
 
               <div>
                 <Controller
-                  name={FORM_PASSWORD}
+                  name={CONFIRM_PASSWORD}
                   rules={{
                     required: true,
+                    validate: (value) =>
+                      value === watch(FORM_PASSWORD) || 'As senhas devem ser iguais',
                   }}
                   control={control}
-                  render={({ field: { onChange, onBlur, name, value } }) => (
+                  render={({ field: { onChange, onBlur, value } }) => (
                     <TextField
                       onBlur={onBlur}
                       onChange={onChange}
                       value={value || ''}
-                      name={name}
                       placeholder="Confirme sua senha"
-                      type="password"
-                      data-cy="password-input"
+                      type={showConfirmPassword ? 'text' : 'password'}
+                      data-cy="confirm-password-input"
+                      sx={sxTextField}
                       variant="outlined"
                       size="small"
-                      sx={sxTextField}
                       fullWidth
-                      autoComplete="current-password"
-                      error={!!errors[FORM_PASSWORD]}
+                      autoComplete="new-password"
+                      error={!!errors.confirmPassword}
+                      slotProps={{
+                        input: {
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              <IconButton onClick={toggleConfirmPasswordVisibility} edge="end">
+                                {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+                              </IconButton>
+                            </InputAdornment>
+                          ),
+                        },
+                      }}
                     />
                   )}
                 />
 
-                {!!errors[FORM_PASSWORD] && (
-                  <FormHelperText error>Senha é obrigatório</FormHelperText>
+                {!!errors[CONFIRM_PASSWORD] && (
+                  <FormHelperText error>As senhas devem ser iguais</FormHelperText>
                 )}
               </div>
             </div>
@@ -162,10 +214,9 @@ export default function Register() {
             <div className="w-full">
               <button
                 type="submit"
-                disabled={isLoading}
+                disabled={!isValid}
                 data-cy="submit-button"
                 style={{
-                  height: '2.2rem',
                   background: '#0D5C63',
                   width: '100%',
                 }}

@@ -7,6 +7,7 @@ import { User } from '@/types/User'
 import { FormHelperText, TextField } from '@mui/material'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { Controller, useForm } from 'react-hook-form'
 
 const FORM_EMAIL = 'email'
@@ -20,7 +21,7 @@ export default function Login() {
 
   const {
     control,
-    formState: { errors },
+    formState: { errors, isValid },
     handleSubmit,
   } = useForm<User>({
     mode: 'all',
@@ -29,14 +30,19 @@ export default function Login() {
 
   const { fetchRequest, setAccessToken } = useRequest()
 
-  const handleFetch = async (data: User) => {
+  const router = useRouter()
+
+  const onSubmit = async (data: User) => {
     try {
       const response = await fetchRequest('/auth/login', {
         method: 'POST',
-        body: data, // Passa o objeto contendo email e password
+        body: data,
       })
 
+      console.log(data)
+
       console.log('Resposta:', response)
+      router.push('learn')
     } catch (error) {
       console.error('Erro na requisição:', error)
     }
@@ -54,7 +60,7 @@ export default function Login() {
 
         <p className="font-bold text-xl text-white">Entre com sua conta</p>
 
-        <form className="flex flex-col gap-4 items-center" onSubmit={handleSubmit(handleFetch)}>
+        <form className="flex flex-col gap-4 items-center" onSubmit={handleSubmit(onSubmit)}>
           <div className="flex flex-col gap-1 w-full">
             <div className="mb-2">
               <Controller
@@ -120,6 +126,7 @@ export default function Login() {
             <button
               type="submit"
               data-cy="submit-button"
+              disabled={!isValid}
               style={{
                 background: '#0D5C63',
                 width: '100%',
