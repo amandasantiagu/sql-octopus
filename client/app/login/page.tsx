@@ -2,6 +2,8 @@
 
 import { sxTextField } from '@/components/CustomTextField'
 import { useRequest } from '@/contexts/RequestContext'
+import { useToast } from '@/contexts/toast'
+import { useAuth } from '@/contexts/useAuth'
 import { CardSign, Sign } from '@/styles/signStyles'
 import { User } from '@/types/User'
 import { FormHelperText, TextField } from '@mui/material'
@@ -14,11 +16,6 @@ const FORM_EMAIL = 'email'
 const FORM_PASSWORD = 'password'
 
 export default function Login() {
-  const formHook = useForm({
-    mode: 'all',
-    reValidateMode: 'onBlur',
-  })
-
   const {
     control,
     formState: { errors, isValid },
@@ -28,27 +25,20 @@ export default function Login() {
     reValidateMode: 'onBlur',
   })
 
-  const { fetchRequest, setAccessToken } = useRequest()
+  const { showToast } = useToast()
+  const { signIn } = useAuth()
 
   const router = useRouter()
 
   const onSubmit = async (data: User) => {
-    try {
-      const response = await fetchRequest('/auth/login', {
-        method: 'POST',
-        body: data,
-      })
+    const { error } = await signIn(data.email, data.password)
 
-      console.log(data)
-
-      console.log('Resposta:', response)
-      router.push('learn')
-    } catch (error) {
-      console.error('Erro na requisição:', error)
+    if (error) {
+      showToast(error, 'error')
+    } else {
+      showToast('Login feito com sucesso', 'success')
+      router.push('/learn')
     }
-  }
-  const handleLogin = () => {
-    setAccessToken('seu-token-aqui') // Configura o token após login
   }
 
   return (

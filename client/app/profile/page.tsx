@@ -3,6 +3,7 @@
 import { ButtonWithLoading } from '@/components/ButtonWithLoading'
 import CustomTextField from '@/components/CustomTextField'
 import Footer from '@/components/Footer'
+import { useAuth } from '@/contexts/useAuth'
 import { ProfileItems, ProfilePage } from '@/styles/profileStyles'
 import { User } from '@/types/User'
 import { Avatar } from '@mui/material'
@@ -24,6 +25,7 @@ export default function Profile() {
   }
 
   const router = useRouter()
+  const { signOut } = useAuth()
 
   return (
     <ProfilePage className="flex flex-col min-h-screen">
@@ -55,7 +57,7 @@ export default function Profile() {
           <ButtonWithLoading
             className="w-full"
             sx={{ background: '#17373A', borderRadius: '0.5rem' }}
-            onClick={() => router.push('/login')}
+            onClick={signOut}
           >
             Sair
           </ButtonWithLoading>

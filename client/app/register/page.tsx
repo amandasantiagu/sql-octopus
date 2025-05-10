@@ -1,6 +1,7 @@
 'use client'
 
 import { sxTextField } from '@/components/CustomTextField'
+import { useRequest } from '@/contexts/RequestContext'
 import { CardSign, Sign } from '@/styles/signStyles'
 import { User } from '@/types/User'
 import { FormHelperText, IconButton, InputAdornment, TextField } from '@mui/material'
@@ -38,17 +39,19 @@ export default function Register() {
   const toggleConfirmPasswordVisibility = () => setShowConfirmPassword(!showConfirmPassword)
 
   const router = useRouter()
+  const { fetchRequest } = useRequest()
 
   const onSubmit = async (data: User) => {
     try {
-      // const response = await fetchRequest('/auth/login', {
-      //   method: 'POST',
-      //   body: data, // Passa o objeto contendo email e password
-      // })
+      await fetchRequest('users', {
+        method: 'POST',
+        body: {
+          name: data.name,
+          email: data.email,
+          password: data.password,
+        },
+      })
 
-      console.log(data)
-
-      // console.log('Resposta:', response)
       router.push('login')
     } catch (error) {
       console.error('Erro na requisição:', error)

@@ -44,8 +44,7 @@ export const RequestProvider: React.FC<{ children: React.ReactNode }> = ({ child
       const response = await fetch(fullUrl, fetchOptions)
       if (!response.ok) {
         if (response.status === 401) {
-          // Token expirado, implemente lógica para refresh token
-          setAccessToken(null) // Redirecionar ou renovar token
+          setAccessToken(null)
         }
         throw new Error(await response.text())
       }
