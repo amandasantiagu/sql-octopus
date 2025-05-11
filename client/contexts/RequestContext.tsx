@@ -1,6 +1,7 @@
 'use client'
 
 import React, { createContext, useContext, useState } from 'react'
+import { useAuth } from './useAuth'
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL // Base da API
 
@@ -12,15 +13,13 @@ type FetchOptions = {
 }
 
 type RequestContextProps = {
-  accessToken: string | null
-  setAccessToken: (token: string | null) => void
   fetchRequest: <T = any>(endpoint: string, options?: Partial<FetchOptions>) => Promise<T>
 }
 
 const RequestContext = createContext<RequestContextProps | undefined>(undefined)
 
 export const RequestProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [accessToken, setAccessToken] = useState<string | null>(null)
+  const { accessToken } = useAuth()
 
   const fetchRequest = async <T = any,>(
     endpoint: string, // Agora aceitamos apenas o endpoint, não a URL completa
@@ -42,24 +41,30 @@ export const RequestProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
     try {
       const response = await fetch(fullUrl, fetchOptions)
+
       if (!response.ok) {
-        if (response.status === 401) {
-          setAccessToken(null)
+        // Tenta obter o JSON do erro, caso disponível, ou uma mensagem de fallback
+        let errorResponse
+        try {
+          errorResponse = await response.json()
+        } catch {
+          errorResponse = { message: response.statusText }
         }
-        throw new Error(await response.text())
+
+        throw {
+          status: response.status,
+          ...errorResponse,
+        }
       }
+
       return response.json()
-    } catch (error: any) {
-      console.error('Erro ao fazer requisição:', error.message)
-      throw error
+    } catch (error) {
+      console.error('Erro ao fazer requisição:', error)
+      throw error // Permite que o erro seja capturado pelo chamador
     }
   }
 
-  return (
-    <RequestContext.Provider value={{ accessToken, setAccessToken, fetchRequest }}>
-      {children}
-    </RequestContext.Provider>
-  )
+  return <RequestContext.Provider value={{ fetchRequest }}>{children}</RequestContext.Provider>
 }
 
 export const useRequest = () => {
