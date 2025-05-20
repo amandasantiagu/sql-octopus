@@ -5,27 +5,21 @@ import CustomTextField from '@/components/CustomTextField'
 import Footer from '@/components/Footer'
 import { useAuth } from '@/contexts/useAuth'
 import { ProfileItems, ProfilePage } from '@/styles/profileStyles'
-import { User } from '@/types/User'
 import { Avatar } from '@mui/material'
-import { useRouter } from 'next/navigation'
 import { IoMdSettings } from 'react-icons/io'
 
 export default function Profile() {
-  const user = {
-    name: 'Amanda Santiago',
-    email: 'amandasantiagu@ufsc.br',
-    userId: 22,
-  } as User
+  const { signOut, user } = useAuth()
 
   const getInitials = () => {
-    if (!user.name) return ''
+    if (!user || !user.name) return ''
+
     const nameParts = user.name.split(' ')
     const initials = nameParts.map((part) => part[0].toUpperCase()).join('')
     return initials
   }
 
-  const router = useRouter()
-  const { signOut } = useAuth()
+  if (!user) return <></>
 
   return (
     <ProfilePage className="flex flex-col min-h-screen">
@@ -48,8 +42,8 @@ export default function Profile() {
           </div>
 
           <div className="flex flex-col justify-center w-full gap-8">
-            <CustomTextField value={user.name} name="name" inputLabel="Nome" />
-            <CustomTextField value={user.email} name="email" inputLabel="Email" />
+            <CustomTextField value={user.name} name="name" inputLabel="Nome" disabled />
+            <CustomTextField value={user.email} name="email" inputLabel="Email" disabled />
           </div>
         </div>
 

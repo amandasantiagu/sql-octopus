@@ -22,7 +22,7 @@ export const RequestProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const { accessToken } = useAuth()
 
   const fetchRequest = async <T = any,>(
-    endpoint: string, // Agora aceitamos apenas o endpoint, não a URL completa
+    endpoint: string,
     options?: Partial<FetchOptions>
   ): Promise<T> => {
     const headers = {
@@ -37,13 +37,11 @@ export const RequestProvider: React.FC<{ children: React.ReactNode }> = ({ child
       body: options?.body ? JSON.stringify(options.body) : undefined,
     }
 
-    const fullUrl = `${apiUrl}${endpoint}` // Adiciona a base da URL
-
+    const fullUrl = `${apiUrl}${endpoint}`
     try {
       const response = await fetch(fullUrl, fetchOptions)
 
       if (!response.ok) {
-        // Tenta obter o JSON do erro, caso disponível, ou uma mensagem de fallback
         let errorResponse
         try {
           errorResponse = await response.json()
@@ -60,7 +58,7 @@ export const RequestProvider: React.FC<{ children: React.ReactNode }> = ({ child
       return response.json()
     } catch (error) {
       console.error('Erro ao fazer requisição:', error)
-      throw error // Permite que o erro seja capturado pelo chamador
+      throw error
     }
   }
 

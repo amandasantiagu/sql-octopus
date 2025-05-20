@@ -6,6 +6,7 @@ interface CustomTextFieldProps {
   name: string
   inputLabel: string
   type?: string
+  disabled?: boolean
 }
 
 export const sxTextField = {
@@ -22,6 +23,7 @@ const CustomTextField: React.FC<CustomTextFieldProps> = ({
   name,
   inputLabel,
   type = 'text',
+  disabled = false,
 }) => {
   return (
     <div className="flex flex-col gap-2">
@@ -34,6 +36,7 @@ const CustomTextField: React.FC<CustomTextFieldProps> = ({
         variant="outlined"
         size="small"
         fullWidth
+        disabled={disabled}
         autoComplete="off"
         sx={sxTextField}
       />

@@ -1,7 +1,7 @@
 'use client'
-
-import React, { createContext, useContext, useState } from 'react'
+import React, { createContext, useContext, useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import Cookies from 'js-cookie'
 import { User } from '@/types/User'
 
 interface AuthContextProps {
@@ -14,11 +14,40 @@ interface AuthContextProps {
 const AuthContext = createContext<AuthContextProps | undefined>(undefined)
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null)
+  const [currentUser, setCurrentUser] = useState<User | null>(null)
   const [accessToken, setAccessToken] = useState<string | null>(null)
   const router = useRouter()
 
   const apiUrl = process.env.NEXT_PUBLIC_API_URL // Base da API
+
+  // Restaura estado de autenticação
+  useEffect(() => {
+    const token = Cookies.get('authToken')
+
+    if (token) {
+      setAccessToken(token)
+      fetch(`${apiUrl}auth/me`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      })
+        .then((res) => {
+          if (!res.ok) {
+            throw new Error('Erro ao buscar dados do usuário')
+          }
+          return res.json()
+        })
+        .then((userData: User) => {
+          setCurrentUser(userData)
+        })
+        .catch((error) => {
+          console.error('Erro ao restaurar sessão:', error)
+          signOut()
+        })
+    }
+  }, [apiUrl])
 
   const signIn = async (email: string, password: string) => {
     try {
@@ -41,7 +70,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const { access_token, user } = await response.json()
 
       setAccessToken(access_token)
-      setUser(user)
+      setCurrentUser(user)
+
+      Cookies.set('authToken', access_token, { expires: 7, path: '/' })
 
       return { error: null, data: user }
     } catch (error: any) {
@@ -51,13 +82,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }
 
   const signOut = () => {
-    setUser(null)
+    setCurrentUser(null)
     setAccessToken(null)
+
+    Cookies.remove('authToken', { path: '/' })
     router.push('/login')
   }
 
   return (
-    <AuthContext.Provider value={{ user, accessToken, signIn, signOut }}>
+    <AuthContext.Provider value={{ user: currentUser, accessToken, signIn, signOut }}>
       {children}
     </AuthContext.Provider>
   )

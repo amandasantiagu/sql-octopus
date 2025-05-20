@@ -1,19 +1,38 @@
-import { useEffect, useState } from 'react'
+'use client'
+
+import { useState } from 'react'
 import Shepherd, { Tour } from 'shepherd.js'
 import 'shepherd.js/dist/css/shepherd.css'
 import { ButtonWithLoading } from '../ButtonWithLoading'
 
 import { useRouter } from 'next/navigation'
 import { buttonTiffanyBlue } from '@/styles/activityStyles'
+import { useAuth } from '@/contexts/useAuth'
+import { useRequest } from '@/contexts/RequestContext'
 
 export default function ShepherdTour() {
   const router = useRouter()
+  const { user } = useAuth()
+  const { fetchRequest } = useRequest()
 
   const [isTourRunning, setIsTourRunning] = useState<boolean>(false)
   let tour: Tour
 
   const handleTourEnd = () => {
     setIsTourRunning(false)
+  }
+
+  const handleCompleteTutorial = async () => {
+    if (user?.alreadyDoneTutorial) return
+
+    try {
+      await fetchRequest(`users/${user?.id}/complete-tutorial`, {
+        method: 'POST',
+        body: {},
+      })
+    } catch (error) {
+    } finally {
+    }
   }
 
   const initializeTour = () => {
@@ -349,6 +368,8 @@ export default function ShepherdTour() {
     initializeTour()
 
     tour.start()
+
+    handleCompleteTutorial()
 
     tour.on('complete', handleTourEnd)
     tour.on('cancel', handleTourEnd)

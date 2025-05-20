@@ -1,7 +1,6 @@
 'use client'
 
 import { sxTextField } from '@/components/CustomTextField'
-import { useRequest } from '@/contexts/RequestContext'
 import { useToast } from '@/contexts/toast'
 import { useAuth } from '@/contexts/useAuth'
 import { CardSign, Sign } from '@/styles/signStyles'
@@ -11,6 +10,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { Controller, useForm } from 'react-hook-form'
+import { useState } from 'react'
 
 const FORM_EMAIL = 'email'
 const FORM_PASSWORD = 'password'
@@ -28,16 +28,32 @@ export default function Login() {
   const { showToast } = useToast()
   const { signIn } = useAuth()
 
+  const [loading, setLoading] = useState(false)
   const router = useRouter()
 
   const onSubmit = async (data: User) => {
-    const { error } = await signIn(data.email, data.password)
+    if (loading) return // Evita múltiplas submissões
 
-    if (error) {
-      showToast(error, 'error')
-    } else {
-      showToast('Login feito com sucesso', 'success')
-      router.push('/learn')
+    setLoading(true) // Inicia carregamento
+    try {
+      const { error, data: loggedUser } = await signIn(data.email, data.password)
+
+      if (error) {
+        showToast(error, 'error')
+      } else {
+        showToast('Login feito com sucesso', 'success')
+
+        if (loggedUser?.alreadyDoneTutorial) {
+          router.push('/learn')
+        } else {
+          router.push('/guide')
+        }
+      }
+    } catch (err) {
+      console.error('Erro inesperado no login:', err)
+      showToast('Erro inesperado. Tente novamente.', 'error')
+    } finally {
+      setLoading(false) // Termina carregamento
     }
   }
 
@@ -55,9 +71,7 @@ export default function Login() {
             <div className="mb-2">
               <Controller
                 name={FORM_EMAIL}
-                rules={{
-                  required: true,
-                }}
+                rules={{ required: 'E-mail é obrigatório' }}
                 control={control}
                 render={({ field: { name, onBlur, value, onChange } }) => (
                   <TextField
@@ -76,16 +90,15 @@ export default function Login() {
                   />
                 )}
               />
-
-              {!!errors[FORM_EMAIL] && <FormHelperText error>E-mail é obrigatório</FormHelperText>}
+              {!!errors[FORM_EMAIL] && (
+                <FormHelperText error>{errors[FORM_EMAIL].message}</FormHelperText>
+              )}
             </div>
 
             <div>
               <Controller
                 name={FORM_PASSWORD}
-                rules={{
-                  required: true,
-                }}
+                rules={{ required: 'Senha é obrigatória' }}
                 control={control}
                 render={({ field: { onChange, onBlur, name, value } }) => (
                   <TextField
@@ -105,9 +118,8 @@ export default function Login() {
                   />
                 )}
               />
-
               {!!errors[FORM_PASSWORD] && (
-                <FormHelperText error>Senha é obrigatório</FormHelperText>
+                <FormHelperText error>{errors[FORM_PASSWORD].message}</FormHelperText>
               )}
             </div>
           </div>
@@ -116,14 +128,15 @@ export default function Login() {
             <button
               type="submit"
               data-cy="submit-button"
-              disabled={!isValid}
+              disabled={!isValid || loading}
               style={{
-                background: '#0D5C63',
+                background: loading ? '#ccc' : '#0D5C63',
                 width: '100%',
+                cursor: loading ? 'not-allowed' : 'pointer',
               }}
               className="flex w-full bg-primary-300 justify-center rounded-md border border-transparent py-1 px-4 text-sm font-medium text-white uppercase"
             >
-              Entrar
+              {loading ? 'Carregando...' : 'Entrar'}
             </button>
           </div>
 

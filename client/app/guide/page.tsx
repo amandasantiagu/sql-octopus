@@ -2,13 +2,36 @@
 
 import { ButtonWithLoading } from '@/components/ButtonWithLoading'
 import ShepherdTour from '@/components/Shepherd/ShepherdTour'
+import { useRequest } from '@/contexts/RequestContext'
+import { useAuth } from '@/contexts/useAuth'
 import { GuidePage } from '@/styles/guideStyles'
 import Image from 'next/image'
-import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
 export default function Guide() {
-  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const { fetchRequest } = useRequest()
+  const { user } = useAuth()
+  const [loading, setLoading] = useState(false)
+  const router = useRouter()
+
+  const handleCompleteTutorial = async () => {
+    if (user?.alreadyDoneTutorial) return router.push('/learn')
+
+    if (!user?.alreadyDoneTutorial) {
+      setLoading(true)
+      try {
+        await fetchRequest(`users/${user?.id}/complete-tutorial`, {
+          method: 'POST',
+          body: {},
+        })
+      } catch (error) {
+      } finally {
+        setLoading(false)
+        router.push('/learn')
+      }
+    }
+  }
 
   return (
     <GuidePage>
@@ -45,20 +68,20 @@ export default function Guide() {
       <div className="flex flex-col w-full">
         <ShepherdTour />
 
-        <Link href="/learn" className="w-full">
-          <ButtonWithLoading
-            className="w-full"
-            variant="text"
-            sx={{
-              color: 'white',
-              width: '100%',
-              textTransform: 'none',
-              fontWeight: 600,
-            }}
-          >
-            Sair
-          </ButtonWithLoading>
-        </Link>
+        <ButtonWithLoading
+          className="w-full"
+          variant="text"
+          onClick={handleCompleteTutorial}
+          isLoading={loading}
+          sx={{
+            color: 'white',
+            width: '100%',
+            textTransform: 'none',
+            fontWeight: 600,
+          }}
+        >
+          Sair
+        </ButtonWithLoading>
       </div>
     </GuidePage>
   )
