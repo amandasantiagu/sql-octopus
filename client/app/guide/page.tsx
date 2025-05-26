@@ -50,18 +50,18 @@ export default function Guide() {
         </span>
 
         <span>
-          Nível Fácil: Começar com consultas básicas, usando comandos como SELECT e WHERE para
-          extrair informações essenciais dos dados.
+          Começar com consultas básicas, usando comandos como SELECT e WHERE para extrair
+          informações essenciais dos dados.
         </span>
 
         <span>
-          Nível Intermediário: Explorar junções e subconsultas, combinando dados de várias tabelas e
-          criando consultas mais dinâmicas e complexas.
+          Explorar junções e subconsultas, combinando dados de várias tabelas e criando consultas
+          mais dinâmicas e complexas.
         </span>
 
         <span>
-          Nível Avançado: Dominar atualizações complexas, gerenciar autorizações e configurar
-          visões, ganhando total controle sobre o banco de dados.
+          Dominar atualizações complexas, gerenciar autorizações e configurar visões, ganhando total
+          controle sobre o banco de dados.
         </span>
       </div>
 
