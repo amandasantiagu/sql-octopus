@@ -2,120 +2,37 @@
 
 import EmptyCard from '@/components/EmptyCard'
 import Footer from '@/components/Footer'
+import { useRequest } from '@/contexts/RequestContext'
 import { ProfileItems, ProfilePage } from '@/styles/profileStyles'
 import { RankingType } from '@/types/Ranking'
 import { Avatar } from '@mui/material'
+import { useEffect, useState } from 'react'
 import { FaRankingStar } from 'react-icons/fa6'
-import { IoTimeOutline } from 'react-icons/io5'
 import { PiCurrencyEthFill } from 'react-icons/pi'
 
 export default function Ranking() {
-  const rankings: RankingType[] = [
-    {
-      id: '1',
-      user: { id: 'u1', name: 'Amanda Santiago', email: 'amandasantiagu@ufsc.br' },
-      time: '10:30',
-      exp: 1500,
-      createdAt: new Date('2025-02-24T10:00:00Z'),
-      updatedAt: new Date('2025-02-24T10:30:00Z'),
-    },
-    {
-      id: '2',
-      user: { id: 'u2', name: 'Carlos Silva', email: 'carlos.silva@exemplo.com' },
-      time: '12:00',
-      exp: 2000,
-      createdAt: new Date('2025-02-24T11:00:00Z'),
-      updatedAt: new Date('2025-02-24T12:00:00Z'),
-    },
-    {
-      id: '3',
-      user: { id: 'u3', name: 'Lucia Oliveira', email: 'lucia.oliveira@exemplo.com' },
-      time: '14:00',
-      exp: 1800,
-      createdAt: new Date('2025-02-24T13:00:00Z'),
-      updatedAt: new Date('2025-02-24T14:00:00Z'),
-    },
-    {
-      id: '4',
-      user: { id: 'u4', name: 'Renato Souza', email: 'renato.souza@exemplo.com' },
-      time: '16:00',
-      exp: 1200,
-      createdAt: new Date('2025-02-24T15:00:00Z'),
-      updatedAt: new Date('2025-02-24T16:00:00Z'),
-    },
-    {
-      id: '5',
-      user: { id: 'u5', name: 'Tatiane Costa', email: 'tatiane.costa@exemplo.com' },
-      time: '18:00',
-      exp: 2200,
-      createdAt: new Date('2025-02-24T17:00:00Z'),
-      updatedAt: new Date('2025-02-24T18:00:00Z'),
-    },
-    {
-      id: '2',
-      user: { id: 'u2', name: 'Carlos Silva', email: 'carlos.silva@exemplo.com' },
-      time: '12:00',
-      exp: 2000,
-      createdAt: new Date('2025-02-24T11:00:00Z'),
-      updatedAt: new Date('2025-02-24T12:00:00Z'),
-    },
-    {
-      id: '3',
-      user: { id: 'u3', name: 'Lucia Oliveira', email: 'lucia.oliveira@exemplo.com' },
-      time: '14:00',
-      exp: 1800,
-      createdAt: new Date('2025-02-24T13:00:00Z'),
-      updatedAt: new Date('2025-02-24T14:00:00Z'),
-    },
-    {
-      id: '4',
-      user: { id: 'u4', name: 'Renato Souza', email: 'renato.souza@exemplo.com' },
-      time: '16:00',
-      exp: 1200,
-      createdAt: new Date('2025-02-24T15:00:00Z'),
-      updatedAt: new Date('2025-02-24T16:00:00Z'),
-    },
-    {
-      id: '5',
-      user: { id: 'u5', name: 'Tatiane Costa', email: 'tatiane.costa@exemplo.com' },
-      time: '18:00',
-      exp: 2200,
-      createdAt: new Date('2025-02-24T17:00:00Z'),
-      updatedAt: new Date('2025-02-24T18:00:00Z'),
-    },
-    {
-      id: '2',
-      user: { id: 'u2', name: 'Carlos Silva', email: 'carlos.silva@exemplo.com' },
-      time: '12:00',
-      exp: 2000,
-      createdAt: new Date('2025-02-24T11:00:00Z'),
-      updatedAt: new Date('2025-02-24T12:00:00Z'),
-    },
-    {
-      id: '3',
-      user: { id: 'u3', name: 'Lucia Oliveira', email: 'lucia.oliveira@exemplo.com' },
-      time: '14:00',
-      exp: 1800,
-      createdAt: new Date('2025-02-24T13:00:00Z'),
-      updatedAt: new Date('2025-02-24T14:00:00Z'),
-    },
-    {
-      id: '4',
-      user: { id: 'u4', name: 'Renato Souza', email: 'renato.souza@exemplo.com' },
-      time: '16:00',
-      exp: 1200,
-      createdAt: new Date('2025-02-24T15:00:00Z'),
-      updatedAt: new Date('2025-02-24T16:00:00Z'),
-    },
-    {
-      id: '5',
-      user: { id: 'u5', name: 'Tatiane Costa', email: 'tatiane.costa@exemplo.com' },
-      time: '18:00',
-      exp: 2200,
-      createdAt: new Date('2025-02-24T17:00:00Z'),
-      updatedAt: new Date('2025-02-24T18:00:00Z'),
-    },
-  ]
+  const { fetchRequest } = useRequest()
+  const [loading, setLoading] = useState(false)
+  const [rankings, setRankings] = useState<RankingType[]>([])
+
+  const getUsersInRanking = async () => {
+    setLoading(true)
+    try {
+      const response = await fetchRequest(`ranking`, {
+        method: 'GET',
+      })
+
+      setRankings(response || [])
+    } catch (error) {
+      console.log('Erro na requisição:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    getUsersInRanking()
+  }, [])
 
   return (
     <ProfilePage className="flex flex-col min-h-screen">
@@ -153,17 +70,17 @@ export default function Ranking() {
                       {index + 1}
                     </Avatar>
 
-                    <span className="font-bold text-sm w-full truncate">{item.user.name}</span>
+                    <span className="font-bold text-sm w-full truncate">{item?.name}</span>
                   </div>
 
                   <div className="col-span-4 flex flex-col justify-end font-light text-sm">
                     <span className="flex flex-row items-center gap-1">
-                      <PiCurrencyEthFill className="text-yellowIcon" size={18} /> {item.exp} XP
+                      <PiCurrencyEthFill className="text-yellowIcon" size={18} /> {item?.exp} XP
                     </span>
 
-                    <span className="flex flex-row items-center gap-1">
+                    {/* <span className="flex flex-row items-center gap-1">
                       <IoTimeOutline className="text-primary-200" size={18} /> {item.time}
-                    </span>
+                    </span> */}
                   </div>
                 </div>
               ))}

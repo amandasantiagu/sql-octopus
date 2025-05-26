@@ -53,7 +53,7 @@ export default function Login() {
       console.error('Erro inesperado no login:', err)
       showToast('Erro inesperado. Tente novamente.', 'error')
     } finally {
-      setLoading(false) // Termina carregamento
+      setLoading(false)
     }
   }
 

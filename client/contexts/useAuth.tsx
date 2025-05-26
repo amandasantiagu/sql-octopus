@@ -35,7 +35,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       })
         .then((res) => {
           if (!res.ok) {
-            throw new Error('Erro ao buscar dados do usuário')
+            return console.log('Erro ao buscar dados do usuário')
           }
           return res.json()
         })
@@ -43,7 +43,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           setCurrentUser(userData)
         })
         .catch((error) => {
-          console.error('Erro ao restaurar sessão:', error)
+          console.log('Erro ao restaurar sessão:', error)
           signOut()
         })
     }

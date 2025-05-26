@@ -4,10 +4,13 @@ import Menu from '@mui/material/Menu'
 
 import { PiCurrencyEthFill } from 'react-icons/pi'
 import { CardStyles } from '@/styles/headerStyles'
+import { useAuth } from '@/contexts/useAuth'
 
 const MenuExp: React.FC = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
+
+  const { user } = useAuth()
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget)
@@ -28,7 +31,7 @@ const MenuExp: React.FC = () => {
         onClick={handleClick}
       >
         <PiCurrencyEthFill className="text-yellowIcon" size={20} />
-        100
+        {user?.exp || 0}
       </Button>
 
       <Menu

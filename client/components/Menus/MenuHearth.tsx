@@ -4,6 +4,7 @@ import Menu from '@mui/material/Menu'
 import { FaHeart } from 'react-icons/fa6'
 import { PiCurrencyEthFill } from 'react-icons/pi'
 import { CardStyles } from '@/styles/headerStyles'
+import { useAuth } from '@/contexts/useAuth'
 
 const stylesRecoveringLives = {
   height: '2.8rem',
@@ -15,14 +16,18 @@ const stylesRecoveringLives = {
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
-  fontWeight: 600, // Corrigido de fontWeigth para fontWeight
+  fontWeight: 600,
   borderRadius: '0.5rem',
 }
 
 const MenuHearth: React.FC = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
-  const [life, setLifes] = React.useState<number>(2)
+
   const open = Boolean(anchorEl)
+
+  const { user, accessToken } = useAuth()
+
+  const [life, setLifes] = React.useState<number>(user?.life || 0)
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget)
@@ -81,10 +86,12 @@ const MenuHearth: React.FC = () => {
           <Button className="w-full text-base" disabled={life === 3} sx={stylesRecoveringLives}>
             <span style={{ flex: 1, textAlign: 'center' }}>Recuperar vidas</span>
 
-            <span className="text-yellowIcon flex flex-row items-center">
-              <PiCurrencyEthFill className="text-yellowIcon" size={20} />
-              100
-            </span>
+            {life !== 3 && (
+              <span className="text-yellowIcon flex flex-row items-center">
+                <PiCurrencyEthFill className="text-yellowIcon" size={20} />
+                100
+              </span>
+            )}
           </Button>
         </div>
       </Menu>
