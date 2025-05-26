@@ -3,14 +3,16 @@ import React from 'react'
 import { FaHeart } from 'react-icons/fa6'
 import DialogCloseLesson from '../Dialog/DialogCloseLesson'
 import { HeaderStyles } from '@/styles/headerStyles'
+import { useAuth } from '@/contexts/useAuth'
 
 interface Props {
-  currentLife: number
   onClose: () => void
 }
 
-const HeaderActivity: React.FC<Props> = ({ currentLife = 2, onClose }) => {
-  const [life, setLifes] = React.useState<number>(currentLife)
+const HeaderActivity: React.FC<Props> = ({ onClose }) => {
+  const { user } = useAuth()
+
+  const [life, setLifes] = React.useState<number>(user?.life || 0)
 
   return (
     <HeaderStyles>

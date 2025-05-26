@@ -25,7 +25,7 @@ const MenuHearth: React.FC = () => {
 
   const open = Boolean(anchorEl)
 
-  const { user, accessToken } = useAuth()
+  const { user } = useAuth()
 
   const [life, setLifes] = React.useState<number>(user?.life || 0)
 

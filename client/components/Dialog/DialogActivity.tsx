@@ -133,7 +133,7 @@ const DialogActivity: React.FC<Props> = ({ open, content, onClose }) => {
       }}
     >
       <div className="w-full flex flex-col h-screen px-2 py-4">
-        {currentActivity && <HeaderActivity currentLife={2} onClose={handleClose} />}
+        {currentActivity && <HeaderActivity onClose={handleClose} />}
 
         {currentActivity && <BorderLinearProgress variant="determinate" value={progress} />}
 
