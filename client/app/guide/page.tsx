@@ -59,10 +59,7 @@ export default function Guide() {
           mais dinâmicas e complexas.
         </span>
 
-        <span>
-          Dominar atualizações complexas, gerenciar autorizações e configurar visões, ganhando total
-          controle sobre o banco de dados.
-        </span>
+        <span>Dominar atualizações complexas, gerenciar autorizações e configurar visões.</span>
       </div>
 
       <div className="flex flex-col w-full">

@@ -214,7 +214,12 @@ export default function ShepherdTour() {
       buttons: [
         {
           text: 'Voltar',
-          action: tour.back,
+          action: function () {
+            router.push('/learn')
+            setTimeout(() => {
+              tour.back()
+            }, 300)
+          },
         },
         {
           text: 'Próximo',
@@ -270,7 +275,12 @@ export default function ShepherdTour() {
       buttons: [
         {
           text: 'Voltar',
-          action: tour.back,
+          action: function () {
+            router.push('/ranking')
+            setTimeout(() => {
+              tour.back()
+            }, 300)
+          },
         },
         {
           text: 'Próximo',
@@ -346,7 +356,12 @@ export default function ShepherdTour() {
       buttons: [
         {
           text: 'Voltar',
-          action: tour.back,
+          action: function () {
+            router.push('/profile')
+            setTimeout(() => {
+              tour.back()
+            }, 300)
+          },
         },
         {
           text: 'Finalizar',
