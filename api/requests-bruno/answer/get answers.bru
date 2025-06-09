@@ -1,0 +1,15 @@
+meta {
+  name: get answers
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{URL_DOMAIN}}/answers
+  body: none
+  auth: inherit
+}
+
+headers {
+  Authorization: {{TOKEN}}
+}
