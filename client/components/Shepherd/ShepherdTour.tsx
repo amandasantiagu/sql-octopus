@@ -56,7 +56,10 @@ export default function ShepherdTour() {
       buttons: [
         {
           text: 'Finalizar',
-          action: tour.complete,
+          action: () => {
+            tour.complete()
+            router.push('learn')
+          },
         },
         {
           text: 'Próximo',

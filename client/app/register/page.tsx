@@ -31,7 +31,6 @@ export default function Register() {
     handleSubmit,
   } = formHook
 
-  const [isLoading, setIsLoading] = useState<boolean>(false)
   const [showPassword, setShowPassword] = useState<boolean>(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false)
 
