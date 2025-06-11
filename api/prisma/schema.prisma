@@ -14,17 +14,18 @@ datasource db {
 }
 
 model user {
-  id                  String    @id @default(cuid())
+  id                  String         @id @default(cuid())
   name                String
-  email               String    @unique
+  email               String         @unique
   password            String
-  exp                 Int       @default(0)
-  life                Int       @default(3)
-  alreadyDoneTutorial Boolean   @default(false) @map("already_done_tutorial")
-  lastLifeLostAt      DateTime? @map("last_life_lost_at")
+  exp                 Int            @default(0)
+  life                Int            @default(3)
+  alreadyDoneTutorial Boolean        @default(false) @map("already_done_tutorial")
+  lastLifeLostAt      DateTime?      @map("last_life_lost_at")
   answers             answer[]
-  createdAt           DateTime  @default(now()) @map("created_at")
-  updatedAt           DateTime  @default(now()) @updatedAt @map("updated_at")
+  userProgresses      UserProgress[]
+  createdAt           DateTime       @default(now()) @map("created_at")
+  updatedAt           DateTime       @default(now()) @updatedAt @map("updated_at")
 }
 
 model module {
@@ -37,18 +38,16 @@ model module {
 }
 
 model content {
-  id          String     @id @default(cuid())
-  label       String     @db.VarChar(120)
-  moduleId    String
-  module      module     @relation(fields: [moduleId], references: [id])
-  duration    Int
-  hits        Int
-  exp         Int
-  completedAt DateTime?  @map("completed_at")
-  exercises   exercise[]
-  createdAt   DateTime   @default(now()) @map("created_at")
-  updatedAt   DateTime   @default(now()) @updatedAt @map("updated_at")
-  deletedAt   DateTime?  @map("deleted_at")
+  id             String         @id @default(cuid())
+  label          String         @db.VarChar(120)
+  moduleId       String
+  module         module         @relation(fields: [moduleId], references: [id])
+  completedAt    DateTime?      @map("completed_at")
+  exercises      exercise[]
+  userProgresses UserProgress[]
+  createdAt      DateTime       @default(now()) @map("created_at")
+  updatedAt      DateTime       @default(now()) @updatedAt @map("updated_at")
+  deletedAt      DateTime?      @map("deleted_at")
 }
 
 enum ExerciseType {
@@ -85,4 +84,20 @@ model answer {
   createdAt  DateTime  @default(now()) @map("created_at")
   updatedAt  DateTime  @default(now()) @updatedAt @map("updated_at")
   deletedAt  DateTime? @map("deleted_at")
+}
+
+model UserProgress {
+  id          String    @id @default(cuid())
+  userId      String
+  user        user      @relation(fields: [userId], references: [id])
+  contentId   String
+  content     content   @relation(fields: [contentId], references: [id])
+  duration    Int?
+  hits        Int?
+  completedAt DateTime? @map("completed_at")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @default(now()) @updatedAt @map("updated_at")
+  deletedAt   DateTime? @map("deleted_at")
+
+  @@map("user_progress")
 }
