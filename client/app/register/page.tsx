@@ -2,6 +2,7 @@
 
 import { sxTextField } from '@/components/CustomTextField'
 import { useRequest } from '@/contexts/RequestContext'
+import { useToast } from '@/contexts/toast'
 import { CardSign, Sign } from '@/styles/signStyles'
 import { User } from '@/types/User'
 import { FormHelperText, IconButton, InputAdornment, TextField } from '@mui/material'
@@ -38,6 +39,7 @@ export default function Register() {
   const toggleConfirmPasswordVisibility = () => setShowConfirmPassword(!showConfirmPassword)
 
   const router = useRouter()
+  const { showToast } = useToast()
   const { fetchRequest } = useRequest()
 
   const onSubmit = async (data: User) => {
@@ -53,7 +55,7 @@ export default function Register() {
 
       router.push('login')
     } catch (error) {
-      console.error('Erro na requisição:', error)
+      showToast(error?.message || 'Erro na requisição', 'error')
     }
   }
 
@@ -224,7 +226,7 @@ export default function Register() {
                 }}
                 className="mt-2 flex w-full bg-primary-300 justify-center rounded-md border border-transparent py-2 px-4 text-sm font-medium text-white uppercase"
               >
-                {isLoading ? '...' : <span>Registrar </span>}
+                <span> Registrar </span>
               </button>
             </div>
 

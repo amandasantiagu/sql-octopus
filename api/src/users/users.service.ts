@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { PrismaService } from 'prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
 import { User, CreateUserDto, type UpdateUserDto } from './dto/create-user-dto';
@@ -19,6 +19,18 @@ export class UsersService {
   }
 
   async createUser(data: CreateUserDto) {
+    const existingUser = await this.prisma.user.findUnique({
+      where: {
+        email: data.email,
+      },
+    });
+
+    if (existingUser) {
+      throw new BadRequestException(
+        'Este e-mail já está cadastrado. Por favor, use outro ou entre em contato com o suporte.',
+      );
+    }
+
     const hashedPassword = await this.hashPassword(data.password);
 
     return this.prisma.user.create({
@@ -35,7 +47,7 @@ export class UsersService {
     });
 
     if (!user) {
-      throw new Error('User not found');
+      throw new Error('Usuario nao encontrado');
     }
 
     if (data.password) {
@@ -66,7 +78,7 @@ export class UsersService {
     });
 
     if (!user) {
-      throw new Error('User not found');
+      throw new Error('Usuario nao encontrado');
     }
 
     if (user.life <= 0) {
@@ -98,7 +110,7 @@ export class UsersService {
     });
 
     if (!user) {
-      throw new Error('User not found');
+      throw new Error('Usuario nao encontrado');
     }
 
     if (user.life >= 3) {
@@ -121,7 +133,7 @@ export class UsersService {
     });
 
     if (!user) {
-      throw new Error('User not found');
+      throw new Error('Usuario nao encontrado');
     }
 
     if (user.exp < 100) {
@@ -152,7 +164,7 @@ export class UsersService {
     });
 
     if (!user) {
-      throw new Error('User not found');
+      throw new Error('Usuario nao encontrado');
     }
 
     const newExp = user.exp + exp;
@@ -171,7 +183,7 @@ export class UsersService {
     });
 
     if (!user) {
-      throw new Error('User not found');
+      throw new Error('Usuario nao encontrado');
     }
 
     const newExp = user.exp - exp;

@@ -57,7 +57,6 @@ export const RequestProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
       return response.json()
     } catch (error) {
-      console.error('Erro ao fazer requisição:', error)
       throw error
     }
   }
