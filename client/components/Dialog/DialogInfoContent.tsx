@@ -29,7 +29,7 @@ const DialogInfoContent: React.FC<Props> = ({ open, content, onClose }) => {
     if (!content?.label) return
 
     switch (content.label) {
-      case 'Seleção de dados':
+      case 'Selecionando dados':
         return <Select />
       case 'Agrupamento de dados':
         return <All />

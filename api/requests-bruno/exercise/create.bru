@@ -16,18 +16,34 @@ headers {
 
 body:json {
   {
-    "contentId": "cmbhne09v0003l98vyk6hues5",
-    "type": "fill_blanks",
-    "description": "lalalala",
-    "template": "SELECT __columns__ FROM __table__;",
+    "contentId": "cmbqperl60009pk3chb9qq15s",
+    "type": "combining_pairs",
     "data": [
-    {
-      "label": "table 1",
-      "data": []
-    }
-  ],
-    "blanks": "['__columns__', '__table__']",
-    "answer": "SELECT name, age FROM students;",
-    "explanation": "Essa consulta utiliza a cláusula SELECT para exibir as colunas name e age, que correspondem ao nome e à idade dos estudantes, respectivamente. A cláusula FROM especifica a tabela students como a fonte dos dados."
+      {
+        "id": 1,
+        "label": "select",
+        "value": "Escolhe as colunas que queremos exibir na consulta."
+      },
+      {
+        "id": 2,
+        "label": "distinct",
+        "value": "Remove valores duplicados da consulta."
+      },
+      {
+        "id": 3,
+        "label": "*",
+        "value": "Seleciona todas as colunas de uma tabela."
+      },
+      {
+        "id": 4,
+        "label": "AS",
+        "value": "Dá um nome alternativo (alias) para uma coluna ou tabela."
+      }
+    ],
+    "template": "",
+    "blanks": "",
+    "answer": "",
+    "description": "Associe os comandos SQL com suas respectivas descrições.",
+    "explanation": ""
   }
 }

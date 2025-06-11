@@ -1,6 +1,6 @@
 export type ModuleContent = {
-  id: number
-  moduleId: number
+  id: string
+  moduleId: string
   label: string
   completed?: Date | null
   duration?: string
@@ -9,7 +9,7 @@ export type ModuleContent = {
 }
 
 export type ModuleType = {
-  id: number
+  id: string
   label: string
   content: ModuleContent[]
   completed?: Date | null

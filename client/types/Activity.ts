@@ -1,11 +1,6 @@
 import { User } from './User'
 
-type TypesActivities =
-  | 'fill-blanks'
-  | 'only-choice'
-  | 'drag-drop'
-  | 'combining-pairs'
-  | 'true-false'
+type TypesActivities = 'fill_blanks' | 'only_choice' | 'combining_pairs' | 'true_false'
 
 export type Data = {
   id: number
@@ -27,7 +22,7 @@ export type ActivityType = {
 export const activitys = [
   {
     id: 5,
-    type: 'combining-pairs',
+    type: 'combining_pairs',
     description:
       'Leia atentamente cada descrição apresentada e verifique se esta associada ao comando correspondente.',
     data: [
@@ -51,7 +46,7 @@ export const activitys = [
   },
   {
     id: 1,
-    type: 'fill-blanks',
+    type: 'fill_blanks',
     description: 'Exiba o nome e a idade dos estudantes da tabela students.',
     template: 'SELECT __columns__ FROM __table__;',
     data: [
@@ -83,7 +78,7 @@ export const activitys = [
   },
   {
     id: 3,
-    type: 'only-choice',
+    type: 'only_choice',
     description: 'Qual comando é utilizado para agrupar resultados por uma coluna?',
     data: [
       { id: 1, label: 'join', value: 'join' },
@@ -97,7 +92,7 @@ export const activitys = [
   },
   {
     id: 4,
-    type: 'true-false',
+    type: 'true_false',
     description: 'A cláusula HAVING pode ser usada sem um GROUP BY',
     answer: 'true',
     explanation:

@@ -11,6 +11,7 @@ import ButtonValidation from '../ButtonValidation/ButtonValidationComponent'
 import ResultPractice from '../Activities/ResultPractice'
 import { activitys, ActivityType } from '@/types/Activity'
 import { ModuleContent } from '@/types/Module'
+import { useRequest } from '@/contexts/RequestContext'
 
 interface Props {
   open: boolean
@@ -30,16 +31,20 @@ const BorderLinearProgress = styled(LinearProgress)(() => ({
   },
 }))
 
-const DialogActivity: React.FC<Props> = ({ open, content, onClose }) => {
+const DialogExercise: React.FC<Props> = ({ open, content, onClose }) => {
+  const { fetchRequest } = useRequest()
+
   const [step, setSteps] = React.useState<number>(1)
-  const [currentActivity, setCurrentActivity] = React.useState<ActivityType | undefined>(undefined)
+  const [currentExercise, setCurrentExercise] = React.useState<ActivityType | undefined>(undefined)
   const [results, setResults] = React.useState<{ activity: ActivityType; answer: any }[]>([])
   const [startTime, setStartTime] = React.useState<Date | null>(null)
   const [totalTime, setTotalTime] = React.useState<number>(0)
+  const [loading, setLoading] = React.useState(false)
+  const [exercises, setExercises] = React.useState<ActivityType[]>([])
 
   const handleClose = () => {
     setSteps(1)
-    setCurrentActivity(activitys[0])
+    setCurrentExercise(exercises[0])
 
     setResults([])
     setStartTime(null)
@@ -48,46 +53,63 @@ const DialogActivity: React.FC<Props> = ({ open, content, onClose }) => {
     if (onClose) onClose()
   }
 
+  const getExercises = async () => {
+    setLoading(true)
+    try {
+      const response = await fetchRequest('exercise', {
+        method: 'GET',
+      })
+
+      setExercises(response || [])
+    } catch (error) {
+      console.log('Erro na requisição:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
   const progress = (step / activitys?.length) * 100
 
   const handleActivityChange = (newValue: any) => {
-    if (currentActivity) {
+    if (currentExercise) {
       setResults((prevResults) => {
-        const updatedResults = prevResults.filter((r) => r.activity !== currentActivity)
-        return [...updatedResults, { activity: currentActivity, answer: newValue }]
+        const updatedResults = prevResults.filter((r) => r.activity !== currentExercise)
+        return [...updatedResults, { activity: currentExercise, answer: newValue }]
       })
     }
   }
 
-  const typeInCurrentActivity = React.useMemo(() => {
-    const type = currentActivity?.type
+  const typeInCurrentExercise = React.useMemo(() => {
+    const type = currentExercise?.type
 
     switch (type) {
-      case 'fill-blanks':
-        return <FillBlanks data={currentActivity} onChange={handleActivityChange} />
-      case 'only-choice':
-        return <OnlyChoice data={currentActivity} onChange={handleActivityChange} />
-      case 'combining-pairs':
-        return <CombiningPairs data={currentActivity} onChange={handleActivityChange} />
-      case 'true-false':
-        return <TrueOrFalse data={currentActivity} onChange={handleActivityChange} />
+      case 'fill_blanks':
+        return <FillBlanks data={currentExercise} onChange={handleActivityChange} />
+      case 'only_choice':
+        return <OnlyChoice data={currentExercise} onChange={handleActivityChange} />
+      case 'combining_pairs':
+        return <CombiningPairs data={currentExercise} onChange={handleActivityChange} />
+      case 'true_false':
+        return <TrueOrFalse data={currentExercise} onChange={handleActivityChange} />
       default:
         return <></>
     }
-  }, [currentActivity])
+  }, [currentExercise])
 
-  const getCurrentActivity = (step: number) => {
+  const getCurrentExercise = (step: number) => {
+    if (exercises.length === 0) return
+
     const index = step - 1
-    const activity = activitys[index] as ActivityType
-    setCurrentActivity(activity)
+    const activity = exercises[index] as ActivityType
+    setCurrentExercise(activity)
   }
 
   const nextStep = React.useCallback(() => {
     const newStep = step + 1
-    getCurrentActivity(newStep)
+    getCurrentExercise(newStep)
     setSteps(newStep)
 
-    if (newStep > activitys.length && startTime) {
+    if (newStep > exercises.length && startTime) {
       const endTime = new Date()
       const timeDiff = endTime.getTime() - startTime.getTime()
 
@@ -102,18 +124,23 @@ const DialogActivity: React.FC<Props> = ({ open, content, onClose }) => {
 
   const currentResult = React.useMemo(() => {
     return (
-      results.find((r) => r.activity === currentActivity) || {
-        activity: currentActivity,
+      results.find((r) => r.activity === currentExercise) || {
+        activity: currentExercise,
         answer: null,
       }
     )
-  }, [currentActivity, results])
+  }, [currentExercise, results])
 
   React.useEffect(() => {
-    if (!currentActivity) setCurrentActivity(activitys[0])
+    if (loading || exercises?.length === 0) return
+    if (!currentExercise) setCurrentExercise(exercises[0])
 
     setSteps(1)
     setStartTime(new Date())
+  }, [exercises])
+
+  React.useEffect(() => {
+    getExercises()
   }, [])
 
   return (
@@ -133,15 +160,15 @@ const DialogActivity: React.FC<Props> = ({ open, content, onClose }) => {
       }}
     >
       <div className="w-full flex flex-col h-screen px-2 py-4">
-        {currentActivity && <HeaderActivity onClose={handleClose} />}
+        {currentExercise && <HeaderActivity onClose={handleClose} />}
 
-        {currentActivity && <BorderLinearProgress variant="determinate" value={progress} />}
+        {currentExercise && <BorderLinearProgress variant="determinate" value={progress} />}
 
         <div className="p-4 w-full flex flex-col gap-2 items-center h-full overflow-auto">
           {step <= activitys.length ? (
-            currentActivity && (
+            currentExercise && (
               <div className="flex flex-col w-full h-full">
-                <div className="flex-grow">{typeInCurrentActivity}</div>
+                <div className="flex-grow">{typeInCurrentExercise}</div>
                 <div className="mt-auto">
                   <ButtonValidation
                     onAfterClick={handleClick}
@@ -165,4 +192,4 @@ const DialogActivity: React.FC<Props> = ({ open, content, onClose }) => {
   )
 }
 
-export default DialogActivity
+export default DialogExercise
