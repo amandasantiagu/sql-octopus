@@ -53,6 +53,8 @@ export default function Register() {
         },
       })
 
+      showToast('Usuario criado com sucesso!', 'success')
+
       router.push('login')
     } catch (error) {
       showToast(error?.message || 'Erro na requisição', 'error')

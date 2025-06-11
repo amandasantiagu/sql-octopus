@@ -65,7 +65,7 @@ model exercise {
   description String       @db.Text
   template    String       @db.Text
   data        Json
-  blanks      String       @db.Text
+  blanks      Json?
   answer      String       @db.Text
   explanation String       @db.Text
   answers     answer[]

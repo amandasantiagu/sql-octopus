@@ -17,7 +17,9 @@ const TrueOrFalse: React.FC<Props> = ({ data, onChange }) => {
   const handleClick = (item: any) => {
     setValue(item.value)
 
-    onChange(item.value.toString())
+    const values = item.value === true ? 'Verdadeiro' : 'Falso'
+
+    onChange(values)
   }
 
   return (

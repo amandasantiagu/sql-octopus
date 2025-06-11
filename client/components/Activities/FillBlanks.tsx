@@ -7,11 +7,14 @@ interface Props {
 }
 
 const FillBlanks: React.FC<Props> = ({ data, onChange }) => {
+  console.log('data', data)
   const [answers, setAnswers] = React.useState(
-    data?.blanks?.reduce((acc: any, blank: any) => {
-      acc[blank] = ''
-      return acc
-    }, {}) || {}
+    data?.blanks
+      ? data?.blanks?.reduce((acc: any, blank: any) => {
+          acc[blank] = ''
+          return acc
+        }, {})
+      : {}
   )
 
   const handleInputChange = (placeholder: string, value: string) => {
@@ -40,7 +43,7 @@ const FillBlanks: React.FC<Props> = ({ data, onChange }) => {
       <div className="flex flex-col w-full gap-1">
         <span className="text-base text-white"> Tabela </span>
 
-        {data?.data && <TableComponent table={data.data} />}
+        {data?.data && <TableComponent data={data.data} />}
       </div>
 
       <div className="text-white flex flex-col w-full gap-4">

@@ -10,6 +10,7 @@ const OnlyChoice: React.FC<Props> = ({ data, onChange }) => {
   const [value, setValue] = React.useState<any | undefined>(undefined)
 
   const handleClick = (item: any) => {
+    console.log('click', item.value)
     setValue(item.value)
     onChange(item.value)
   }

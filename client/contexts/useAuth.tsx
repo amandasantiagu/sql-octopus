@@ -8,6 +8,7 @@ interface AuthContextProps {
   user: User | null
   accessToken: string | null
   signIn: (email: string, password: string) => Promise<{ error: string | null; data?: User }>
+  updateUser: (user: User) => void
   signOut: () => void
 }
 
@@ -20,34 +21,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const apiUrl = process.env.NEXT_PUBLIC_API_URL // Base da API
 
-  // Restaura estado de autenticação
-  useEffect(() => {
-    const token = Cookies.get('authToken')
-
-    if (token) {
-      setAccessToken(token)
-      fetch(`${apiUrl}auth/me`, {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-      })
-        .then((res) => {
-          if (!res.ok) {
-            return console.log('Erro ao buscar dados do usuário')
-          }
-          return res.json()
-        })
-        .then((userData: User) => {
-          setCurrentUser(userData)
-        })
-        .catch((error) => {
-          console.log('Erro ao restaurar sessão:', error)
-          signOut()
-        })
-    }
-  }, [apiUrl])
+  const updateUser = (updatedUser: User) => {
+    setCurrentUser(updatedUser)
+  }
 
   const signIn = async (email: string, password: string) => {
     try {
@@ -89,8 +65,35 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     router.push('/login')
   }
 
+  useEffect(() => {
+    const token = Cookies.get('authToken')
+
+    if (token) {
+      setAccessToken(token)
+      fetch(`${apiUrl}auth/me`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      })
+        .then((res) => {
+          if (!res.ok) {
+            return console.log('Erro ao buscar dados do usuário')
+          }
+          return res.json()
+        })
+        .then((userData: User) => {
+          setCurrentUser(userData)
+        })
+        .catch((error) => {
+          console.log('Erro ao restaurar sessão:', error)
+          signOut()
+        })
+    }
+  }, [apiUrl])
   return (
-    <AuthContext.Provider value={{ user: currentUser, accessToken, signIn, signOut }}>
+    <AuthContext.Provider value={{ user: currentUser, accessToken, updateUser, signIn, signOut }}>
       {children}
     </AuthContext.Provider>
   )

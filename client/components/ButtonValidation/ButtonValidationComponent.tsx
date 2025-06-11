@@ -8,24 +8,28 @@ import { FaHeart } from 'react-icons/fa6'
 import DialogExplanation from '../Dialog/DialogExplanation'
 import { ActivityType } from '@/types/Activity'
 import { buttonTeal, buttonTiffanyBlue } from '@/styles/activityStyles'
+import { useAuth } from '@/contexts/useAuth'
+import { useRequest } from '@/contexts/RequestContext'
+import { User } from '@/types/User'
+import { useRouter } from 'next/navigation'
+import { useToast } from '@/contexts/toast'
 
 type Props = {
   currentResult: { activity: ActivityType | undefined; answer: any }
-  life?: number
   disabled?: boolean
   consecutive?: number
   onAfterClick: () => void
 }
 
-const ButtonValidation: React.FC<Props> = ({
-  life = 2,
-  currentResult,
-  consecutive = 0,
-  disabled = false,
-  onAfterClick,
-}) => {
+const ButtonValidation: React.FC<Props> = ({ currentResult, disabled = false, onAfterClick }) => {
+  const { user, updateUser } = useAuth()
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [openExplanation, setOpenExplanation] = useState(false)
+  const { showToast } = useToast()
+
+  const router = useRouter()
+
+  const { fetchRequest } = useRequest()
 
   const validateAnswer = (
     activityType: string,
@@ -48,6 +52,36 @@ const ButtonValidation: React.FC<Props> = ({
     return correctAnswer === answer
   }
 
+  const removeLife = async () => {
+    if (user?.life === 0) return
+
+    try {
+      await fetchRequest(`users/${user?.id}/remove-life`, {
+        method: 'POST',
+      })
+
+      const lifeValue = (user?.life || 1) - 1
+
+      const currentUser = {
+        ...user,
+        life: lifeValue,
+      } as User
+
+      updateUser(currentUser)
+
+      if (lifeValue === 0) {
+        router.push('/learn')
+
+        showToast(
+          'Você está sem vidas! Use exp para recuperar ou aguarde a regeneração automática.',
+          'info'
+        )
+      }
+    } catch (error) {
+    } finally {
+    }
+  }
+
   const title = useMemo(() => {
     if (!currentResult.activity || !currentResult.answer) return 'Incorreto'
 
@@ -60,6 +94,8 @@ const ButtonValidation: React.FC<Props> = ({
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen)
+
+    if (title === 'Incorreto') removeLife()
   }
 
   const toggleModalExplanation = () => {
@@ -114,9 +150,18 @@ const ButtonValidation: React.FC<Props> = ({
             {title === 'Incorreto' ? (
               <div className="flex flex-col gap-4">
                 <div className="w-full flex gap-2 justify-center">
-                  <FaHeart className={life === 3 ? 'text-red-600' : 'text-red-950'} size={30} />
-                  <FaHeart className={life > 1 ? 'text-red-600' : 'text-red-950'} size={30} />
-                  <FaHeart className={life === 0 ? 'text-red-950' : 'text-red-600'} size={30} />
+                  <FaHeart
+                    className={user?.life === 3 ? 'text-red-600' : 'text-red-950'}
+                    size={30}
+                  />
+                  <FaHeart
+                    className={user?.life && user?.life > 1 ? 'text-red-600' : 'text-red-950'}
+                    size={30}
+                  />
+                  <FaHeart
+                    className={user?.life === 0 ? 'text-red-950' : 'text-red-600'}
+                    size={30}
+                  />
                 </div>
 
                 <span className="text-white"> A cada erro voce perde uma vida </span>

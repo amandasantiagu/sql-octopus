@@ -42,6 +42,8 @@ const DialogExercise: React.FC<Props> = ({ open, content, onClose }) => {
   const [loading, setLoading] = React.useState(false)
   const [exercises, setExercises] = React.useState<ActivityType[]>([])
 
+  console.log('content', content, 'exercises', exercises)
+
   const handleClose = () => {
     setSteps(1)
     setCurrentExercise(exercises[0])
@@ -54,13 +56,23 @@ const DialogExercise: React.FC<Props> = ({ open, content, onClose }) => {
   }
 
   const getExercises = async () => {
+    if (!content?.id) return
+
     setLoading(true)
     try {
-      const response = await fetchRequest('exercise', {
+      const response = await fetchRequest(`content/${content?.id}/exercises`, {
         method: 'GET',
       })
 
-      setExercises(response || [])
+      const responseValues = response?.exercises || []
+
+      setExercises(responseValues)
+
+      if (responseValues.length > 0) {
+        setCurrentExercise(responseValues[0])
+        setSteps(1)
+        setStartTime(new Date())
+      }
     } catch (error) {
       console.log('Erro na requisição:', error)
     } finally {
@@ -106,6 +118,8 @@ const DialogExercise: React.FC<Props> = ({ open, content, onClose }) => {
 
   const nextStep = React.useCallback(() => {
     const newStep = step + 1
+
+    console.log('step', step, 'new', newStep)
     getCurrentExercise(newStep)
     setSteps(newStep)
 
@@ -132,16 +146,8 @@ const DialogExercise: React.FC<Props> = ({ open, content, onClose }) => {
   }, [currentExercise, results])
 
   React.useEffect(() => {
-    if (loading || exercises?.length === 0) return
-    if (!currentExercise) setCurrentExercise(exercises[0])
-
-    setSteps(1)
-    setStartTime(new Date())
-  }, [exercises])
-
-  React.useEffect(() => {
     getExercises()
-  }, [])
+  }, [content?.id])
 
   return (
     <Dialog
