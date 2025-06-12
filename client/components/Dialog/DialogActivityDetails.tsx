@@ -18,7 +18,6 @@ const DialogActivityDetails: React.FC<DialogActivityDetailsProps> = ({
   onClose,
   onOpenLesson,
 }) => {
-  console.log('content', content)
   return (
     <Dialog
       onClose={onClose}

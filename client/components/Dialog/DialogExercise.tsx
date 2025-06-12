@@ -58,8 +58,6 @@ const DialogExercise: React.FC<Props> = ({
     duration: number
   } | null>(null)
 
-  console.log('content', content, typeExercises)
-
   const validateAnswer = (
     activityType: string,
     data: any[],
@@ -125,15 +123,27 @@ const DialogExercise: React.FC<Props> = ({
 
       if (hits < 50) return
 
-      await fetchRequest(`user-progress/${user?.id}`, {
-        method: 'POST',
-        body: {
-          hits,
-          contentId: content?.id,
-          duration: total,
-          exp,
-        },
-      })
+      if (typeExercises === 'redo' && content?.userProgressId) {
+        await fetchRequest(`user-progress/${content?.userProgressId}`, {
+          method: 'PATCH',
+          body: {
+            hits,
+            contentId: content?.id,
+            duration: total,
+            exp,
+          },
+        })
+      } else {
+        await fetchRequest(`user-progress/${user?.id}`, {
+          method: 'POST',
+          body: {
+            hits,
+            contentId: content?.id,
+            duration: total,
+            exp,
+          },
+        })
+      }
 
       updateUser({ ...user, exp: user?.exp ? user?.exp + exp : exp } as User)
 
