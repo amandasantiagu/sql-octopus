@@ -71,15 +71,15 @@ const MenuHearth: React.FC = () => {
   }
 
   const hasBtn = React.useMemo(() => {
-    if (!user || !user.life || !user.exp) return true
+    if (!user || !user.exp) return true
 
-    return !!(user?.life === 3 || (user?.life < 3 && user?.exp < 100))
+    return !!(user?.life === 3 || ((user?.life || 0) < 3 && user?.exp < 100))
   }, [user])
 
   const messageLifes = React.useMemo(() => {
     if (user?.life === 3) return 'Você está com todas as 3 vidas!'
 
-    if (user?.life === 0) return 'Recupere vidas! ou espere elas recarregarem novamente'
+    if (user?.life === 0) return 'Recupere vidas! ou espere elas recarregarem novamente.'
 
     return 'Você está com 2 vidas! Ainda é possível continuar, mas cuidado: a cada erro, uma vida será perdida.'
   }, [user?.life])

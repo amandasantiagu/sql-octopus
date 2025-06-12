@@ -19,9 +19,15 @@ type Props = {
   disabled?: boolean
   consecutive?: number
   onAfterClick: () => void
+  onCloseAllDialog: () => void
 }
 
-const ButtonValidation: React.FC<Props> = ({ currentResult, disabled = false, onAfterClick }) => {
+const ButtonValidation: React.FC<Props> = ({
+  currentResult,
+  disabled = false,
+  onAfterClick,
+  onCloseAllDialog,
+}) => {
   const { user, updateUser } = useAuth()
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [openExplanation, setOpenExplanation] = useState(false)
@@ -71,6 +77,10 @@ const ButtonValidation: React.FC<Props> = ({ currentResult, disabled = false, on
 
       if (lifeValue === 0) {
         router.push('/learn')
+
+        setIsModalOpen(false)
+
+        onCloseAllDialog()
 
         showToast(
           'Você está sem vidas! Use exp para recuperar ou aguarde a regeneração automática.',

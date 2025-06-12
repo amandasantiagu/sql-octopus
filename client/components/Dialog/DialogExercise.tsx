@@ -42,7 +42,7 @@ const DialogExercise: React.FC<Props> = ({ open, content, onClose }) => {
   const [loading, setLoading] = React.useState(false)
   const [exercises, setExercises] = React.useState<ActivityType[]>([])
 
-  console.log('content', content, 'exercises', exercises)
+  // console.log('content', content, 'exercises', exercises)
 
   const handleClose = () => {
     setSteps(1)
@@ -180,6 +180,7 @@ const DialogExercise: React.FC<Props> = ({ open, content, onClose }) => {
                     onAfterClick={handleClick}
                     currentResult={currentResult}
                     disabled={!currentResult?.answer}
+                    onCloseAllDialog={handleClose}
                   />
                 </div>
               </div>
