@@ -29,6 +29,12 @@ export class AnswerController {
   }
 
   @UseGuards(AuthGuard)
+  @Get('exercise/:exerciseId')
+  async findOneByExerciseId(@Param('exerciseId') exerciseId: string) {
+    return this.answerService.findOneByExerciseId(exerciseId);
+  }
+
+  @UseGuards(AuthGuard)
   @Post()
   async create(@Body() answerDto: AnswerDto) {
     return this.answerService.create(answerDto);

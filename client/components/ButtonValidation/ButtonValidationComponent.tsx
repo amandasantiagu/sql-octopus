@@ -6,7 +6,7 @@ import DialogActions from '@mui/material/DialogActions'
 
 import { FaHeart } from 'react-icons/fa6'
 import DialogExplanation from '../Dialog/DialogExplanation'
-import { ActivityType } from '@/types/Activity'
+import { ExerciseType } from '@/types/Activity'
 import { buttonTeal, buttonTiffanyBlue } from '@/styles/activityStyles'
 import { useAuth } from '@/contexts/useAuth'
 import { useRequest } from '@/contexts/RequestContext'
@@ -15,7 +15,7 @@ import { useRouter } from 'next/navigation'
 import { useToast } from '@/contexts/toast'
 
 type Props = {
-  currentResult: { activity: ActivityType | undefined; answer: any }
+  currentResult: { activity: ExerciseType | undefined; answer: any }
   disabled?: boolean
   consecutive?: number
   onAfterClick: () => void
@@ -43,7 +43,7 @@ const ButtonValidation: React.FC<Props> = ({
     correctAnswer: string,
     answer: any
   ): boolean => {
-    if (activityType === 'combining-pairs') {
+    if (activityType === 'combining_pairs') {
       return (
         data.length === answer.length &&
         data.every((item: { label: string; value: string }) =>
@@ -74,22 +74,24 @@ const ButtonValidation: React.FC<Props> = ({
       } as User
 
       updateUser(currentUser)
-
-      if (lifeValue === 0) {
-        router.push('/learn')
-
-        setIsModalOpen(false)
-
-        onCloseAllDialog()
-
-        showToast(
-          'Você está sem vidas! Use exp para recuperar ou aguarde a regeneração automática.',
-          'info'
-        )
-      }
     } catch (error) {
     } finally {
     }
+  }
+
+  const whithoutLife = () => {
+    if (user?.life && user?.life > 0) return
+
+    router.push('/learn')
+
+    setIsModalOpen(false)
+
+    onCloseAllDialog()
+
+    return showToast(
+      'Você está sem vidas! Use exp para recuperar ou aguarde a regeneração automática.',
+      'info'
+    )
   }
 
   const title = useMemo(() => {
@@ -105,7 +107,7 @@ const ButtonValidation: React.FC<Props> = ({
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen)
 
-    if (title === 'Incorreto') removeLife()
+    if (isModalOpen && title === 'Incorreto') removeLife()
   }
 
   const toggleModalExplanation = () => {
@@ -117,7 +119,12 @@ const ButtonValidation: React.FC<Props> = ({
       <DialogExplanation
         open={openExplanation}
         activity={currentResult.activity}
-        onClose={() => setOpenExplanation(false)}
+        onClose={() => {
+          if (user?.life === 0) {
+            return whithoutLife()
+          }
+          setOpenExplanation(false)
+        }}
       />
 
       <Button
@@ -198,6 +205,11 @@ const ButtonValidation: React.FC<Props> = ({
           <Button
             onClick={() => {
               if (onAfterClick) onAfterClick()
+
+              if (user?.life === 0) {
+                return whithoutLife()
+              }
+
               toggleModal()
             }}
             sx={buttonTiffanyBlue}

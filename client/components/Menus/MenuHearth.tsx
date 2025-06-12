@@ -45,7 +45,7 @@ const MenuHearth: React.FC = () => {
 
       await fetchRequest(`users/${user?.id}/remove-exp`, {
         method: 'POST',
-        body: { exp: -100 },
+        body: { exp: 100 },
       })
 
       const currentUser = {
@@ -81,7 +81,7 @@ const MenuHearth: React.FC = () => {
 
     if (user?.life === 0) return 'Recupere vidas! ou espere elas recarregarem novamente.'
 
-    return 'Você está com 2 vidas! Ainda é possível continuar, mas cuidado: a cada erro, uma vida será perdida.'
+    return `Você está com ${user?.life === 1 ? '1 vida' : '2 vidas'}! Ainda é possível continuar, mas cuidado: a cada erro, uma vida será perdida.`
   }, [user?.life])
 
   return (
@@ -128,21 +128,29 @@ const MenuHearth: React.FC = () => {
             <span className="text-white text-base">{messageLifes}</span>
           </div>
 
-          <Button
-            className="w-full text-base"
-            disabled={hasBtn}
-            sx={stylesRecoveringLives}
-            onClick={addLife}
-          >
-            <span style={{ flex: 1, textAlign: 'center' }}>Recuperar vidas</span>
+          <div className="flex flex-col gap-1">
+            <Button
+              className="w-full text-base"
+              disabled={hasBtn}
+              sx={stylesRecoveringLives}
+              onClick={addLife}
+            >
+              <span style={{ flex: 1, textAlign: 'center' }}>Recuperar vidas</span>
+
+              {!hasBtn && (
+                <span className="text-yellowIcon flex flex-row items-center">
+                  <PiCurrencyEthFill className="text-yellowIcon" size={20} />
+                  100
+                </span>
+              )}
+            </Button>
 
             {!hasBtn && (
-              <span className="text-yellowIcon flex flex-row items-center">
-                <PiCurrencyEthFill className="text-yellowIcon" size={20} />
-                100
+              <span className="text-primary-30 text-xs">
+                Atenção: recuperar vida custará 100 EXP.
               </span>
             )}
-          </Button>
+          </div>
         </div>
       </Menu>
     </div>

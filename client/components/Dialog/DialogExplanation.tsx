@@ -13,7 +13,7 @@ interface Props {
 
 const DialogExplanation: React.FC<Props> = ({ open, activity, onClose }) => {
   const getFormattedAnswer = () => {
-    if (activity?.type === 'combining-pairs') {
+    if (activity?.type === 'combining_pairs') {
       return activity?.data?.map((item: { label: string; value: string }, index: number) => (
         <div className="flex flex-col gap-2" key={index}>
           <span className="text-md text-center uppercase">{item.label}</span>
@@ -22,7 +22,7 @@ const DialogExplanation: React.FC<Props> = ({ open, activity, onClose }) => {
       ))
     }
 
-    if (activity?.type === 'true-false') {
+    if (activity?.type === 'true_false') {
       const translatedAnswer = activity?.answer === 'true' ? 'Verdadeiro' : 'Falso'
 
       return <span className="text-md text-center">{translatedAnswer}</span>
@@ -63,7 +63,7 @@ const DialogExplanation: React.FC<Props> = ({ open, activity, onClose }) => {
             <div className="flex flex-col gap-4">{getFormattedAnswer()}</div>
           </div>
 
-          {activity.type !== 'combining-pairs' && (
+          {activity.type !== 'combining_pairs' && (
             <div className="rounded-md bg-white text-primary p-4 text-sm">
               <span>{activity?.explanation}</span>
             </div>

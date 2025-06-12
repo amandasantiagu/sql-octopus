@@ -9,7 +9,7 @@ interface DialogActivityDetailsProps {
   open: boolean
   content: ModuleContent
   onClose: () => void
-  onOpenLesson: () => void
+  onOpenLesson: (type: 'view' | 'redo') => void
 }
 
 const DialogActivityDetails: React.FC<DialogActivityDetailsProps> = ({
@@ -18,6 +18,7 @@ const DialogActivityDetails: React.FC<DialogActivityDetailsProps> = ({
   onClose,
   onOpenLesson,
 }) => {
+  console.log('content', content)
   return (
     <Dialog
       onClose={onClose}
@@ -45,7 +46,7 @@ const DialogActivityDetails: React.FC<DialogActivityDetailsProps> = ({
               boxShadow: 'none',
               borderRadius: '0.5rem',
             }}
-            onClick={onOpenLesson}
+            onClick={() => onOpenLesson('view')}
           >
             Visualizar
           </ButtonWithLoading>
@@ -58,7 +59,7 @@ const DialogActivityDetails: React.FC<DialogActivityDetailsProps> = ({
               boxShadow: 'none',
               borderRadius: '0.5rem',
             }}
-            onClick={onOpenLesson}
+            onClick={() => onOpenLesson('redo')}
           >
             Refazer prática
           </ButtonWithLoading>

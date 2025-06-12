@@ -32,9 +32,9 @@ export default function Login() {
   const router = useRouter()
 
   const onSubmit = async (data: User) => {
-    if (loading) return // Evita múltiplas submissões
+    if (loading) return
 
-    setLoading(true) // Inicia carregamento
+    setLoading(true)
     try {
       const { error, data: loggedUser } = await signIn(data.email, data.password)
 
@@ -64,7 +64,7 @@ export default function Login() {
           <Image src="/logo.png" alt="SqlOctopus" width={142} height={142} />
         </div>
 
-        <p className="font-bold text-xl text-white">Entre com sua conta</p>
+        <p className="font-bold text-lg text-white">Entre com sua conta</p>
 
         <form className="flex flex-col gap-4 items-center" onSubmit={handleSubmit(onSubmit)}>
           <div className="flex flex-col gap-1 w-full">

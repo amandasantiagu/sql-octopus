@@ -8,7 +8,7 @@ export type Data = {
   value: any
 }
 
-export type ActivityType = {
+export type ExerciseType = {
   id: number
   type: TypesActivities
   answer: string

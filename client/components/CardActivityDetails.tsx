@@ -15,6 +15,8 @@ const CardActivityDetails: React.FC<Props> = ({ activity }) => {
     return format(date, 'HH:mm')
   }
 
+  console.log('activity', activity)
+
   return (
     <div className="flex w-full gap-4 text-sm justify-center py-4">
       <LabelCard>
@@ -32,7 +34,7 @@ const CardActivityDetails: React.FC<Props> = ({ activity }) => {
         <CardItems className="bg-blue-200 text-blue-800">
           <BiTimeFive className="text-blue-500" size={20} />
 
-          {formatToHoursAndMinutes(activity?.completed || new Date())}
+          {activity?.duration}
         </CardItems>
       </LabelCard>
 

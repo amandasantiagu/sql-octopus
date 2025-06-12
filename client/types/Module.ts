@@ -2,9 +2,9 @@ export type ModuleContent = {
   id: string
   moduleId: string
   label: string
-  completed?: Date | null
-  duration?: string
+  duration?: number
   hits?: number
+  userId?: string
   exp?: number
 }
 
@@ -12,5 +12,4 @@ export type ModuleType = {
   id: string
   label: string
   content: ModuleContent[]
-  completed?: Date | null
 }

@@ -8,7 +8,7 @@ export class ExerciseDto {
   template: string;
   data?: Prisma.InputJsonValue | null;
   blanks: Prisma.InputJsonValue | null;
-  answer: string;
+  answer?: Prisma.InputJsonValue | null;
   explanation: string;
   createdAt?: Date;
   updatedAt?: Date;

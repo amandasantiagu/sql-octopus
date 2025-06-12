@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'prisma/prisma.service';
 import { AnswerDto } from './dto/answer-dto';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class AnswerService {
@@ -15,13 +16,35 @@ export class AnswerService {
   }
 
   async create(answerDto: AnswerDto) {
-    return this.prisma.answer.create({ data: answerDto });
+    if (!answerDto) return null;
+
+    const sanitizedAnswerDto = {
+      ...answerDto,
+      answer: answerDto.answer ?? Prisma.JsonNull,
+    };
+
+    return this.prisma.answer.create({
+      data: sanitizedAnswerDto,
+    });
+  }
+
+  async findOneByExerciseId(exerciseId: string): Promise<AnswerDto | null> {
+    return this.prisma.answer.findFirst({
+      where: { exerciseId },
+    });
   }
 
   async update(id: string, answerDto: AnswerDto) {
+    if (!answerDto) return null;
+
+    const sanitizedAnswerDto = {
+      ...answerDto,
+      answer: answerDto.answer ?? Prisma.JsonNull,
+    };
+
     return this.prisma.answer.update({
       where: { id },
-      data: answerDto,
+      data: sanitizedAnswerDto,
     });
   }
 

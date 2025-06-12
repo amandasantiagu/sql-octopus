@@ -66,7 +66,7 @@ model exercise {
   template    String       @db.Text
   data        Json
   blanks      Json?
-  answer      String       @db.Text
+  answer      Json
   explanation String       @db.Text
   answers     answer[]
   createdAt   DateTime     @default(now()) @map("created_at")
@@ -80,7 +80,7 @@ model answer {
   user       user      @relation(fields: [userId], references: [id])
   exerciseId String
   exercise   exercise  @relation(fields: [exerciseId], references: [id])
-  answer     String    @db.VarChar(300)
+  answer     Json
   createdAt  DateTime  @default(now()) @map("created_at")
   updatedAt  DateTime  @default(now()) @updatedAt @map("updated_at")
   deletedAt  DateTime? @map("deleted_at")
@@ -93,6 +93,7 @@ model UserProgress {
   contentId   String
   content     content   @relation(fields: [contentId], references: [id])
   duration    Int?
+  exp         Int?
   hits        Int?
   completedAt DateTime? @map("completed_at")
   createdAt   DateTime  @default(now()) @map("created_at")

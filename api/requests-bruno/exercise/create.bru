@@ -16,66 +16,33 @@ headers {
 
 body:json {
   {
-    "contentId": "cmbsdjjgi0003rv0v5fzlab56",
-    "type": "fill_blanks",
+    "contentId": "cmbttqarb0003qa0vp3ahewo2",
+    "type": "combining_pairs",
+    "answer": "",
+    "blanks": "",
+    "explanation": "",
+    "description": "Leia atentamente cada descrição apresentada e verifique se esta associada ao comando correspondente.",
     "data": [
       {
-        "label": "Tabela students",
-        "data": [
-          {
-            "id": 1,
-            "label": "id",
-            "value": [
-              "1",
-              "2",
-              "3"
-            ]
-          },
-          {
-            "id": 2,
-            "label": "name",
-            "value": [
-              "Anna",
-              "Maria",
-              "Keny"
-            ]
-          },
-          {
-            "id": 3,
-            "label": "age",
-            "value": [
-              "22",
-              "28",
-              "33"
-            ]
-          },
-          {
-            "id": 4,
-            "label": "city",
-            "value": [
-              "São José",
-              "Curitiba",
-              "Florianópolis"
-            ]
-          }
-        ]
+        "id": 1,
+        "label": "select",
+        "value": "Escolhe as colunas a serem exibidas no resultado da consulta."
+      },
+      {
+        "id": 2,
+        "label": "where",
+        "value": "Filtra registros com base em condições específicas."
+      },
+      {
+        "id": 3,
+        "label": "from",
+        "value": "Define a tabela de onde os dados serão recuperados."
+      },
+      {
+        "id": 4,
+        "label": "distinct",
+        "value": "Remove valores duplicados do resultado."
       }
-    ],
-    "template": "SELECT __columns__ FROM __table__;",
-    "blanks": ["__columns__", "__table__"],
-    "answer": "SELECT name, age FROM patients;",
-    "description": "Exiba o nome e a idade dos estudantes da tabela students.",
-    "explanation": "A consulta seleciona as colunas name e age da tabela students, que contém informações sobre os estudantes."
-  }
-  
-  {
-    "contentId": "cmbsdjjgi0003rv0v5fzlab56",
-    "type": "true_false",
-    "data": "",
-    "template": "",
-    "blanks": "__columns__, __table__",
-    "answer": "Verdadeiro",
-    "description": "A cláusula SELECT pode ser utilizada para selecionar todas as colunas de uma tabela.",
-    "explanation": "A cláusula SELECT pode ser utilizada com * para selecionar todas as colunas de uma tabela, como SELECT * FROM table_name;."
+    ]
   }
 }

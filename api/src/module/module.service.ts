@@ -73,7 +73,7 @@ export class ModuleService {
   async getModule(): Promise<ModuleDto[]> {
     const modules = await this.prisma.module.findMany({
       orderBy: {
-        createdAt: 'desc',
+        createdAt: 'asc',
       },
     });
 

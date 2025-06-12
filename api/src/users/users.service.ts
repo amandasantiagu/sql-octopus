@@ -47,7 +47,7 @@ export class UsersService {
     });
 
     if (!user) {
-      throw new Error('Usuario nao encontrado');
+      throw new BadRequestException('Usuario não encontrado.');
     }
 
     if (data.password) {
@@ -78,11 +78,13 @@ export class UsersService {
     });
 
     if (!user) {
-      throw new Error('Usuario nao encontrado');
+      throw new BadRequestException('Usuario não encontrado.');
     }
 
     if (user.life <= 0) {
-      throw new Error('User has no lives left');
+      throw new BadRequestException(
+        'O usuário não tem vidas para ser removidas.',
+      );
     }
 
     const newLife = user.life - 1;
@@ -110,11 +112,11 @@ export class UsersService {
     });
 
     if (!user) {
-      throw new Error('Usuario nao encontrado');
+      throw new BadRequestException('Usuário não encontrado.');
     }
 
     if (user.life >= 3) {
-      throw new Error('User has maximum lives');
+      throw new BadRequestException('O máximo sao 3 vidas por usuário.');
     }
 
     const newLife = user.life + 1;
@@ -133,15 +135,17 @@ export class UsersService {
     });
 
     if (!user) {
-      throw new Error('Usuario nao encontrado');
+      throw new BadRequestException('Usuário não encontrado.');
     }
 
     if (user.exp < 100) {
-      throw new Error('User does not have enough experience points');
+      throw new BadRequestException(
+        'User does not have enough experience points',
+      );
     }
 
     if (user.life >= 3) {
-      throw new Error('User has maximum lives');
+      throw new BadRequestException('O máximo são 3 vidas por usuário.');
     }
 
     const newLife = user.life + 1;
@@ -164,7 +168,7 @@ export class UsersService {
     });
 
     if (!user) {
-      throw new Error('Usuario nao encontrado');
+      throw new BadRequestException('Usuario não encontrado.');
     }
 
     const newExp = user.exp + exp;
@@ -183,7 +187,7 @@ export class UsersService {
     });
 
     if (!user) {
-      throw new Error('Usuario nao encontrado');
+      throw new BadRequestException('Usuario não encontrado.');
     }
 
     const newExp = user.exp - exp;

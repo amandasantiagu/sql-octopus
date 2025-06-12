@@ -2,62 +2,66 @@ import Image from 'next/image'
 import * as React from 'react'
 import { ButtonWithLoading } from '../ButtonWithLoading'
 import CardActivityDetails from '../CardActivityDetails'
-import { ActivityType } from '@/types/Activity'
 import { ModuleContent } from '@/types/Module'
 import { buttonTiffanyBlue } from '@/styles/activityStyles'
+import { HiOutlineEmojiSad } from 'react-icons/hi'
 
 interface Props {
-  data: { activity: ActivityType; answer: any }[]
+  data: { hits: number; exp: number; duration: number }
   content: ModuleContent
-  time: number
   onClose?: () => void
 }
 
-const ResultPractice: React.FC<Props> = ({ data, content, time, onClose }) => {
+const ResultPractice: React.FC<Props> = ({ data, content, onClose }) => {
   const formattedTime = React.useMemo(() => {
-    const minutes = Math.floor(time / 60)
-    const seconds = time % 60
+    if (!data?.duration) return '0'
+    const minutes = Math.floor(data.duration / 60)
+    const seconds = data?.duration % 60
 
     return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
-  }, [time])
-
-  const hits = React.useMemo(() => {
-    const total = data.length
-    const correctAnswers = data.filter((item) => item.activity.answer === item.answer).length
-
-    if (total === 0) return 0
-    return Math.round((correctAnswers / total) * 100)
-  }, [data])
-
-  const exp = React.useMemo(() => {
-    if (hits === 100) return 150
-    if (hits >= 60 && hits < 100) return 100
-    return 70
-  }, [hits])
+  }, [data?.duration])
 
   return (
     <div className="w-full flex flex-col gap-8 items-center justify-center h-full">
-      <div className="text-white text-base flex-col text-center flex w-full">
+      <div className="text-white text-base flex-col text-center flex w-full gap-1">
         <span>Conteúdo</span>
-        <span className="text-primary-100 font-medium">{content.label}</span>
-        <span>finalizado!</span>
+
+        <span className="text-primary-100 font-bold text-md">{content.label}</span>
+
+        {data?.hits > 49 && <span>finalizado!</span>}
       </div>
 
-      <Image src="/logo.png" alt="SqlOctopus" width={200} height={200} />
+      {data?.hits < 50 ? (
+        <HiOutlineEmojiSad size={120} className="text-primary-500" />
+      ) : (
+        <Image src="/logo.png" alt="SqlOctopus" width={200} height={200} />
+      )}
 
-      <div className="bg-white w-full px-2 rounded-lg">
-        <CardActivityDetails
-          activity={{
-            label: content.label,
-            id: content.id,
-            moduleId: content.moduleId,
-            completed: new Date(),
-            duration: formattedTime,
-            exp: exp,
-            hits: hits,
-          }}
-        />
-      </div>
+      {data?.hits < 50 ? (
+        <div className="text-white text-base flex-col gap-2 text-center flex w-full">
+          <span className="text-yellow-600 font-bold text-md">
+            Você precisa refazer este conteúdo!
+          </span>
+
+          <span className="text-sm">
+            Você fez <span className="font-bold text-md">{data?.hits}</span> pontos. A pontuação
+            mínima necessária é 50.
+          </span>
+        </div>
+      ) : (
+        <div className="bg-white w-full px-2 rounded-lg">
+          <CardActivityDetails
+            activity={{
+              label: content.label,
+              id: content.id,
+              moduleId: content.moduleId,
+              duration: formattedTime,
+              exp: data?.exp,
+              hits: data?.hits,
+            }}
+          />
+        </div>
+      )}
 
       <ButtonWithLoading
         id="back"
