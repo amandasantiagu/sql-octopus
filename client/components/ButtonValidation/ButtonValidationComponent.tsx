@@ -58,6 +58,18 @@ const ButtonValidation: React.FC<Props> = ({
     return correctAnswer === answer
   }
 
+  const whithoutLife = () => {
+    router.push('/learn')
+
+    setIsModalOpen(false)
+
+    onCloseAllDialog()
+
+    return showToast(
+      'Você está sem vidas! Use exp para recuperar ou aguarde a regeneração automática.',
+      'info'
+    )
+  }
   const removeLife = async () => {
     if (user?.life === 0) return
 
@@ -74,24 +86,11 @@ const ButtonValidation: React.FC<Props> = ({
       } as User
 
       updateUser(currentUser)
+
+      if (lifeValue === 0) whithoutLife()
     } catch (error) {
     } finally {
     }
-  }
-
-  const whithoutLife = () => {
-    if (user?.life && user?.life > 0) return
-
-    router.push('/learn')
-
-    setIsModalOpen(false)
-
-    onCloseAllDialog()
-
-    return showToast(
-      'Você está sem vidas! Use exp para recuperar ou aguarde a regeneração automática.',
-      'info'
-    )
   }
 
   const title = useMemo(() => {
@@ -108,6 +107,10 @@ const ButtonValidation: React.FC<Props> = ({
     setIsModalOpen(!isModalOpen)
 
     if (isModalOpen && title === 'Incorreto') removeLife()
+
+    if (user?.life === 0) {
+      return whithoutLife()
+    }
   }
 
   const toggleModalExplanation = () => {
@@ -205,10 +208,6 @@ const ButtonValidation: React.FC<Props> = ({
           <Button
             onClick={() => {
               if (onAfterClick) onAfterClick()
-
-              if (user?.life === 0) {
-                return whithoutLife()
-              }
 
               toggleModal()
             }}

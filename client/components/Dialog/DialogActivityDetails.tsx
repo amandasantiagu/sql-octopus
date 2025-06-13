@@ -4,6 +4,7 @@ import DialogTitle from '@mui/material/DialogTitle'
 import { ButtonWithLoading } from '../ButtonWithLoading'
 import CardActivityDetails from '../CardActivityDetails'
 import { ModuleContent } from '@/types/Module'
+import { useAuth } from '@/contexts/useAuth'
 
 interface DialogActivityDetailsProps {
   open: boolean
@@ -18,6 +19,8 @@ const DialogActivityDetails: React.FC<DialogActivityDetailsProps> = ({
   onClose,
   onOpenLesson,
 }) => {
+  const { user } = useAuth()
+
   return (
     <Dialog
       onClose={onClose}
@@ -50,18 +53,22 @@ const DialogActivityDetails: React.FC<DialogActivityDetailsProps> = ({
             Visualizar
           </ButtonWithLoading>
 
-          <ButtonWithLoading
-            className="w-full"
-            sx={{
-              background: '#78CDD7',
-              color: 'black',
-              boxShadow: 'none',
-              borderRadius: '0.5rem',
-            }}
-            onClick={() => onOpenLesson('redo')}
-          >
-            Refazer prática
-          </ButtonWithLoading>
+          {user?.life && user?.life > 0 ? (
+            <ButtonWithLoading
+              className="w-full"
+              sx={{
+                background: '#78CDD7',
+                color: 'black',
+                boxShadow: 'none',
+                borderRadius: '0.5rem',
+              }}
+              onClick={() => onOpenLesson('redo')}
+            >
+              Refazer prática
+            </ButtonWithLoading>
+          ) : (
+            <></>
+          )}
 
           <ButtonWithLoading
             className="w-full"

@@ -84,14 +84,25 @@ const DialogExercise: React.FC<Props> = ({
   const saveAnswers = async (results: any[]) => {
     try {
       for (const result of results) {
-        await fetchRequest('answers', {
-          method: 'POST',
-          body: {
-            userId: user?.id,
-            exerciseId: result.activity.id,
-            answer: result.answer,
-          },
-        })
+        if (typeExercises === 'redo') {
+          await fetchRequest(`answers/exerciseId/${result.activity.id}`, {
+            method: 'PATCH',
+            body: {
+              userId: user?.id,
+              exerciseId: result.activity.id,
+              answer: result.answer,
+            },
+          })
+        } else {
+          await fetchRequest('answers', {
+            method: 'POST',
+            body: {
+              userId: user?.id,
+              exerciseId: result.activity.id,
+              answer: result.answer,
+            },
+          })
+        }
       }
     } catch (error) {
       console.log('Erro ao enviar uma ou mais respostas:', error)
@@ -185,7 +196,7 @@ const DialogExercise: React.FC<Props> = ({
         setStartTime(new Date())
       }
     } catch (error) {
-      console.log('Erro na requisição:', error)
+      handleClose()
     } finally {
       setLoading(false)
     }

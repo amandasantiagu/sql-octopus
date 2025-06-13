@@ -126,7 +126,7 @@ const AccordionComponent: React.FC = () => {
       return <FaCheck className="text-primary-300" size={20} />
     }
 
-    if (previousContentCompleted) {
+    if (previousContentCompleted && user?.life && user?.life > 0) {
       return <TbLockOpen className="text-primary-300" size={20} />
     }
 
@@ -244,7 +244,10 @@ const AccordionComponent: React.FC = () => {
                         <div
                           className="flex flex-row justify-between items-center w-full"
                           onClick={() => {
-                            if (isContentCompleted || previousContentCompleted) {
+                            if (
+                              isContentCompleted ||
+                              (previousContentCompleted && user?.life && user?.life > 0)
+                            ) {
                               setCurrentContent(content)
                               if (isContentCompleted) {
                                 const contentInUserProgress =

@@ -11,11 +11,13 @@ interface Props {
 }
 
 const CardActivityDetails: React.FC<Props> = ({ activity }) => {
-  const formatToHoursAndMinutes = (date: Date): string => {
-    return format(date, 'HH:mm')
-  }
+  const formattedTime = React.useMemo(() => {
+    if (!activity?.duration) return '0'
+    const minutes = Math.floor(activity.duration / 60)
+    const seconds = activity?.duration % 60
 
-  console.log('activity', activity)
+    return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
+  }, [activity?.duration])
 
   return (
     <div className="flex w-full gap-4 text-sm justify-center py-4">
@@ -34,7 +36,7 @@ const CardActivityDetails: React.FC<Props> = ({ activity }) => {
         <CardItems className="bg-blue-200 text-blue-800">
           <BiTimeFive className="text-blue-500" size={20} />
 
-          {activity?.duration}
+          {formattedTime}
         </CardItems>
       </LabelCard>
 

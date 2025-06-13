@@ -13,14 +13,6 @@ interface Props {
 }
 
 const ResultPractice: React.FC<Props> = ({ data, content, onClose }) => {
-  const formattedTime = React.useMemo(() => {
-    if (!data?.duration) return '0'
-    const minutes = Math.floor(data.duration / 60)
-    const seconds = data?.duration % 60
-
-    return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
-  }, [data?.duration])
-
   return (
     <div className="w-full flex flex-col gap-8 items-center justify-center h-full">
       <div className="text-white text-base flex-col text-center flex w-full gap-1">
@@ -55,7 +47,7 @@ const ResultPractice: React.FC<Props> = ({ data, content, onClose }) => {
               label: content.label,
               id: content.id,
               moduleId: content.moduleId,
-              duration: formattedTime,
+              duration: data?.duration,
               exp: data?.exp,
               hits: data?.hits,
             }}
