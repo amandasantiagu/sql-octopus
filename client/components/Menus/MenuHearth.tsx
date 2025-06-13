@@ -60,7 +60,7 @@ const MenuHearth: React.FC = () => {
 
       showToast('Vida adicionada com sucesso', 'success')
     } catch (error) {
-      showToast(error?.message || 'Erro na requisição', 'error')
+      // showToast(error?.message || 'Erro na requisição', 'error')
     } finally {
       setLoading(false)
     }

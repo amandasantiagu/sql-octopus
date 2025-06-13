@@ -1,7 +1,7 @@
 import * as React from 'react'
-import TableComponent from '../TableComponent'
 import QueryResult from '../QueryResult'
 import ListWithCircle from '../ListWithCircleProps'
+import TableComponentTemplates from '../TableComponentTemplates'
 
 const OuterJoin: React.FC = () => {
   const students = [
@@ -47,10 +47,10 @@ const OuterJoin: React.FC = () => {
 
       <div className="flex flex-col w-full gap-4 mt-6">
         <h3 className="font-medium text-sm">Tabela students</h3>
-        <TableComponent table={students} />
+        <TableComponentTemplates data={students} />
 
         <h3 className="font-medium text-sm mt-4">Tabela courses</h3>
-        <TableComponent table={courses} />
+        <TableComponentTemplates data={courses} />
       </div>
 
       <QueryResult

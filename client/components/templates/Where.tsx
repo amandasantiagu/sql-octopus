@@ -1,5 +1,5 @@
 import * as React from 'react'
-import TableComponent from '../TableComponent'
+import TableComponentTemplates from '../TableComponentTemplates'
 import QueryResult from '../QueryResult'
 
 const Where: React.FC = () => {
@@ -30,7 +30,7 @@ const Where: React.FC = () => {
 
       <div className="flex flex-col w-full gap-1">
         <h3 className="font-medium text-sm">Tabela Students</h3>
-        <TableComponent table={data} />
+        <TableComponentTemplates data={data} />
       </div>
 
       <div className="flex flex-col gap-4">

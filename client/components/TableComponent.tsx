@@ -21,7 +21,7 @@ const TableComponent: React.FC<TableProps> = ({ data }) => {
       {data?.length > 0 &&
         data?.map((item, index) => (
           <div className="flex flex-col w-full gap-2" key={index}>
-            <span className="text-base text-white">{item.label}</span>
+            <span className="text-base text-white">{item?.label}</span>
 
             <table className="table-auto w-full border-separate border-spacing-0 rounded-lg">
               <thead>

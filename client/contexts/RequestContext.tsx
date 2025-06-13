@@ -49,14 +49,11 @@ export const RequestProvider: React.FC<{ children: React.ReactNode }> = ({ child
           errorResponse = { message: response.statusText }
         }
 
-        throw {
-          status: response.status,
-          ...errorResponse,
-        }
+        throw new Error(errorResponse.message || 'Erro desconhecido')
       }
 
       return response.json()
-    } catch (error) {
+    } catch (error: any) {
       throw error
     }
   }

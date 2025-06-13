@@ -42,7 +42,7 @@ export default function Register() {
   const { showToast } = useToast()
   const { fetchRequest } = useRequest()
 
-  const onSubmit = async (data: User) => {
+  const onSubmit = async (data: any) => {
     try {
       await fetchRequest('users', {
         method: 'POST',
@@ -57,7 +57,7 @@ export default function Register() {
 
       router.push('login')
     } catch (error) {
-      showToast(error?.message || 'Erro na requisição', 'error')
+      // showToast(error?.message || 'Erro na requisição', 'error')
     }
   }
 

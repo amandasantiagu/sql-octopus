@@ -1,7 +1,7 @@
 import * as React from 'react'
 
 import ListWithCircle from '../ListWithCircleProps'
-import TableComponent from '../TableComponent'
+import TableComponentTemplates from '../TableComponentTemplates'
 import QueryResult from '../QueryResult'
 
 const Update: React.FC = () => {
@@ -58,10 +58,10 @@ const Update: React.FC = () => {
 
       <div className="flex flex-col w-full gap-2">
         <h3 className="font-medium text-sm">Tabela Students</h3>
-        <TableComponent table={students} />
+        <TableComponentTemplates data={students} />
 
         <h3 className="font-medium text-sm mt-4">Tabela Exams</h3>
-        <TableComponent table={exams} />
+        <TableComponentTemplates data={exams} />
       </div>
 
       <QueryResult

@@ -1,6 +1,6 @@
 import React from 'react'
-import TableComponent from '../TableComponent'
 import QueryResult from '../QueryResult'
+import TableComponentTemplates from '../TableComponentTemplates'
 
 const data = [
   { id: 1, label: 'id', value: ['1', '2', '3'] },
@@ -28,7 +28,7 @@ const OrderBy: React.FC = () => {
 
       <div className="flex flex-col w-full gap-1">
         <h3 className="font-medium text-sm">Tabela Students</h3>
-        <TableComponent table={data} />
+        <TableComponentTemplates data={data} />
       </div>
 
       <div className="flex flex-col gap-4">

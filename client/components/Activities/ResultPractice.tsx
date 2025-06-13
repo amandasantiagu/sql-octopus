@@ -7,7 +7,7 @@ import { buttonTiffanyBlue } from '@/styles/activityStyles'
 import { HiOutlineEmojiSad } from 'react-icons/hi'
 
 interface Props {
-  data: { hits: number; exp: number; duration: number }
+  data: any | null
   content: ModuleContent
   onClose?: () => void
 }

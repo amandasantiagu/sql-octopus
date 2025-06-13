@@ -3,7 +3,7 @@ export type ModuleContent = {
   moduleId: string
   label: string
   userProgressId?: string
-  duration?: number
+  duration?: any
   hits?: number
   userId?: string
   exp?: number

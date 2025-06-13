@@ -328,7 +328,7 @@ const DialogExercise: React.FC<Props> = ({
               content={content}
               data={
                 typeExercises === 'view'
-                  ? { hits: content.hits, exp: content.exp, duration: content.duration }
+                  ? { hits: content?.hits || 0, exp: content?.exp, duration: content?.duration }
                   : dataResult
               }
               onClose={handleClose}

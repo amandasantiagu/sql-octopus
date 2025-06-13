@@ -1,6 +1,6 @@
 import * as React from 'react'
-import TableComponent from '../TableComponent'
 import QueryResult from '../QueryResult'
+import TableComponentTemplates from '../TableComponentTemplates'
 
 const All: React.FC = () => {
   const students = [
@@ -22,10 +22,10 @@ const All: React.FC = () => {
 
       <div className="flex flex-col w-full gap-2 mt-6">
         <h3 className="font-medium text-sm">Tabela students</h3>
-        <TableComponent table={students} />
+        <TableComponentTemplates data={students} />
 
         <h3 className="font-medium text-sm mt-4">Tabela allowed_ages</h3>
-        <TableComponent table={allowedAges} />
+        <TableComponentTemplates data={allowedAges} />
       </div>
 
       <QueryResult

@@ -1,5 +1,5 @@
 import * as React from 'react'
-import TableComponent from '../TableComponent'
+import TableComponentTemplates from '../TableComponentTemplates'
 import QueryResult from '../QueryResult'
 import ListWithCircle from '../ListWithCircleProps'
 
@@ -38,10 +38,10 @@ const Revoke: React.FC = () => {
 
       <div className="flex flex-col w-full gap-4 mt-6">
         <h3 className="font-medium text-sm">Tabela de Usuários</h3>
-        <TableComponent table={users} />
+        <TableComponentTemplates data={users} />
 
         <h3 className="font-medium text-sm mt-4">Tabela de Permissões</h3>
-        <TableComponent table={tables} />
+        <TableComponentTemplates data={tables} />
       </div>
 
       <QueryResult

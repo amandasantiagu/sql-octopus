@@ -1,5 +1,5 @@
 import React from 'react'
-import TableComponent from '../TableComponent'
+import TableComponentTemplates from '../TableComponentTemplates'
 import QueryResult from '../QueryResult'
 
 const students = [
@@ -31,10 +31,10 @@ const Union: React.FC = () => {
 
       <div className="flex flex-col w-full gap-2">
         <h3 className="font-medium text-sm">Tabela Students</h3>
-        <TableComponent table={students} />
+        <TableComponentTemplates data={students} />
 
         <h3 className="font-medium text-sm mt-4">Tabela Alumni</h3>
-        <TableComponent table={alumni} />
+        <TableComponentTemplates data={alumni} />
       </div>
 
       <div className="flex flex-col gap-4">

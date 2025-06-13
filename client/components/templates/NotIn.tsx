@@ -1,6 +1,6 @@
 import React from 'react'
-import TableComponent from '../TableComponent'
 import QueryResult from '../QueryResult'
+import TableComponentTemplates from '../TableComponentTemplates'
 
 const dataStudents = [
   { id: 1, label: 'id', value: ['1', '2', '3', '4'] },
@@ -36,11 +36,11 @@ const NotIn: React.FC = () => {
       <div className="flex flex-col w-full gap-4">
         <div className="flex-1">
           <h4 className="font-medium text-sm "> Tabela students</h4>
-          <TableComponent table={dataStudents} />
+          <TableComponentTemplates data={dataStudents} />
         </div>
         <div className="flex-1">
           <h4 className="font-medium text-sm ">Tabela courses</h4>
-          <TableComponent table={dataCourses} />
+          <TableComponentTemplates data={dataCourses} />
         </div>
       </div>
 
