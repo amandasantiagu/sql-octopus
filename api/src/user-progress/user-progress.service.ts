@@ -22,6 +22,12 @@ export class UserProgressService {
     return await this.prisma.userProgress.findUnique({ where: { id } });
   }
 
+  async findManyByUserId(userId: string): Promise<UserProgressDto[]> {
+    return await this.prisma.userProgress.findMany({
+      where: { userId },
+    });
+  }
+
   async create(
     id: string,
     dto: CreateUserProgressDto,

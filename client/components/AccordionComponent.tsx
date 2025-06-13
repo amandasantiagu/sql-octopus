@@ -11,9 +11,11 @@ import DialogInfoContent from './Dialog/DialogInfoContent'
 import { ModuleType } from '@/types/Module'
 import { useRequest } from '@/contexts/RequestContext'
 import DialogExercise from './Dialog/DialogExercise'
+import { useAuth } from '@/contexts/useAuth'
 
 const AccordionComponent: React.FC = () => {
   const { fetchRequest } = useRequest()
+  const { user } = useAuth()
   const [currentContent, setCurrentContent] = React.useState<any>(undefined)
   const [openLesson, setOpenLesson] = React.useState<'redo' | 'view' | 'start' | null>(null)
   const [openModalDetails, setOpenModalDetails] = React.useState<boolean>(false)
@@ -40,7 +42,7 @@ const AccordionComponent: React.FC = () => {
   const getUserProgress = async () => {
     setLoading(true)
     try {
-      const response = await fetchRequest(`user-progress`, {
+      const response = await fetchRequest(`user-progress/userId/${user?.id}`, {
         method: 'GET',
       })
 

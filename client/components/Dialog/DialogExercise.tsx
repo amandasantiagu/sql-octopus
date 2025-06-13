@@ -94,7 +94,7 @@ const DialogExercise: React.FC<Props> = ({
         })
       }
     } catch (error) {
-      console.error('Erro ao enviar uma ou mais respostas:', error)
+      console.log('Erro ao enviar uma ou mais respostas:', error)
     }
   }
 
