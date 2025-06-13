@@ -25,10 +25,10 @@ export const CardHeader = styled.div`
 export const CardStyles = {
   display: 'flex',
   alignItems: 'center',
-  gap: '0.8rem',
+  gap: '0.4rem',
   padding: '0.8rem',
   width: 'auto',
-  maxWidth: '6rem',
+  maxWidth: '6.5rem',
   height: '41px',
   fontSize: '1.2rem',
   backgroundColor: '#f2f2f2',

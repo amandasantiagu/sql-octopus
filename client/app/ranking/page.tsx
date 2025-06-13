@@ -74,13 +74,9 @@ export default function Ranking() {
                   </div>
 
                   <div className="col-span-4 flex flex-col justify-end font-light text-sm">
-                    <span className="flex flex-row items-center gap-1">
-                      <PiCurrencyEthFill className="text-yellowIcon" size={18} /> {item?.exp} XP
+                    <span className="flex flex-row items-center gap-1 text-xs">
+                      <PiCurrencyEthFill className="text-yellowIcon" size={18} /> {item?.exp}
                     </span>
-
-                    {/* <span className="flex flex-row items-center gap-1">
-                      <IoTimeOutline className="text-primary-200" size={18} /> {item.time}
-                    </span> */}
                   </div>
                 </div>
               ))}

@@ -15,6 +15,9 @@ export const sxTextField = {
     '& fieldset': {
       borderColor: 'white',
     },
+    '& Mui-disabled': {
+      background: 'red',
+    },
   },
 }
 

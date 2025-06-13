@@ -44,22 +44,25 @@ export default function Guide() {
         <span>Bem-vindo(a) ao SQLOctopus!</span>
 
         <span>
-          Neste aplicativo, você embarcará em uma jornada completa pelo mundo do SQL, desde os
-          primeiros passos até o domínio avançado da linguagem. Ao longo do caminho, você aprenderá
-          a:
+          Neste aplicativo, você dará seus primeiros passos no universo do SQL, aprendendo de forma
+          prática e acessível. O objetivo aqui não é dominar tudo, mas sim adquirir as habilidades
+          essenciais para explorar e manipular dados com confiança.
         </span>
 
         <span>
-          Começar com consultas básicas, usando comandos como SELECT e WHERE para extrair
-          informações essenciais dos dados.
+          Você aprenderá comandos como SELECT e WHERE, essenciais para extrair informações
+          importantes dos dados.
         </span>
 
         <span>
-          Explorar junções e subconsultas, combinando dados de várias tabelas e criando consultas
-          mais dinâmicas e complexas.
+          Explorará junções e subconsultas, entendendo como combinar dados de diferentes tabelas e
+          criar consultas dinâmicas e mais elaboradas.
         </span>
 
-        <span>Dominar atualizações complexas, gerenciar autorizações e configurar visões.</span>
+        <span>
+          Descobrirá como realizar atualizações simples, gerenciar permissões básicas e configurar
+          visões úteis para o seu aprendizado.
+        </span>
       </div>
 
       <div className="flex flex-col w-full">

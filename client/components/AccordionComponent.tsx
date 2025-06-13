@@ -46,8 +46,6 @@ const AccordionComponent: React.FC = () => {
         method: 'GET',
       })
 
-      console.log('response', response)
-
       setUserProgressContents(response || [])
     } catch (error) {
       console.log('Erro na requisição:', error)
