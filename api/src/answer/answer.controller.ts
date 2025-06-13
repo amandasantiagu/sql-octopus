@@ -47,6 +47,15 @@ export class AnswerController {
   }
 
   @UseGuards(AuthGuard)
+  @Patch('/exerciseId/:id')
+  async updateByExerciseId(
+    @Param('id') exerciseId: string,
+    @Body() answerDto: AnswerDto,
+  ) {
+    return this.answerService.updateByExerciseId(exerciseId, answerDto);
+  }
+
+  @UseGuards(AuthGuard)
   @Delete(':id')
   async remove(@Param('id') id: string) {
     return this.answerService.remove(id);

@@ -34,6 +34,20 @@ export class AnswerService {
     });
   }
 
+  async updateByExerciseId(exerciseId: string, answerDto: Partial<AnswerDto>) {
+    if (!answerDto) return null;
+
+    const sanitizedAnswerDto = {
+      answer: answerDto.answer ?? Prisma.JsonNull,
+      updatedAt: new Date(),
+    };
+
+    return this.prisma.answer.updateMany({
+      where: { exerciseId },
+      data: sanitizedAnswerDto,
+    });
+  }
+
   async update(id: string, answerDto: AnswerDto) {
     if (!answerDto) return null;
 
