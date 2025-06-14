@@ -42,8 +42,6 @@ const OnlyChoice: React.FC<Props> = ({ data, type, onChange }) => {
 
   return (
     <div className="w-full flex flex-col gap-6">
-      <span className="text-white text-base w-full">{data?.description}</span>
-
       <div className="flex flex-col w-full gap-4">
         {data?.data &&
           data.data.map((item: any, index: number) => (

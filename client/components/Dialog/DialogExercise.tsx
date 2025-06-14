@@ -301,16 +301,20 @@ const DialogExercise: React.FC<Props> = ({
         },
       }}
     >
-      <div className="w-full flex flex-col h-screen px-2 py-4">
-        {currentExercise && <HeaderActivity type={typeExercises} onClose={handleClose} />}
-
-        {currentExercise && <BorderLinearProgress variant="determinate" value={progress} />}
-
-        <div className="p-4 w-full flex flex-col gap-2 items-center h-full overflow-auto">
+      <div className="w-full flex flex-col h-screen">
+        <div className="p-4 w-full flex flex-col gap-2 items-center h-full">
           {step <= exercises?.length ? (
             currentExercise && (
-              <div className="flex flex-col w-full h-full">
-                <div className="flex-grow">{typeInCurrentExercise}</div>
+              <div className="flex flex-col w-full h-full gap-4">
+                <HeaderActivity type={typeExercises} onClose={handleClose} />
+
+                <BorderLinearProgress variant="determinate" value={progress} />
+
+                <span className="text-white text-base w-full font-bold">
+                  {currentExercise?.description}
+                </span>
+
+                <div className="flex-grow overflow-auto">{typeInCurrentExercise}</div>
 
                 {typeExercises === 'view' ? (
                   <Button

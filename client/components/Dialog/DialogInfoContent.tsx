@@ -33,31 +33,31 @@ const DialogInfoContent: React.FC<Props> = ({ open, content, onClose }) => {
         return <Select />
       case 'Agrupamento de dados':
         return <All />
-      case 'exists':
+      case 'Subconsultas exists':
         return <Exists />
-      case 'natural-join':
+      case 'Junção natural':
         return <NaturalJoin />
-      case 'not-in':
+      case 'Subconsultas not in':
         return <NotIn />
-      case 'some':
+      case 'Subconsultas some':
         return <Some />
       case 'Unindo dados':
         return <Union />
-      case 'update':
+      case 'Subconsultas update':
         return <Update />
       case 'Filtrando dados':
         return <Where />
       case 'Ordenando dados':
         return <OrderBy />
-      case 'unnatural-join':
+      case 'Junção não natural':
         return <UnnaturalJoin />
-      case 'grant':
+      case 'Introdução a visões grant':
         return <Grant />
-      case 'restrictions':
+      case 'Restrições':
         return <Restrictions />
       case 'outer-join':
         return <OuterJoin />
-      case 'revoke':
+      case 'Introdução a visões revoke':
         return <Revoke />
       default:
         return <Revoke />
