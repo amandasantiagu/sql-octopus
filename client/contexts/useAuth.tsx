@@ -19,10 +19,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [accessToken, setAccessToken] = useState<string | null>(null)
   const router = useRouter()
 
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL // Base da API
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL
 
   const updateUser = (updatedUser: User) => {
     setCurrentUser(updatedUser)
+
+    Cookies.set('user', JSON.stringify(updatedUser), { expires: 7, path: '/' })
+  }
+
+  const updateToken = (value: string) => {
+    setAccessToken(value)
+
+    Cookies.set('authToken', value, { expires: 7, path: '/' })
   }
 
   const signIn = async (email: string, password: string) => {
@@ -45,10 +53,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       const { access_token, user } = await response.json()
 
-      setAccessToken(access_token)
-      setCurrentUser(user)
-
-      Cookies.set('authToken', access_token, { expires: 7, path: '/' })
+      updateToken(access_token)
+      updateUser(user)
 
       return { error: null, data: user }
     } catch (error: any) {
@@ -62,36 +68,32 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setAccessToken(null)
 
     Cookies.remove('authToken', { path: '/' })
+    Cookies.remove('user', { path: '/' })
     router.push('/login')
   }
 
   useEffect(() => {
     const token = Cookies.get('authToken')
+    const storedUser = Cookies.get('user')
+
+    if (storedUser) {
+      try {
+        const parsedUser = JSON.parse(storedUser)
+        setCurrentUser(parsedUser)
+      } catch (error) {
+        console.log('Erro ao analisar o cookie do usuário:', error)
+        Cookies.remove('user')
+      }
+    } else {
+      console.log('Cookie do usuário não encontrado ou vazio')
+      setCurrentUser(null)
+    }
 
     if (token) {
-      setAccessToken(token)
-      fetch(`${apiUrl}auth/me`, {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-      })
-        .then((res) => {
-          if (!res.ok) {
-            return console.log('Erro ao buscar dados do usuário')
-          }
-          return res.json()
-        })
-        .then((userData: User) => {
-          setCurrentUser(userData)
-        })
-        .catch((error) => {
-          console.log('Erro ao restaurar sessão:', error)
-          signOut()
-        })
+      updateToken(token)
     }
-  }, [apiUrl])
+  }, [accessToken])
+
   return (
     <AuthContext.Provider value={{ user: currentUser, accessToken, updateUser, signIn, signOut }}>
       {children}

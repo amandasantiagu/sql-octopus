@@ -21,6 +21,8 @@ const RequestContext = createContext<RequestContextProps | undefined>(undefined)
 export const RequestProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { accessToken } = useAuth()
 
+  console.log('accessToken RequestProvider', accessToken)
+
   const fetchRequest = async <T = any,>(
     endpoint: string,
     options?: Partial<FetchOptions>

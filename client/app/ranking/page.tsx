@@ -3,6 +3,7 @@
 import EmptyCard from '@/components/EmptyCard'
 import Footer from '@/components/Footer'
 import { useRequest } from '@/contexts/RequestContext'
+import { useAuth } from '@/contexts/useAuth'
 import { ProfileItems, ProfilePage } from '@/styles/profileStyles'
 import { RankingType } from '@/types/Ranking'
 import { Avatar, CircularProgress } from '@mui/material'
@@ -12,6 +13,7 @@ import { PiCurrencyEthFill } from 'react-icons/pi'
 
 export default function Ranking() {
   const { fetchRequest } = useRequest()
+  const { accessToken } = useAuth()
   const [loading, setLoading] = useState(false)
   const [rankings, setRankings] = useState<RankingType[]>([])
 
@@ -33,7 +35,7 @@ export default function Ranking() {
 
   useEffect(() => {
     getUsersInRanking()
-  }, [])
+  }, [accessToken])
 
   return (
     <ProfilePage className="flex flex-col min-h-screen">

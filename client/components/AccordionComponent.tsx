@@ -16,7 +16,7 @@ import { CircularProgress } from '@mui/material'
 
 const AccordionComponent: React.FC = () => {
   const { fetchRequest } = useRequest()
-  const { user } = useAuth()
+  const { user, accessToken } = useAuth()
   const [currentContent, setCurrentContent] = React.useState<any>(undefined)
   const [openLesson, setOpenLesson] = React.useState<'redo' | 'view' | 'start' | null>(null)
   const [openModalDetails, setOpenModalDetails] = React.useState<boolean>(false)
@@ -136,7 +136,7 @@ const AccordionComponent: React.FC = () => {
     getModules()
     getContents()
     getUserProgress()
-  }, [])
+  }, [accessToken])
 
   return (
     <div
