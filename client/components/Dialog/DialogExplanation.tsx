@@ -1,6 +1,6 @@
 import * as React from 'react'
 import Dialog from '@mui/material/Dialog'
-import { IconButton } from '@mui/material'
+import { DialogTitle, IconButton } from '@mui/material'
 import { IoMdClose } from 'react-icons/io'
 import { ButtonWithLoading } from '../ButtonWithLoading'
 import { buttonTiffanyBlue } from '@/styles/activityStyles'
@@ -44,7 +44,7 @@ const DialogExplanation: React.FC<Props> = ({ open, activity, onClose }) => {
         },
       }}
     >
-      <div className="flex flex-col gap-4 py-2">
+      <DialogTitle className="text-white text-base flex w-full" sx={{ fontSize: '1rem' }}>
         <div className="flex w-full gap-4 items-center p-2">
           <IconButton aria-label="close" onClick={onClose}>
             <IoMdClose className="text-gray-300" />
@@ -52,9 +52,9 @@ const DialogExplanation: React.FC<Props> = ({ open, activity, onClose }) => {
 
           <span className="text-white font-semibold w-full flex items-center">EXPLICAÇÃO</span>
         </div>
+      </DialogTitle>
 
-        <hr className="border-0 h-[0.2rem] bg-primary-100 rounded-full" />
-      </div>
+      <hr className="border-0 h-[0.2rem] bg-primary-100 rounded-full" />
 
       <div className="px-4 w-full flex flex-col gap-8 items-center text-white h-max">
         <div className="flex flex-col gap-4">
