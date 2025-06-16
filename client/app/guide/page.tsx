@@ -36,7 +36,7 @@ export default function Guide() {
   return (
     <GuidePage>
       <div className="w-full flex flex-row items-center gap-4">
-        <Image src="/logo.png" alt="SqlOctopus" width={60} height={60} />
+        <img src="/logo.png" alt="SqlOctopus" width={60} height={60} />
         <p className="font-bold text-xl text-white">Ola, humano!</p>
       </div>
 

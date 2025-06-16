@@ -6,7 +6,6 @@ import { useAuth } from '@/contexts/useAuth'
 import { CardSign, Sign } from '@/styles/signStyles'
 import { User } from '@/types/User'
 import { FormHelperText, TextField } from '@mui/material'
-import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { Controller, useForm } from 'react-hook-form'
@@ -61,7 +60,7 @@ export default function Login() {
     <Sign>
       <CardSign>
         <div className="h-auto w-auto text-center justify-center mb-2">
-          <Image src="/logo.png" alt="SqlOctopus" width={142} height={142} />
+          <img src="/logo.png" alt="SqlOctopus" width={142} height={142} />
         </div>
 
         <p className="font-bold text-lg text-white">Entre com sua conta</p>

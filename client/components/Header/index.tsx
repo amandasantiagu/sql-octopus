@@ -10,7 +10,7 @@ const Header = () => {
   return (
     <HeaderStyles>
       <Link href="/guide">
-        <Image
+        <img
           src="/logo.png"
           alt="SqlOctopus"
           width={60}

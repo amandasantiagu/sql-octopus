@@ -26,7 +26,7 @@ const ResultPractice: React.FC<Props> = ({ data, content, onClose }) => {
       {data?.hits < 50 ? (
         <HiOutlineEmojiSad size={120} className="text-primary-500" />
       ) : (
-        <Image src="/logo.png" alt="SqlOctopus" width={200} height={200} />
+        <img src="/logo.png" alt="SqlOctopus" width={200} height={200} />
       )}
 
       {data?.hits < 50 ? (

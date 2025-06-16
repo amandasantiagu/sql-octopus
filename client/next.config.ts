@@ -1,7 +1,10 @@
 import type { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  output: 'export', // Habilita a exportação estática
+  images: {
+    unoptimized: true, // Necessário para que as imagens funcionem em modo estático
+  },
 }
 
 export default nextConfig

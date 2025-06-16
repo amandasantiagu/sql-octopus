@@ -65,7 +65,7 @@ export default function Register() {
     <Sign>
       <CardSign>
         <div className="h-auto w-auto text-center justify-center mb-2">
-          <Image src="/logo.png" alt="SqlOctopus" width={142} height={142} />
+          <img src="/logo.png" alt="SqlOctopus" width={142} height={142} />
         </div>
 
         <p className="font-bold text-xl text-white">Registre-se</p>

@@ -40,7 +40,7 @@ const DialogCloseLesson: React.FC<DialogCloseLessonProps> = ({ onClose }) => {
 
         <div className="p-4 w-full flex flex-col gap-2 justify-center items-center">
           <div className="flex flex-col gap-2 justify-center items-center w-full py-4">
-            <Image
+            <img
               src="/logo.png"
               alt="SqlOctopus"
               width={100}
