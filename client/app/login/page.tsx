@@ -90,7 +90,7 @@ export default function Login() {
                 )}
               />
               {!!errors[FORM_EMAIL] && (
-                <FormHelperText error>{errors[FORM_EMAIL].message}</FormHelperText>
+                <span className="text-red-800 font-bold">{errors[FORM_EMAIL].message}</span>
               )}
             </div>
 
@@ -118,7 +118,7 @@ export default function Login() {
                 )}
               />
               {!!errors[FORM_PASSWORD] && (
-                <FormHelperText error>{errors[FORM_PASSWORD].message}</FormHelperText>
+                <span className="text-red-800 font-bold">{errors[FORM_PASSWORD].message}</span>
               )}
             </div>
           </div>

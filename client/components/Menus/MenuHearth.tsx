@@ -60,7 +60,7 @@ const MenuHearth: React.FC = () => {
 
       showToast('Vida adicionada com sucesso', 'success')
     } catch (error) {
-      // showToast(error?.message || 'Erro na requisição', 'error')
+      setLoading(false)
     } finally {
       setLoading(false)
     }
@@ -133,6 +133,8 @@ const MenuHearth: React.FC = () => {
               className="w-full text-base"
               disabled={hasBtn}
               sx={stylesRecoveringLives}
+              loading={loading}
+              loadingIndicator="Carregando..."
               onClick={addLife}
             >
               <span style={{ flex: 1, textAlign: 'center' }}>Recuperar vidas</span>

@@ -16,10 +16,15 @@ export default function Guide() {
   const router = useRouter()
 
   const handleCompleteTutorial = async () => {
-    if (user?.alreadyDoneTutorial) return router.push('/learn')
+    setLoading(true)
+
+    if (user?.alreadyDoneTutorial) {
+      setLoading(false)
+
+      return router.push('/learn')
+    }
 
     if (!user?.alreadyDoneTutorial) {
-      setLoading(true)
       try {
         await fetchRequest(`users/${user?.id}/complete-tutorial`, {
           method: 'POST',

@@ -4,8 +4,7 @@ import { sxTextField } from '@/components/CustomTextField'
 import { useRequest } from '@/contexts/RequestContext'
 import { useToast } from '@/contexts/toast'
 import { CardSign, Sign } from '@/styles/signStyles'
-import { User } from '@/types/User'
-import { FormHelperText, IconButton, InputAdornment, TextField } from '@mui/material'
+import { IconButton, InputAdornment, TextField } from '@mui/material'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -34,6 +33,7 @@ export default function Register() {
 
   const [showPassword, setShowPassword] = useState<boolean>(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const togglePasswordVisibility = () => setShowPassword(!showPassword)
   const toggleConfirmPasswordVisibility = () => setShowConfirmPassword(!showConfirmPassword)
@@ -44,6 +44,7 @@ export default function Register() {
 
   const onSubmit = async (data: any) => {
     try {
+      setIsLoading(true)
       await fetchRequest('users', {
         method: 'POST',
         body: {
@@ -56,6 +57,8 @@ export default function Register() {
       showToast('Usuario criado com sucesso!', 'success')
 
       router.push('login')
+
+      setIsLoading(false)
     } catch (error) {
       // showToast(error?.message || 'Erro na requisição', 'error')
     }
@@ -99,7 +102,7 @@ export default function Register() {
                 />
 
                 {!!errors[FORM_NAME] && (
-                  <FormHelperText error>Nome completo é obrigatório</FormHelperText>
+                  <span className="text-red-800 font-bold">Nome completo é obrigatório</span>
                 )}
               </div>
 
@@ -129,7 +132,9 @@ export default function Register() {
                   )}
                 />
 
-                {!!errors[FORM_EMAIL] && <FormHelperText error>Email é obrigatório</FormHelperText>}
+                {!!errors[FORM_EMAIL] && (
+                  <span className="text-red-800 font-bold">Email é obrigatório</span>
+                )}
               </div>
 
               <div>
@@ -169,7 +174,7 @@ export default function Register() {
                 />
 
                 {!!errors[FORM_PASSWORD] && (
-                  <FormHelperText error>Senha é obrigatório</FormHelperText>
+                  <span className="text-red-800 font-bold">Senha é obrigatório</span>
                 )}
               </div>
 
@@ -212,7 +217,7 @@ export default function Register() {
                 />
 
                 {!!errors[CONFIRM_PASSWORD] && (
-                  <FormHelperText error>As senhas devem ser iguais</FormHelperText>
+                  <span className="text-red-800 font-bold">As senhas devem ser iguais</span>
                 )}
               </div>
             </div>
@@ -220,15 +225,16 @@ export default function Register() {
             <div className="w-full">
               <button
                 type="submit"
-                disabled={!isValid}
+                disabled={!isValid || isLoading}
                 data-cy="submit-button"
                 style={{
-                  background: '#0D5C63',
+                  background: isLoading ? '#ccc' : '#0D5C63',
                   width: '100%',
+                  cursor: isLoading ? 'not-allowed' : 'pointer',
                 }}
                 className="mt-2 flex w-full bg-primary-300 justify-center rounded-md border border-transparent py-2 px-4 text-sm font-medium text-white uppercase"
               >
-                <span> Registrar </span>
+                <span> {isLoading ? 'Carregando...' : 'Registrar'}</span>
               </button>
             </div>
 

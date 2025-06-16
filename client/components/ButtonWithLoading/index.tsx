@@ -80,7 +80,9 @@ export const ButtonWithLoading: React.FC<ButtonWithLoadingProps> = ({
         id={id}
         className={className}
       >
-        {isLoading ? <CircularProgress color="secondary" size={20} /> : <>{children}</>}
+        {isLoading && <CircularProgress color="primary" size={20} />}
+
+        <>{children}</>
       </Button>
     </Tooltip>
   )

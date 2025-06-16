@@ -12,6 +12,7 @@ import { ModuleType } from '@/types/Module'
 import { useRequest } from '@/contexts/RequestContext'
 import DialogExercise from './Dialog/DialogExercise'
 import { useAuth } from '@/contexts/useAuth'
+import { CircularProgress } from '@mui/material'
 
 const AccordionComponent: React.FC = () => {
   const { fetchRequest } = useRequest()
@@ -167,124 +168,132 @@ const AccordionComponent: React.FC = () => {
 
       <DialogInfoContent open={openInfoContent} content={currentContent} onClose={handleClose} />
 
-      {modules?.length > 0 &&
-        modules.map((module, index) => {
-          const isUnlocked = index === 0 || isModuleUnlocked(modules[index - 1]?.id)
-          const contents = filterContentsInModule(module.id)
+      {loading ? (
+        <div className="w-full flex justify-center">
+          <CircularProgress color="primary" />
+        </div>
+      ) : (
+        <>
+          {modules?.length > 0 &&
+            modules.map((module, index) => {
+              const isUnlocked = index === 0 || isModuleUnlocked(modules[index - 1]?.id)
+              const contents = filterContentsInModule(module.id)
 
-          return (
-            <Accordion
-              key={module.id}
-              disabled={!isUnlocked}
-              className="rounded border-none shadow-none flex flex-col"
-              sx={{
-                backgroundColor: '#0d5c63',
-                borderRadius: '0.5rem',
-                '& .MuiAccordion-root': {
-                  borderRadius: '0.5rem',
-                },
-              }}
-            >
-              <AccordionSummary
-                aria-controls={`panel-content-${module.id}`}
-                id={`panel-header-${module.id}`}
-                sx={{
-                  backgroundColor: '#44A1A0',
-                  padding: '1.2rem 1rem',
-                  justifyContent: 'center',
-                  borderRadius: '0.5rem',
-                  '& .MuiAccordionSummary-expandIconWrapper': {
-                    color: 'white',
-                  },
-                }}
-              >
-                <span className="text-white items-center flex justify-center gap-4 w-full">
-                  {getIconForLesson(module, index, modules)}
-                  {module.label}
-                </span>
-              </AccordionSummary>
+              return (
+                <Accordion
+                  key={module.id}
+                  disabled={!isUnlocked}
+                  className="rounded border-none shadow-none flex flex-col"
+                  sx={{
+                    backgroundColor: '#0d5c63',
+                    borderRadius: '0.5rem',
+                    '& .MuiAccordion-root': {
+                      borderRadius: '0.5rem',
+                    },
+                  }}
+                >
+                  <AccordionSummary
+                    aria-controls={`panel-content-${module.id}`}
+                    id={`panel-header-${module.id}`}
+                    sx={{
+                      backgroundColor: '#44A1A0',
+                      padding: '1.2rem 1rem',
+                      justifyContent: 'center',
+                      borderRadius: '0.5rem',
+                      '& .MuiAccordionSummary-expandIconWrapper': {
+                        color: 'white',
+                      },
+                    }}
+                  >
+                    <span className="text-white items-center flex justify-center gap-4 w-full">
+                      {getIconForLesson(module, index, modules)}
+                      {module.label}
+                    </span>
+                  </AccordionSummary>
 
-              {contents.length > 0 &&
-                contents.map((content, contentIndex) => {
-                  const isContentCompleted = userProgressContents.some(
-                    (progress) => progress.contentId === content.id
-                  )
-                  const previousContentCompleted =
-                    contentIndex === 0 ||
-                    userProgressContents.some(
-                      (progress) => progress.contentId === contents[contentIndex - 1]?.id
-                    )
+                  {contents.length > 0 &&
+                    contents.map((content, contentIndex) => {
+                      const isContentCompleted = userProgressContents.some(
+                        (progress) => progress.contentId === content.id
+                      )
+                      const previousContentCompleted =
+                        contentIndex === 0 ||
+                        userProgressContents.some(
+                          (progress) => progress.contentId === contents[contentIndex - 1]?.id
+                        )
 
-                  return (
-                    <AccordionDetails
-                      key={content.id}
-                      className="bg-white flex flex-row items-center justify-between w-full cursor-pointer"
-                      sx={{
-                        padding: '16px',
-                        borderBottom: '1px solid #ECEEEE',
-                      }}
-                    >
-                      <div className="flex flex-row items-center gap-4 w-full">
-                        <div
-                          className="bg-primary-200 p-2 rounded-full shadow-lg"
-                          onClick={() => {
-                            setCurrentContent(content)
-                            setOpenInfoContent(true)
-                          }}
-                          style={{
-                            boxShadow:
-                              'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px',
+                      return (
+                        <AccordionDetails
+                          key={content.id}
+                          className="bg-white flex flex-row items-center justify-between w-full cursor-pointer"
+                          sx={{
+                            padding: '16px',
+                            borderBottom: '1px solid #ECEEEE',
                           }}
                         >
-                          <FaBookOpen className="text-white" />
-                        </div>
+                          <div className="flex flex-row items-center gap-4 w-full">
+                            <div
+                              className="bg-primary-200 p-2 rounded-full shadow-lg"
+                              onClick={() => {
+                                setCurrentContent(content)
+                                setOpenInfoContent(true)
+                              }}
+                              style={{
+                                boxShadow:
+                                  'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px',
+                              }}
+                            >
+                              <FaBookOpen className="text-white" />
+                            </div>
 
-                        <div
-                          className="flex flex-row justify-between items-center w-full"
-                          onClick={() => {
-                            if (
-                              isContentCompleted ||
-                              (previousContentCompleted && user?.life && user?.life > 0)
-                            ) {
-                              setCurrentContent(content)
-                              if (isContentCompleted) {
-                                const contentInUserProgress =
-                                  userProgressContents.length > 0
-                                    ? userProgressContents.find(
-                                        (item) => item.contentId === content.id
-                                      )
-                                    : null
+                            <div
+                              className="flex flex-row justify-between items-center w-full"
+                              onClick={() => {
+                                if (
+                                  isContentCompleted ||
+                                  (previousContentCompleted && user?.life && user?.life > 0)
+                                ) {
+                                  setCurrentContent(content)
+                                  if (isContentCompleted) {
+                                    const contentInUserProgress =
+                                      userProgressContents.length > 0
+                                        ? userProgressContents.find(
+                                            (item) => item.contentId === content.id
+                                          )
+                                        : null
 
-                                const currentContent = contentInUserProgress
-                                  ? {
-                                      ...content,
-                                      ...contentInUserProgress,
-                                      id: content.id,
-                                      userProgressId: contentInUserProgress.id,
-                                    }
-                                  : content
+                                    const currentContent = contentInUserProgress
+                                      ? {
+                                          ...content,
+                                          ...contentInUserProgress,
+                                          id: content.id,
+                                          userProgressId: contentInUserProgress.id,
+                                        }
+                                      : content
 
-                                setCurrentContent(currentContent)
+                                    setCurrentContent(currentContent)
 
-                                setOpenModalDetails(true)
-                              } else {
-                                setOpenLesson('start')
-                              }
-                            }
-                          }}
-                        >
-                          <span className="flex-grow">{content.label}</span>
-                          <span className="justify-end">
-                            {getContentIcon(isContentCompleted, previousContentCompleted)}
-                          </span>
-                        </div>
-                      </div>
-                    </AccordionDetails>
-                  )
-                })}
-            </Accordion>
-          )
-        })}
+                                    setOpenModalDetails(true)
+                                  } else {
+                                    setOpenLesson('start')
+                                  }
+                                }
+                              }}
+                            >
+                              <span className="flex-grow">{content.label}</span>
+                              <span className="justify-end">
+                                {getContentIcon(isContentCompleted, previousContentCompleted)}
+                              </span>
+                            </div>
+                          </div>
+                        </AccordionDetails>
+                      )
+                    })}
+                </Accordion>
+              )
+            })}
+        </>
+      )}
     </div>
   )
 }

@@ -2,6 +2,7 @@ import * as React from 'react'
 import TableComponent from '../TableComponent'
 import { Answer } from '@/types/Answer'
 import { useRequest } from '@/contexts/RequestContext'
+import { CircularProgress } from '@mui/material'
 
 interface Props {
   data: any
@@ -12,6 +13,7 @@ interface Props {
 const FillBlanks: React.FC<Props> = ({ data, type, onChange }) => {
   const { fetchRequest } = useRequest()
   const [currentAnswer, setCurrentAnswer] = React.useState<string | null>(null)
+  const [loading, setLoading] = React.useState(false)
 
   const [answers, setAnswers] = React.useState(
     data?.blanks
@@ -31,6 +33,8 @@ const FillBlanks: React.FC<Props> = ({ data, type, onChange }) => {
 
   const getCurrentAnswer = async () => {
     if (!data?.id) return
+
+    setLoading(true)
     try {
       const response = await fetchRequest<Answer>(`answers/exercise/${data?.id}`, {
         method: 'GET',
@@ -44,6 +48,7 @@ const FillBlanks: React.FC<Props> = ({ data, type, onChange }) => {
     } catch (error) {
       console.log('Erro na requisição:', error)
     } finally {
+      setLoading(false)
     }
   }
 
@@ -70,33 +75,39 @@ const FillBlanks: React.FC<Props> = ({ data, type, onChange }) => {
       <div className="text-white flex flex-col w-full gap-4">
         <span className="text-base ">Complete a consulta:</span>
 
-        <div className="flex flex-wrap w-full gap-4 items-center p-4 rounded-lg bg-primary-500">
-          {currentAnswer && type === 'view' ? (
-            <span>{currentAnswer}</span>
-          ) : (
-            <>
-              {data?.template.split(/(__\w+__)/g).map((part: string, index: number) => {
-                const blank = data?.blanks?.find((b: any) => b === part)
+        {loading ? (
+          <div className="w-full flex justify-center">
+            <CircularProgress color="primary" />
+          </div>
+        ) : (
+          <div className="flex flex-wrap w-full gap-4 items-center p-4 rounded-lg bg-primary-500">
+            {currentAnswer && type === 'view' ? (
+              <span>{currentAnswer}</span>
+            ) : (
+              <>
+                {data?.template.split(/(__\w+__)/g).map((part: string, index: number) => {
+                  const blank = data?.blanks?.find((b: any) => b === part)
 
-                if (blank) {
-                  return (
-                    <input
-                      key={index}
-                      disabled={!!(currentAnswer && type === 'view')}
-                      type="text"
-                      value={answers[blank]}
-                      onChange={(e) => handleInputChange(blank, e.target.value)}
-                      onBlur={handleBlur}
-                      placeholder="Insira um valor"
-                      className="px-1 py-1 rounded bg-white text-black"
-                    />
-                  )
-                }
-                return <span key={index}>{part}</span>
-              })}
-            </>
-          )}
-        </div>
+                  if (blank) {
+                    return (
+                      <input
+                        key={index}
+                        disabled={!!(currentAnswer && type === 'view')}
+                        type="text"
+                        value={answers[blank]}
+                        onChange={(e) => handleInputChange(blank, e.target.value)}
+                        onBlur={handleBlur}
+                        placeholder="Insira um valor"
+                        className="px-1 py-1 rounded bg-white text-black"
+                      />
+                    )
+                  }
+                  return <span key={index}>{part}</span>
+                })}
+              </>
+            )}
+          </div>
+        )}
       </div>
     </div>
   )

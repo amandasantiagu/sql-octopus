@@ -5,7 +5,7 @@ import Footer from '@/components/Footer'
 import { useRequest } from '@/contexts/RequestContext'
 import { ProfileItems, ProfilePage } from '@/styles/profileStyles'
 import { RankingType } from '@/types/Ranking'
-import { Avatar } from '@mui/material'
+import { Avatar, CircularProgress } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { FaRankingStar } from 'react-icons/fa6'
 import { PiCurrencyEthFill } from 'react-icons/pi'
@@ -25,6 +25,7 @@ export default function Ranking() {
       setRankings(response || [])
     } catch (error) {
       console.log('Erro na requisição:', error)
+      setLoading(false)
     } finally {
       setLoading(false)
     }
@@ -47,44 +48,50 @@ export default function Ranking() {
           <hr className="border-0 h-[0.2rem] bg-primary-100 rounded-full" />
         </div>
 
-        <div
-          className="flex flex-col gap-2 w-full flex-grow overflow-y-auto"
-          style={{
-            maxHeight: 'calc(100vh - 250px)',
-            overflowY: 'auto',
-          }}
-          id="list-ranking"
-        >
-          {rankings?.length > 0 ? (
-            <div className="flex flex-col gap-4 w-full">
-              {rankings.map((item: RankingType, index) => (
-                <div
-                  className="grid grid-cols-12 w-full bg-white rounded-lg p-3 gap-4 items-center"
-                  key={index}
-                >
-                  <div className="col-span-8 flex flex-row items-center gap-4">
-                    <Avatar
-                      alt="user-avatar"
-                      sx={{ width: 25, height: 25, background: '#44A1A0', fontSize: '1rem' }}
-                    >
-                      {index + 1}
-                    </Avatar>
+        {loading ? (
+          <div className="w-full flex justify-center">
+            <CircularProgress color="primary" />
+          </div>
+        ) : (
+          <div
+            className="flex flex-col gap-2 w-full flex-grow overflow-y-auto"
+            style={{
+              maxHeight: 'calc(100vh - 250px)',
+              overflowY: 'auto',
+            }}
+            id="list-ranking"
+          >
+            {rankings?.length > 0 ? (
+              <div className="flex flex-col gap-4 w-full">
+                {rankings.map((item: RankingType, index) => (
+                  <div
+                    className="grid grid-cols-12 w-full bg-white rounded-lg p-3 gap-4 items-center"
+                    key={index}
+                  >
+                    <div className="col-span-8 flex flex-row items-center gap-4">
+                      <Avatar
+                        alt="user-avatar"
+                        sx={{ width: 25, height: 25, background: '#44A1A0', fontSize: '1rem' }}
+                      >
+                        {index + 1}
+                      </Avatar>
 
-                    <span className="font-bold text-sm w-full truncate">{item?.name}</span>
-                  </div>
+                      <span className="font-bold text-sm w-full truncate">{item?.name}</span>
+                    </div>
 
-                  <div className="col-span-4 flex flex-col justify-end font-light text-sm">
-                    <span className="flex flex-row items-center gap-1 text-xs">
-                      <PiCurrencyEthFill className="text-yellowIcon" size={18} /> {item?.exp}
-                    </span>
+                    <div className="col-span-4 flex flex-col justify-end font-light text-sm">
+                      <span className="flex flex-row items-center gap-1 text-xs">
+                        <PiCurrencyEthFill className="text-yellowIcon" size={18} /> {item?.exp}
+                      </span>
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <EmptyCard message="Ainda não há rankings registrados" />
-          )}
-        </div>
+                ))}
+              </div>
+            ) : (
+              <EmptyCard message="Ainda não há rankings registrados" />
+            )}
+          </div>
+        )}
       </ProfileItems>
 
       <Footer />
