@@ -21,18 +21,16 @@ Atualmente, a API e o banco de dados estão hospedados em um servidor na nuvem. 
    ```bash
    cd /api
 
-   ```
-
 2. **Configurar a URL do banco de dados:**
    No arquivo de variáveis de ambiente .env (se não existir, crie), altere a variável DATABASE_URL para utilizar o banco de dados local. Descomente a linha correspondente ao banco local e comente a linha do banco na nuvem:
 
-# Para rodar localmente, use:
+No .env para rodar localmente, use:
 
 DATABASE_URL="mysql://root:123@mysql_db:3306/octopus"
 
-# Para o servidor na nuvem, use:
+para usar o servidor na nuvem (pode ser que esteja offline), use:
 
-# DATABASE_URL="mysql://admin:amanda_power_user@54.94.221.214:3306/octopus"
+DATABASE_URL="mysql://admin:amanda_power_user@54.94.221.214:3306/octopus"
 
 3. **Executar o Docker Compose:**
 
@@ -81,7 +79,7 @@ Atualmente, a API e o banco de dados estão hospedados em um servidor na nuvem. 
 📂 Estrutura do Projeto
 /api: Contém o código da API desenvolvida em NestJS.
 
-    /front: Contém o código do front-end em Vue.js.
+    /client: Contém o código do front-end em Vue.js.
 
     database.zip: Arquivo compactado contendo os scripts SQL para popular a base de dados local.
 
